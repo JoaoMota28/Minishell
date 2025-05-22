@@ -1,0 +1,18 @@
+//Ola mota isto e tipo para falar contigo e 
+//explicar updates ig e mais facil
+//do que fazer commits em biblia :D
+
+---MAKEFILE--
+
+Para ficar mais organizado como ja te disse criei
+pastas diferentes para cada etapa do minishell assim 
+é muito mais moldável e fácil de aceder também/o MAKE
+dos objetos está feito de forma a que diga em que parte
+parou e fica mais facil de perceber erros.
+
+Se quiseres *ADICIONAR* as tuas proprias pastas no
+repositorio podes so criar novas variaveis dentro do
+Makefile para os built ins e executor e trata-las 
+exatamente da mesma forma que faço com o Lexer e o
+Parser
+
