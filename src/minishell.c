@@ -6,12 +6,12 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:53:16 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/22 18:43:11 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:51:07 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 //Sempre que eu me referir a uma variavel de struct 
 //como data geralmente significa a struct "principal"
 //que interliga a todas as outras structs
@@ -27,16 +27,17 @@ void    msh_loop(t_minishell *data)
 			rl_clear_history();
 			exit_msh(data, 0);
 		}
-		//ou se a line for so white spaces
 		if (!*line)
 		{
 			free(line);
 			continue ;
 		}
 		add_history(line);
+		data->exit_code = lexer(line);
 		free(line);
 	}
 }
+
 
 int main(int argc, char **argv, char **envp)
 {
@@ -50,3 +51,4 @@ int main(int argc, char **argv, char **envp)
 	msh_loop(&data);
 	return (0);
 }
+	*/

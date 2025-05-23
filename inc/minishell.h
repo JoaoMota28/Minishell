@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/22 18:39:03 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:05:10 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "lexer.h"
 
 # define PROMPT "Minishell >$"
 # define PRIVATE_PATH "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin\
@@ -28,7 +29,8 @@
 
 typedef struct s_minishell
 {
-	char    *prompt;
+	char	*prompt;
+	int		exit_code;
 }				t_minishell;
 
 //inits
@@ -36,5 +38,8 @@ void    data_init(t_minishell *data);
 
 //free and exit
 void    exit_msh(t_minishell *data, int exit_code);
+
+//utils
+int 	is_space(char c);
 
 #endif

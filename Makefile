@@ -15,7 +15,7 @@ INCLUDE			= -I inc/
 SRCS	 		= $(LEXER_SRCS) $(PARSER_SRCS) minishell.c inits.c utils.c memory_handle.c
 SRC_PATH		= src/
 
-LEXER_SRCS		= lexer.c
+LEXER_SRCS		= lexer.c main.c
 LEXER_PATH 		= src/lexer/
 LEXER			= $(addprefix $(LEXER_PATH), $(LEXER_SRCS))
 

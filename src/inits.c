@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/22 18:41:35 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/05/22 20:18:46 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,4 +15,5 @@
 void	data_init(t_minishell *data)
 {
 	data->prompt = PROMPT;
+	data->exit_code = 0;
 }
