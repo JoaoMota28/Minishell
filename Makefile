@@ -12,10 +12,10 @@ CFLAGS			= -Wall -Wextra -Werror -g
 INCLUDE			= -I inc/
 
 ### MINISHELL SRCS ###
-SRCS	 		= $(LEXER_SRCS) $(PARSER_SRCS) minishell.c inits.c utils.c memory_handle.c
+SRCS	 		= $(LEXER_SRCS) $(PARSER_SRCS) minishell.c inits.c utils.c memory_handle.c 
 SRC_PATH		= src/
 
-LEXER_SRCS		= lexer.c main.c
+LEXER_SRCS		= errors.c lexer_memory_handle.c lexer.c main.c syntax_checker.c
 LEXER_PATH 		= src/lexer/
 LEXER			= $(addprefix $(LEXER_PATH), $(LEXER_SRCS))
 

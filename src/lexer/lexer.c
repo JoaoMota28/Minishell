@@ -38,7 +38,6 @@ static void	set_type(t_token_list *node, char *line, int *i)
 	}
     else
 		node->token_type = WORD;
-	printf("TYPE: %i\n", node->token_type);
 }
 
 static void    add_content(t_token_list *node, int *i)
@@ -60,17 +59,42 @@ static void    add_content(t_token_list *node, int *i)
 		return ;
 }
 
+static t_token_list	*lex_node(char *line, int *i)
+{
+	int				start;
+	t_token_list	*node;
 
-t_token_list *lexer(char *line)
+	node = malloc(sizeof(*node));
+	if (!node)
+		return (NULL);
+	node->next = NULL;
+	start = *i;
+	set_type(node, line, i);
+	if (node->token_type != WORD)
+		add_content(node, i);
+	else
+	{
+		while (line[*i] && !is_space(line[*i]) && line[*i] != '|'
+			&& line[*i] != '>' && line[*i] != '<')
+				(*i)++;
+		node->content = ft_substr(line, start, *i - start);
+	}
+	return (node);
+}
+
+int	lexer(char *line)
 {
 	t_token_list	*node;
 	t_token_list	*head;
+	t_quote_type	type;
 	int	i;
-	int start;
 
 	i = 0;
 	head = NULL;
 	node = NULL;
+	type = is_unquoted(line);
+	if (type)
+		return(put_unclosed_syntax_error(type), 1);
 	while (line[i])
 	{
 		if (is_space(line[i]))
@@ -78,23 +102,11 @@ t_token_list *lexer(char *line)
 			i++;
 			continue ;
 		}
-		node = malloc(sizeof(*node));
-		if (!node)
-			return (NULL);
-		node->next = NULL;
-		start = i;
-		set_type(node, line, &i);
-		if (node->token_type != WORD)
-			add_content(node, &i);
-		else
-		{
-			while (line[i] && !is_space(line[i]) && line[i] != '|'
-				&& line[i] != '>' && line[i] != '<')
-					i++;
-			node->content = ft_substr(line, start, i - start);
-		}
+		node = lex_node(line, &i);
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
 	}
-	//vai returnar parser :D
-	return (head);
+	if (check_syntax_errors(head))
+		return (free_tokens(head), 1);
+	// return (parser());
+	return (0);
 }

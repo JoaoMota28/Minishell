@@ -19,3 +19,15 @@ int is_space(char c)
 	else
 		return (0);
 }
+
+int	is_operator(t_token_type type)
+{
+	return (type == PIPE || type == R_IN || type == R_OUT
+		|| type == AP_R_OUT || type == HERE_DOC);
+}
+
+//por agora skipa quotes mas pode skipar ()
+// int	skip_closed(char *line, char c)
+// {
+
+// }

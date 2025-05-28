@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "lexer.h"
+# include "parser.h"
 
 # define PROMPT "Minishell >$"
 # define PRIVATE_PATH "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin\
@@ -41,5 +42,6 @@ void    exit_msh(t_minishell *data, int exit_code);
 
 //utils
 int 	is_space(char c);
+int	is_operator(t_token_type type);
 
 #endif

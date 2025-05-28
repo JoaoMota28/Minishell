@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
+
 //Sempre que eu me referir a uma variavel de struct 
 //como data geralmente significa a struct "principal"
 //que interliga a todas as outras structs
@@ -51,4 +51,3 @@ int main(int argc, char **argv, char **envp)
 	msh_loop(&data);
 	return (0);
 }
-	*/
