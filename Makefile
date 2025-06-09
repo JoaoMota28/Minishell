@@ -12,14 +12,14 @@ CFLAGS			= -Wall -Wextra -Werror -g
 INCLUDE			= -I inc/
 
 ### MINISHELL SRCS ###
-SRCS	 		= $(LEXER_SRCS) $(PARSER_SRCS) minishell.c inits.c utils.c memory_handle.c 
+SRCS	 		= $(LEXER_SRCS) $(PARSER_SRCS) minishell.c inits.c utils.c exit.c 
 SRC_PATH		= src/
 
-LEXER_SRCS		= errors.c lexer_memory_handle.c lexer.c main.c syntax_checker.c
+LEXER_SRCS		= errors.c lexer_memory_handle.c lexer.c syntax_checker.c #test.c
 LEXER_PATH 		= src/lexer/
 LEXER			= $(addprefix $(LEXER_PATH), $(LEXER_SRCS))
 
-PARSER_SRCS		= parser.c
+PARSER_SRCS		= parser.c test.c
 PARSER_PATH		= src/parser/
 PARSER			= $(addprefix $(PARSER_PATH), $(PARSER_SRCS))
 
@@ -40,7 +40,7 @@ GNL_PATH		= complete_lib/42_GNL/
 GNL				= $(GNL_PATH)libgnl.a
 PERSONAL_LIBS	= -lft -lgnl -lftprintf
 
-vpath %.c $(SRC_PATH) $(LEXER_PATH) $(PARSER_PATH)
+vpath %.c $(SRC_PATH) $(PARSER_PATH) $(LEXER_PATH) 
 
 ### RULES ###
 all: 			$(NAME)

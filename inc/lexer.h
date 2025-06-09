@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/23 16:03:06 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:46:47 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define SYNTAX_ERROR_OPEN_SQUOTE "Minishell: syntax error unclosed single quote\n"
 # define SYNTAX_ERROR_OPEN_DQUOTE "Minishell: syntax error unclosed double quotes\n"
 
-typedef enum s_token_type
+typedef enum e_token_type
 {
 	PIPE,
 	R_IN,
@@ -35,9 +35,9 @@ typedef enum s_token_type
 	AP_R_OUT,
 	HERE_DOC,
 	WORD,
-}               t_token_type;
+}				t_token_type;
 
-typedef enum s_quote_type
+typedef enum e_quote_type
 {
 	UNQUOTED,
 	SINGLE_O,

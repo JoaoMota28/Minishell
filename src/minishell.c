@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:53:16 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/23 15:51:07 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:54:24 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //Sempre que eu me referir a uma variavel de struct 
 //como data geralmente significa a struct "principal"
 //que interliga a todas as outras structs
-void    msh_loop(t_minishell *data)
+/*void    msh_loop(t_minishell *data)
 {
 	char *line;
 	while (1)
@@ -50,4 +50,4 @@ int main(int argc, char **argv, char **envp)
 	data_init(&data);
 	msh_loop(&data);
 	return (0);
-}
+}*/
