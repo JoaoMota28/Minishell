@@ -6,39 +6,11 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/23 20:10:52 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:03:17 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	set_type(t_token_list *node, char *line, int *i)
-{
-	if (line[*i] == '|')
-	node->token_type = PIPE;
-	else if (line[*i] == '>' && line[*i + 1] == '>')
-	{
-		node->token_type = AP_R_OUT;
-		*i += 2;
-	}
-	else if (line[*i] == '<' && line[*i + 1] == '<')
-	{
-		node->token_type = HERE_DOC;
-		*i += 2;
-	}
-	else if (line[*i] == '<')
-	{
-		node->token_type = R_IN;
-		(*i)++;
-	}
-	else if (line[*i] == '>')
-	{
-		node->token_type = R_OUT;
-		(*i)++;
-	}
-    else
-		node->token_type = WORD;
-}
 
 static void    add_content(t_token_list *node, int *i)
 {
@@ -70,6 +42,7 @@ static t_token_list	*lex_node(char *line, int *i)
 	node->next = NULL;
 	start = *i;
 	set_type(node, line, i);
+	node->quote_type = set_quote_type(line, start);
 	if (node->token_type != WORD)
 		add_content(node, i);
 	else
@@ -82,13 +55,14 @@ static t_token_list	*lex_node(char *line, int *i)
 	return (node);
 }
 
-int	lexer(char *line)
+int	lexer(char *line, t_minishell *data)
 {
+	int				i;
 	t_token_list	*node;
 	t_token_list	*head;
 	t_quote_type	type;
-	int	i;
 
+	(void)data;
 	i = 0;
 	head = NULL;
 	node = NULL;
@@ -103,10 +77,10 @@ int	lexer(char *line)
 			continue ;
 		}
 		node = lex_node(line, &i);
+		expand_token(node, data);
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
 	}
 	if (check_syntax_errors(head))
 		return (free_tokens(head), 1);
-	// return (parser());
-	return (0);
+	return (parser(head));
 }

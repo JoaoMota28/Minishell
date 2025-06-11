@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/29 15:46:47 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:53:29 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,11 @@ typedef enum e_quote_type
 
 typedef struct s_token_list
 {
-	char                *content;
+	char				*content;
 	struct s_token_list *next;
 	t_token_type		token_type;
-}               t_token_list;
-
-/// @brief Main Function that turns the parameter given into a list of tokens
-/// @param line interactive line written by the minishell
-/// @return exit status to the next step -> Parser
-int lexer(char *line);
+	t_quote_type		quote_type;
+}				t_token_list;
 
 //Checks
 t_quote_type	is_unquoted(char *line);
@@ -62,11 +58,14 @@ int				check_pipe_syntax_errors(t_token_list *token, t_token_list *prev);
 int				check_redir_syntax_errors(t_token_list *token);
 int				check_syntax_errors(t_token_list *list);
 
-//Errors
-void	put_unclosed_syntax_error(t_quote_type type);
-void	put_token_syntax_error(t_token_list *token);
+//Utils
+void			set_type(t_token_list *node, char *line, int *i);
+t_quote_type    set_quote_type(char *line, int index);
 
+//Errors
+void			put_unclosed_syntax_error(t_quote_type type);
+void			put_token_syntax_error(t_token_list *token);
 //Memory handle
-void	free_tokens(t_token_list *list);
+void			free_tokens(t_token_list *list);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:57:48 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/22 20:27:50 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:29:27 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,36 @@ int	is_operator(t_token_type type)
 		|| type == AP_R_OUT || type == HERE_DOC);
 }
 
-//por agora skipa quotes mas pode skipar ()
-// int	skip_closed(char *line, char c)
-// {
+int	dp_len(char **dp)
+{
+	int	len;
 
-// }
+	if (!dp)
+		return (0);
+	len = 0;
+	while(dp[len])
+		len++;
+	return (len);
+}
+
+char	**dp_dup(char **dp)
+{
+	int		i;
+	int		len;
+	char	**new;
+
+	i = 0;
+	len = dp_len(dp);
+	new = malloc(sizeof(char *) * (len + 1));
+	if (!new)
+		return (NULL);
+	while (dp[i])
+	{
+		new[i] = ft_strdup(dp[i]);
+		if (!new)
+			return (free_ar((void **)new), NULL);
+		i++;
+	}
+	new[i] = NULL;
+	return (new);
+}

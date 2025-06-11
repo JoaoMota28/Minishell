@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:53:16 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/06 18:54:24 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:34:42 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 //Sempre que eu me referir a uma variavel de struct 
 //como data geralmente significa a struct "principal"
 //que interliga a todas as outras structs
-/*void    msh_loop(t_minishell *data)
+
+void    msh_loop(t_minishell *data)
 {
 	char *line;
 	while (1)
@@ -33,7 +34,7 @@
 			continue ;
 		}
 		add_history(line);
-		data->exit_code = lexer(line);
+		data->exit_code = lexer(line, data);
 		free(line);
 	}
 }
@@ -47,7 +48,8 @@ int main(int argc, char **argv, char **envp)
 	(void)envp;	
 	if (argc != 1)
 		return(ft_putendl_fd(WRONG_ARGC, 2), 1);
-	data_init(&data);
+	data_init(&data, envp);
 	msh_loop(&data);
+	exit_msh(&data, 0);
 	return (0);
-}*/
+}

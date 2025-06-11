@@ -6,12 +6,12 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:43:51 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/06 19:52:37 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:35:48 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 static t_token_list *new_token(const char *str, t_token_type type)
 {
 	t_token_list *node = malloc(sizeof(t_token_list));
@@ -79,4 +79,4 @@ int	main(void)
 		free_tree(tree);
 	}
     return (0);
-}
+}*/

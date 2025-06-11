@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   errors_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:45:01 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/29 18:06:32 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:42:29 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,18 @@ void	put_token_syntax_error(t_token_list *token)
 		ft_putstr_fd(SYNTAX_ERROR_AP_R_OUT, 2);
 	else if (token->token_type == HERE_DOC)
 		ft_putstr_fd(SYNTAX_ERROR_HEREDOC, 2);
+}
+
+void	free_tokens(t_token_list *list)
+{
+	t_token_list    *tmp;
+
+	while (list)
+	{
+		tmp = list->next;
+		if (list->content && list->token_type == WORD)
+			free(list->content);
+		free(list);
+		list = tmp;
+	}
 }
