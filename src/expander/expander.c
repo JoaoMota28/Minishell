@@ -6,35 +6,55 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/11 18:14:17 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:54:44 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expand_token(char *content, t_minishell *data)
+static void	append_splitted_tokens(t_token_list *node, char **splitted)
 {
-	char	*new;
-	int		i;
-	int		k;
+	t_token_list	*tmp;
+	int				i;
 
-	new = malloc(sizeof(char) * ft_strlen(content) + 1);
-	i = 0;
-	k = 0;
-	while (content[i])
+	i = 1;
+	node->content = ft_strdup(splitted[0]);
+	tmp = node;
+	while(splitted[i])
 	{
-		
-		i++;
+		tmp->next = malloc(sizeof(*tmp));
+		tmp = tmp->next;
+		tmp->content = ft_strdup(splitted[i++]);
+		tmp->quote_type = UNQUOTED;
+		tmp->token_type = WORD;
+		tmp->next = NULL;
 	}
+	free_ar((void **)splitted);
 }
 
 void	expander(t_token_list *node, t_minishell *data)
 {
-	t_token_list	*tmp;
 	char		*expanded;
-	char		**tokens;
+	char		**splitted;
 
 	if (node->quote_type == SINGLE_O)
 		return ;
 	expanded = expand_token(node->content, data);
+	if (node->token_type == WORD)
+		free(node->content);
+	if (node->quote_type == UNQUOTED && strchr(expanded, ' '))
+	{
+		splitted = ft_split(expanded, ' ');
+		free(expanded);
+		append_splitted_tokens(node, splitted);
+	}
+	else
+		node->content = expanded;
+	int i = 1;
+	while (node)
+	{
+		printf("Expanded Token %d : [%s]\n", i, node->content);
+		i++;
+		node = node->next;
+	}
 }

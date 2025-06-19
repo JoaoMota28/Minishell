@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:38:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/06 18:53:30 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:27:18 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,5 @@ typedef struct s_tree
 t_tree	*build_tree(t_token_list *list);
 t_tree	*split_and_build(t_token_list *target, t_token_list *left, t_token_type type);
 t_tree	*build_word_node(t_token_list *list);
-
-//main function
-int		parser(t_token_list *list);
 
 #endif

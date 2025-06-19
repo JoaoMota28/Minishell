@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/10 16:09:32 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:38:53 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ typedef struct s_minishell
 /// @param line interactive line written by the minishell
 /// @return exit status to the next step -> Parser
 int 	lexer(char *line, t_minishell *data);
+void	expander(t_token_list *node, t_minishell *data);
+int		parser(t_token_list *list);
+
+//expander
+char	*expand_token(char *content, t_minishell *data);
+int		get_exp_length(char *content, t_minishell *data);
 
 //inits
 void    data_init(t_minishell *data, char **envp);
@@ -47,9 +53,9 @@ void    exit_msh(t_minishell *data, int exit_code);
 void	free_tree(t_tree *node);
 
 //utils
-int 	is_space(char c);
 int		is_operator(t_token_type type);
 char	**dp_dup(char **dp);
 int		dp_len(char **dp);
+char	*get_env(char **envp, char *name);
 
 #endif

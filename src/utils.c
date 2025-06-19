@@ -6,24 +6,32 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:57:48 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/10 16:29:27 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:57:23 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_space(char c)
-{
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (1);
-	else
-		return (0);
-}
-
 int	is_operator(t_token_type type)
 {
 	return (type == PIPE || type == R_IN || type == R_OUT
 		|| type == AP_R_OUT || type == HERE_DOC);
+}
+
+char	*get_env(char **envp, char *name)
+{
+	size_t	n;
+	size_t	i;
+
+	i = 0;
+	n = ft_strlen(name);
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], name, n) && envp[i][n] == '=')
+			return (envp[i] + n + 1);
+		i++;
+	}
+	return ("");
 }
 
 int	dp_len(char **dp)

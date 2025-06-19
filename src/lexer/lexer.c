@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/11 18:03:17 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:41:53 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ int	lexer(char *line, t_minishell *data)
 			continue ;
 		}
 		node = lex_node(line, &i);
-		expand_token(node, data);
+		printf("Token: [%s]\n\n", node->content);
+		expander(node, data);
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
 	}
 	if (check_syntax_errors(head))
