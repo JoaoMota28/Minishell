@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 18:28:17 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/19 17:28:03 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/23 00:02:27 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	handle_dollar(char *content, char *new, int *i, int *k, t_minishell 
 	int		j;
 
 	(*i)++;
+	if (content[*i] == '"' || content[*i] == '\'')
+		return ;
 	if (content[*i] == '?')
 	{
 		tmp = ft_itoa(data->exit_code);
@@ -36,19 +38,32 @@ static void	handle_dollar(char *content, char *new, int *i, int *k, t_minishell 
 		free(tmp);
 		(*i)++;
 	}
-	else if (ft_isalpha(content[*i]) || content[*i] == '_')
+	else if (ft_isalnum(content[*i]) || content[*i] == '_')
 	{
-		j = 0;
-		while (content[*i + j] && 
-			(ft_isalnum(content[*i + j]) || content[*i + j] == '_'))
-			j++;
-		aux = ft_substr(content, *i, j);
-		*i = *i + j;
+		if (ft_isdigit(content[*i]))
+		{
+			aux = ft_substr(content, *i, 1);
+			(*i)++;
+		}
+		else
+		{
+			j = 0;
+			while (content[*i + j] && 
+				(ft_isalnum(content[*i + j]) || content[*i + j] == '_'))
+				j++;
+			aux = ft_substr(content, *i, j);
+			*i = *i + j;
+		}
 		tmp = ft_strdup(get_env(data->envp, aux));
 		ft_memcpy(new + *k, tmp, ft_strlen(tmp));
 		*k += ft_strlen(tmp);
 		free(aux);
 		free(tmp);
+	}
+	else
+	{
+		new[(*k)++] = '$';
+		new[(*k)++] = content[(*i)++];
 	}
 }
 

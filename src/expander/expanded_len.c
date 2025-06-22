@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:19:51 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/19 17:22:20 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/23 00:05:05 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ static int	handle_variable_len(char *content, int *i, t_minishell *data)
 	int		var_len;
 	int		len;
 
+	if (ft_isdigit(content[*i]))
+	{
+		tmp = ft_substr(content, *i, 1);
+		value = ft_strdup(get_env(data->envp, tmp));
+		len = ft_strlen(value);
+		(*i)++;
+		return (free(tmp), free(value), len);
+	}
 	var_len = 0;
 	while (ft_isalnum(content[*i + var_len]) || content[*i + var_len] == '_')
 		var_len++;
@@ -38,6 +46,8 @@ static int	handle_dollar_len(char *content, int *i, t_minishell *data)
 
 	len = 0;
 	(*i)++;
+	if (content[*i] == '"' || content[*i] == '\'')
+		return (0);
 	if (content[*i] == '?')
 	{
 		tmp = ft_itoa(data->exit_code);
@@ -45,10 +55,13 @@ static int	handle_dollar_len(char *content, int *i, t_minishell *data)
 		free(tmp);
 		(*i)++;
 	}
-	else if (ft_isalpha(content[*i]) || content[*i] == '_')
+	else if (ft_isalnum(content[*i]) || content[*i] == '_')
 		len += handle_variable_len(content, i, data);
 	else
-		len++;
+	{
+		len += 2;
+		(*i)++;
+	}
 	return (len);
 }
 

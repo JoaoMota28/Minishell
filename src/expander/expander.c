@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/19 17:54:44 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/22 22:56:53 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	expander(t_token_list *node, t_minishell *data)
 	char		*expanded;
 	char		**splitted;
 
-	if (node->quote_type == SINGLE_O)
-		return ;
 	expanded = expand_token(node->content, data);
 	if (node->token_type == WORD)
 		free(node->content);

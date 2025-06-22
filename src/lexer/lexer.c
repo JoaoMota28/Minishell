@@ -6,15 +6,15 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/19 17:41:53 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:37:31 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void    add_content(t_token_list *node, int *i)
+static void	add_content(t_token_list *node, int *i)
 {
-    if (node->token_type == PIPE)
+	if (node->token_type == PIPE)
 	{
 		node->content = "|";
 		(*i)++;
