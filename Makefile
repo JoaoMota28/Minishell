@@ -12,7 +12,7 @@ CFLAGS			= -Wall -Wextra -Werror -g
 INCLUDE			= -I inc/
 
 ### MINISHELL SRCS ###
-SRCS	 		= $(LEXER_SRCS) $(EXP_SRCS) $(PARSER_SRCS) minishell.c inits.c utils.c exit_free.c 
+SRCS	 		= $(LEXER_SRCS) $(EXP_SRCS) $(PARSER_SRCS) $(BUILTIN_SRCS) $(EXEC_SRCS) minishell.c inits.c utils.c exit_free.c handler.c signals.c
 SRC_PATH		= src/
 
 LEXER_SRCS		= errors_free.c lexer.c syntax_checker.c set_types.c
@@ -26,6 +26,14 @@ EXP				= $(addprefix $(EXP_PATH), $(EXP_SRCS))
 PARSER_SRCS		= parser.c test.c tree_utils.c
 PARSER_PATH		= src/parser/
 PARSER			= $(addprefix $(PARSER_PATH), $(PARSER_SRCS))
+
+BUILTIN_SRCS	= builtin_utils.c echo_builtin.c pwd_builtin.c env_builtin.c cd_builtin.c exit_builtin.c unset_builtin.c export_builtin.c builtins.c
+BUILTIN_PATH	= src/executor/builtins
+BUILTIN			= $(addprefix $(BUILTIN_PATH), $(BUILTIN_SRCS))
+
+EXEC_SRCS		= executor.c exec.c exec_utils.c redirections.c pipes.c and_or.c
+EXEC_PATH		= src/executor
+EXEC			= $(addprefix $(EXEC_PATH), $(EXEC_SRCS))
 
 TOTAL_SRCS		= $(words $(SRCS))
 FILES			= 0
@@ -44,7 +52,7 @@ GNL_PATH		= complete_lib/42_GNL/
 GNL				= $(GNL_PATH)libgnl.a
 PERSONAL_LIBS	= -lft -lgnl -lftprintf
 
-vpath %.c $(SRC_PATH) $(PARSER_PATH) $(LEXER_PATH) $(EXP_PATH) 
+vpath %.c $(SRC_PATH) $(PARSER_PATH) $(LEXER_PATH) $(EXP_PATH) $(BUILTIN_PATH) $(EXEC_PATH)
 
 ### RULES ###
 all: 			$(NAME)
@@ -97,6 +105,12 @@ fclean: 		clean
 
 re: 			fclean all
 
+v:	$(NAME)
+	clear && valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --track-origins=yes --suppressions=readline.supp ./minishell
+
+ch:	$(NAME)
+	valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --track-origins=yes --suppressions=readline.supp --trace-children=yes ./minishell
+
 .PHONY: 		all clean fclean re
 
 define PRINT_PROGRESS
@@ -114,5 +128,5 @@ define PRINT_PROGRESS
     @printf "] $(shell echo $$(($(FILES) * 100 / $(1))))%%"
 	if [ "$(FILES)" -eq "$(1)" ]; then \
         printf "\n"; \
-	fi
+	fi	
 endef

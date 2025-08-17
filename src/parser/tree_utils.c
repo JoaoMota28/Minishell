@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/11 17:43:35 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:09:05 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,3 +65,16 @@ t_tree	*split_and_build(t_token_list *target, t_token_list *left, t_token_type t
 	return (node);
 }
 
+void print_tree(t_tree *node, int level, char *leaf)
+{
+	if (!node)
+		return;
+	for (int i = 0; i < level; i++)
+		printf("  ");
+    if (leaf){
+        printf("%s", leaf);
+    }
+    printf("[%s]\n", node->content);
+	print_tree(node->left, level + 1, "left : ");
+	print_tree(node->right, level + 1, "right : ");
+}

@@ -3,38 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:53:16 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/11 17:34:42 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/17 15:03:18 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Sempre que eu me referir a uma variavel de struct 
-//como data geralmente significa a struct "principal"
-//que interliga a todas as outras structs
+volatile sig_atomic_t	sig;
 
 void    msh_loop(t_minishell *data)
 {
 	char *line;
+
 	while (1)
 	{
+		init_interactive_signals();
 		line = readline(data->prompt);
+		if (sig)
+		{
+			data->exit_code = 128 + sig;
+			sig = 0;
+		}
 		if (!line)
 		{
 			ft_putendl_fd("exit", 1);
 			rl_clear_history();
 			exit_msh(data, 0);
 		}
-		if (!*line)
+		if (*line)
 		{
-			free(line);
-			continue ;
+			add_history(line);
+			data->exit_code = lexer(line, data);
 		}
-		add_history(line);
-		data->exit_code = lexer(line, data);
 		free(line);
 	}
 }

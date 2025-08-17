@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/22 22:56:53 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:26:43 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ void	expander(t_token_list *node, t_minishell *data)
 	}
 	else
 		node->content = expanded;
-	int i = 1;
-	while (node)
+	//int i = 1;
+	/*while (node)
 	{
 		printf("Expanded Token %d : [%s]\n", i, node->content);
 		i++;
 		node = node->next;
-	}
+	}*/
 }

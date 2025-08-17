@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_len.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:19:51 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/23 00:05:05 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/16 23:49:44 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	handle_variable_len(char *content, int *i, t_minishell *data)
 	while (ft_isalnum(content[*i + var_len]) || content[*i + var_len] == '_')
 		var_len++;
 	tmp = ft_substr(content, *i, var_len);
-	value =ft_strdup(get_env(data->envp, tmp));
+	value = ft_strdup(get_env(data->envp, tmp));
 	len = ft_strlen(value);
 	free(tmp);
 	free(value);

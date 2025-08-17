@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/11 17:43:22 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:26:19 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ t_tree	*build_tree(t_token_list *list)
 	return (build_word_node(list));
 }
 
-int	parser(t_token_list *list)
+int	parser(t_minishell *data, t_token_list *list)
 {
 	t_tree	*root;
 
 	root  = build_tree(list);
 	if (!root)
 		return (-1);
-	return (0);
+	print_tree(root, 0, NULL);
+	return (executor(data, root));
 }

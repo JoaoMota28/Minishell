@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/19 17:38:53 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/16 17:51:46 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define _POSIX_C_SOURCE 200809L
 
 # include "../complete_lib/42_Libft/libft.h"
 # include "../complete_lib/42_GNL/get_next_line_bonus.h"
@@ -20,7 +22,10 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "parser.h"
+# include <signal.h>
+# include "executor.h"
+
+extern volatile sig_atomic_t	sig;
 
 # define PROMPT "Minishell>$ "
 # define PRIVATE_PATH "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin\
@@ -31,6 +36,11 @@ typedef struct s_minishell
 {
 	char	*prompt;
 	char	**envp;
+	char	**export;
+	char	*pwd;
+	char	*oldpwd;
+	t_tree	*root;
+	t_exec	exec;
 	int		exit_code;
 }				t_minishell;
 
@@ -39,7 +49,8 @@ typedef struct s_minishell
 /// @return exit status to the next step -> Parser
 int 	lexer(char *line, t_minishell *data);
 void	expander(t_token_list *node, t_minishell *data);
-int		parser(t_token_list *list);
+int		parser(t_minishell *data, t_token_list *list);
+int		executor(t_minishell *data, t_tree *root);
 
 //expander
 char	*expand_token(char *content, t_minishell *data);
@@ -47,10 +58,19 @@ int		get_exp_length(char *content, t_minishell *data);
 
 //inits
 void    data_init(t_minishell *data, char **envp);
+void	init_signals(char type);
 
 //free and exit
 void    exit_msh(t_minishell *data, int exit_code);
 void	free_tree(t_tree *node);
+
+//signals
+void	handle_sigint_h(int signo);
+void	handle_sigint_i(int signo);
+void	init_interactive_signals();
+void	init_child_signals();
+void	init_heredoc_signals();
+void	init_ignore_signals();
 
 //utils
 int		is_operator(t_token_type type);

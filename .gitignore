@@ -1,0 +1,6 @@
+obj
+minishell
+complete_lib/*.o
+.vscode
+bea.txt
+mota.txt

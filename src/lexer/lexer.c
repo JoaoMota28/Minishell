@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/25 21:00:23 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/17 13:36:14 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ int	lexer(char *line, t_minishell *data)
 			continue ;
 		}
 		node = lex_node(line, &i);
-		printf("Token: [%s]\n\n", node->content);
+		//printf("Token: [%s]\n\n", node->content);
 		expander(node, data);
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
 	}
 	if (check_syntax_errors(head))
 		return (printf("%d\n", data->exit_code),free_tokens(head), 2);
-	return (parser(head));
+	return (parser(data, head));
 }

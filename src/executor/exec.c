@@ -1,0 +1,120 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
+/*   Updated: 2025/08/17 15:18:55 by jomanuel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+void execve_error(char *path, char **cmd, int errnum)
+{
+    struct stat st;
+
+    if (ft_strchr(cmd[0], '/') && errnum == EACCES)
+    {
+        ft_putstr_fd(cmd[0], 2);
+        if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+            ft_putstr_fd(": Is a directory\n", 2);
+        else
+            ft_putstr_fd(": Permission denied\n", 2);
+    }
+    else if (errnum == ENOENT)
+    {
+        if (ft_strchr(cmd[0], '/') != NULL)
+        {
+            ft_putstr_fd(path, 2);
+            ft_putstr_fd(": No such file or directory\n", 2);
+        }
+        else
+        {
+            ft_putstr_fd(cmd[0], 2);
+            ft_putstr_fd(": command not found\n", 2);
+        }
+    }
+}
+
+int exec_command(t_minishell *data, t_tree *node)
+{
+    char    *path;
+    char    **cmd;
+    int     status;
+
+    path = test_cmd(data, node);
+    if (!path)
+    {
+        ft_putstr_fd("minishell: ", 2);
+        ft_putstr_fd(node->content, 2);
+        ft_putstr_fd(": command not found\n", 2);
+        exit_msh(data, 127);
+    }
+    cmd = get_cmd_line(node);
+    execve(path, cmd, data->envp);
+    execve_error(path, cmd, errno);
+	if (errno == ENOENT)
+		status = 127;
+	else
+		status = 126;
+    free(path);
+    free_ar((void **) cmd);
+    return(exit_msh(data, status), status);
+}
+
+int fork_command(t_minishell *data, t_tree *node)
+{
+    pid_t   pid;
+    int wstatus;
+
+    pid = fork();
+    if (pid == -1)
+        return(perror("fork failed"), 1);
+    if (pid == 0)
+    {
+        init_child_signals();
+        data->exec.pipeline_child = true;
+        exec_command(data, node);
+    }
+    init_ignore_signals();
+    restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in, 'i');
+    restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out, 'o');
+    waitpid(pid, &wstatus, 0);
+    init_interactive_signals();
+    if (WIFSIGNALED(wstatus))
+		return (128 + WTERMSIG(wstatus));
+	if (WIFEXITED(wstatus))
+		return (WEXITSTATUS(wstatus));
+	return (1);
+}
+
+int process_command(t_minishell *data, t_tree *node)
+{
+    if (!node->content)
+    {
+        if (data->exec.pipeline_child)
+            exit_msh(data, 0);
+        if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in, 'i') == 1)
+            return (1);
+        if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out, 'o') == 1)
+            return (1);
+        return (0);
+    }
+    if (node->content[0] && !is_builtin(node))
+    {
+        if (data->exec.pipeline_child)
+            return (exec_command(data, node));
+        else
+            return (fork_command(data, node));
+    }
+    else
+    {
+        if (data->exec.pipeline_child)
+            close_parent_fds(data);
+        return (exec_builtin(data, node));
+    }
+    return (1);
+}
