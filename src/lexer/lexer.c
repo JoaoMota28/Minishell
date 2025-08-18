@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/17 13:36:14 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 16:00:29 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	lexer(char *line, t_minishell *data)
 	node = NULL;
 	type = is_unquoted(line);
 	if (type)
-		return(printf("%d\n", data->exit_code), put_unclosed_syntax_error(type), 2);
+		return(/*printf("%d\n", data->exit_code), */put_unclosed_syntax_error(type), 2);
 	while (line[i])
 	{
 		if (is_space(line[i]))
@@ -82,6 +82,6 @@ int	lexer(char *line, t_minishell *data)
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
 	}
 	if (check_syntax_errors(head))
-		return (printf("%d\n", data->exit_code),free_tokens(head), 2);
+		return (/*printf("%d\n", data->exit_code),*/free_tokens(head), 2);
 	return (parser(data, head));
 }

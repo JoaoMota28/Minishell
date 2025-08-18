@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 11:19:53 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:53:50 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	executor(t_minishell *data, t_tree *root)
 
 	data->root = root;
 	data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
+	//if no path??
 	ret = process_node(data, root);
 	free_ar((void **)data->exec.spath);
 	data->exec.spath = NULL;

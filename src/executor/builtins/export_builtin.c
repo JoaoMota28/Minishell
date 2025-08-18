@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:28 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/16 17:46:24 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:52:00 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	list_export(t_minishell *data)
 {
+	//check _= and split logic
 	int	i;
 	char	**arr;
 	char	*str;
@@ -53,6 +54,7 @@ int	non_identifier_char(char *content)
 			return(ft_putstr_fd(EXPORT_PREFIX, 2),
 			ft_putstr_fd(content, 2),
 			ft_putstr_fd(EXPORT_INVALID, 2), 1);
+			//break
 		i++;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:30:41 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/16 18:04:09 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:18:46 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	dup_in(t_minishell *data, t_tree *node)
 	if (dup2(new_fd, data->exec.curr_fd_in) == -1)
 		return (close(new_fd), perror(IN_DUP_ERROR), 1);
 	close(new_fd);
+	//CHECK WHATS WRONG
 	if (!node->right->content || node->right->type != WORD)
 		return (process_node(data, node->right));
 	return (0);
