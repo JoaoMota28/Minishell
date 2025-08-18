@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:12:16 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/16 23:15:37 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:20:09 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int run_parent(t_minishell *data, pid_t last_pid)
 
     status = 0;
     init_ignore_signals();
-    restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in, 'i');
-    restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out, 'o');
+    restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in);
+    restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out);
     while (true)
     {
         pid = waitpid(-1, &wstatus, 0);
@@ -72,7 +72,7 @@ int run_last_pipe(t_minishell *data, t_tree *node)
     {
         init_child_signals();
         data->exec.pipeline_child = true;
-        restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out, 'o');
+        restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out);
         process_node(data, node->right);
     }
     return (run_parent(data, pid));

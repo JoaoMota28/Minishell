@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/17 15:18:55 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:19:42 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ int fork_command(t_minishell *data, t_tree *node)
         exec_command(data, node);
     }
     init_ignore_signals();
-    restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in, 'i');
-    restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out, 'o');
+    restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in);
+    restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out);
     waitpid(pid, &wstatus, 0);
     init_interactive_signals();
     if (WIFSIGNALED(wstatus))
@@ -97,9 +97,9 @@ int process_command(t_minishell *data, t_tree *node)
     {
         if (data->exec.pipeline_child)
             exit_msh(data, 0);
-        if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in, 'i') == 1)
+        if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in) == 1)
             return (1);
-        if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out, 'o') == 1)
+        if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out) == 1)
             return (1);
         return (0);
     }

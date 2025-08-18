@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:26:54 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/16 18:11:57 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:19:13 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	logical_or(t_minishell *data, t_tree *node);
 char	*test_cmd(t_minishell *data, t_tree *node);
 int	count_nodes(t_tree *node);
 char	**get_cmd_line(t_tree *node);
-int	restore_fd(int src, int dest, char c);
+int	restore_fd(int src, int dest);
 void	close_parent_fds(t_minishell *data);
 
 #endif

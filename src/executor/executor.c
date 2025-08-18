@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/17 13:41:15 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:19:53 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	executor(t_minishell *data, t_tree *root)
 	data->exec.redir_num = 0;
 	free_tree(root);
 	data->root = NULL;
-	if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in, 'i') == 1)
+	if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in) == 1)
 		return (1);
-	if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out, 'o') == 1)
+	if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out) == 1)
 		return (1);
 	return(ret);
 }

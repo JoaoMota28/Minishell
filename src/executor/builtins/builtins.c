@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:11:09 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/17 00:52:36 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:18:48 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ int	exec_builtin(t_minishell *data, t_tree *root)
 	if (status == 0)
 	{
 		if (data->exec.parent_fd_in != -1)
-			if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in, 'i') == 1)
+			if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in) == 1)
 				return (1);
 		if (data->exec.parent_fd_out != -1)
-			if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out, 'o') == 1)
+			if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out) == 1)
 				return (1);
 	}
 	if (data->exec.pipeline_child)

@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 11:15:03 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/17 14:59:04 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:18:19 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,11 @@ char	**get_cmd_line(t_tree *node)
 	return (cmd);
 }
 
-int	restore_fd(int src, int dest, char c)
+int	restore_fd(int src, int dest)
 {
 	if (dup2(src, dest) == -1)
 	{
-		if (c == 'o')
-			perror("Error restoring stdout");
-		if (c == 'i')
-			perror("Error restoring stdin");
+		perror("Error restoring standard fds");
 		return (1);
 	}
 	else
