@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/18 15:33:35 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:23:58 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 extern volatile sig_atomic_t	sig;
 
 # define PROMPT "Minishell>$ "
-# define PRIVATE_PATH "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin\
+# define PRIVATE_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin\
 :/usr/bin:/sbin:/bin"
 # define WRONG_ARGC "Minishell: no arguments expected"
 
