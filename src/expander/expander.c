@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/09 23:26:43 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/19 15:21:20 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ void	expander(t_token_list *node, t_minishell *data)
 	expanded = expand_token(node->content, data);
 	if (node->token_type == WORD)
 		free(node->content);
+	if (!expanded[0] && node->quote_type == UNQUOTED)
+	{
+		free(expanded);
+		node->content = NULL;
+		return ;
+	}
 	if (node->quote_type == UNQUOTED && strchr(expanded, ' '))
 	{
 		splitted = ft_split(expanded, ' ');
