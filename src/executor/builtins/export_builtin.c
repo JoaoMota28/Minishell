@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:28 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 17:52:00 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:55:00 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	list_export(t_minishell *data)
 {
-	//check _= and split logic
 	int	i;
 	char	**arr;
 	char	*str;
@@ -27,10 +26,17 @@ void	list_export(t_minishell *data)
 			continue ;
 		arr = ft_split(data->export[i], '=');
 		str = ft_strchr(data->export[i], '=');
-		printf("declare -x %s=\"", arr[0]);
-		if (++str)
-			printf("%s", str);
-		printf("\"\n");
+		if (arr[1])
+		{
+			printf("declare -x %s=\"", arr[0]);
+			if (++str)
+				printf("%s", str);
+			printf("\"\n");
+		}
+		else
+		{
+			printf("declare -x %s=\n", arr[0]);
+		}
 		free_ar((void **)arr);
 	}
 }
@@ -54,7 +60,6 @@ int	non_identifier_char(char *content)
 			return(ft_putstr_fd(EXPORT_PREFIX, 2),
 			ft_putstr_fd(content, 2),
 			ft_putstr_fd(EXPORT_INVALID, 2), 1);
-			//break
 		i++;
 	}
 	return (0);

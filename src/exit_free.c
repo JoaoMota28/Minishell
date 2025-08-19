@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:16:06 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/17 14:58:48 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/19 16:28:38 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ void	free_msh(t_minishell *data)
 	if (data->export)
 		free_ar((void **)data->export);
 	data->export = NULL;
-	free(data->pwd);
+	if (data->pwd)
+		free(data->pwd);
 	data->pwd = NULL;
-	free(data->oldpwd);
+	if (data->oldpwd)
+		free(data->oldpwd);
 	data->oldpwd = NULL;
 	if (data->root)
 		free_tree(data->root);
