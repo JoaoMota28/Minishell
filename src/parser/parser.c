@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/09 23:26:19 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:32:58 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ t_tree	*build_tree(t_token_list *list)
 
 	if (!list)
 		return (NULL);
+	tmp = list;
+	while (tmp)
+	{
+		if (tmp->token_type == AND || tmp->token_type == OR)
+			return (split_and_build(tmp, list, tmp->token_type));
+		tmp = tmp->next;
+	}
 	tmp = list;
 	while (tmp)
 	{

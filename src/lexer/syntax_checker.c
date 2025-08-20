@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:56:20 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/25 20:58:58 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/19 19:52:17 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,22 @@ t_quote_type	is_unquoted(char *line)
 		i++;
 	}
 	return (type);
+}
+
+int	check_and_or_syntax_errors(t_token_list *token, t_token_list *prev)
+{
+	if (token->token_type == AND || token->token_type == OR)
+	{
+		if (!prev || !token->next)
+			return (1);
+		if (token->next->token_type != WORD
+			&& token->next->token_type != R_IN
+			&& token->next->token_type != R_OUT
+			&& token->next->token_type != AP_R_OUT
+			&& token->next->token_type != HERE_DOC)
+			return (1);
+	}
+	return (0);
 }
 
 int	check_pipe_syntax_errors(t_token_list *token, t_token_list *prev)
@@ -62,7 +78,15 @@ int	check_syntax_errors(t_token_list *list)
 	prev = NULL;
 	while (list)
 	{
-		if (check_pipe_syntax_errors(list, prev))
+		if (check_and_or_syntax_errors(list, prev))
+		{
+			if (list->next && list->next->token_type == PIPE)
+				put_token_syntax_error(list->next);
+			else
+				put_token_syntax_error(list);
+			return (1);
+		}
+		else if (check_pipe_syntax_errors(list, prev))
 		{
 			put_token_syntax_error(list);
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:08:47 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/11 17:14:40 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:11:48 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,21 @@
 
 void	set_type(t_token_list *node, char *line, int *i)
 {
-	if (line[*i] == '|')
-	node->token_type = PIPE;
+	if (line[*i] == '|' && line[*i + 1] == '|')
+	{
+		node->token_type = OR;
+		*i += 2;
+	}
+	else if (line[*i] == '&' && line[*i + 1] == '&')
+	{
+		node->token_type = AND;
+		*i += 2;
+	}
+	else if (line[*i] == '|')
+	{
+		node->token_type = PIPE;
+		(*i)++;
+	}
 	else if (line[*i] == '>' && line[*i + 1] == '>')
 	{
 		node->token_type = AP_R_OUT;

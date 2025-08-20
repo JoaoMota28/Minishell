@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/16 19:23:06 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:55:07 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # define SYNTAX_ERROR_R_OUT "Minishell: syntax error near unexpected token `>'\n"
 # define SYNTAX_ERROR_AP_R_OUT "Minishell: syntax error near unexpected token `>>'\n"
 # define SYNTAX_ERROR_HEREDOC "Minishell: syntax error near unexpected token `<<'\n"
+# define SYNTAX_ERROR_AND "Minishell: syntax error near unexpected token `&&'\n"
+# define SYNTAX_ERROR_OR "Minishell: syntax error near unexpected token `||'\n"
 # define SYNTAX_ERROR_OPEN_SQUOTE "Minishell: syntax error unclosed single quote\n"
 # define SYNTAX_ERROR_OPEN_DQUOTE "Minishell: syntax error unclosed double quotes\n"
 
@@ -34,6 +36,8 @@ typedef enum e_token_type
 	R_OUT,
 	AP_R_OUT,
 	HERE_DOC,
+	AND,
+	OR,
 	WORD,
 }				t_token_type;
 

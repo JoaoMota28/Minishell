@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/19 15:24:08 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:18:50 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 static void	add_content(t_token_list *node, int *i)
 {
+	(void)i;
 	if (node->token_type == PIPE)
-	{
 		node->content = "|";
-		(*i)++;
-	}
 	else if (node->token_type == R_IN)
 		node->content = "<";
 	else if (node->token_type == R_OUT)
@@ -27,6 +25,10 @@ static void	add_content(t_token_list *node, int *i)
 		node->content = ">>";
 	else if (node->token_type == HERE_DOC)
 		node->content = "<<";
+	else if (node->token_type == AND)
+		node->content = "&&";
+	else if (node->token_type == OR)
+		node->content = "||";
 	else
 		return ;
 }
@@ -85,6 +87,7 @@ int	lexer(char *line, t_minishell *data)
 			continue;
 		}
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
+		//printf("%s\n -> %d\n", node->content, node->token_type);
 	}
 	if (check_syntax_errors(head))
 		return (/*printf("%d\n", data->exit_code),*/free_tokens(head), 2);
