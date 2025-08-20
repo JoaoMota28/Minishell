@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/19 20:18:50 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/20 11:36:36 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static t_token_list	*lex_node(char *line, int *i)
 {
 	int				start;
 	t_token_list	*node;
+	char			quote;
 
 	node = malloc(sizeof(*node));
 	if (!node)
@@ -51,7 +52,19 @@ static t_token_list	*lex_node(char *line, int *i)
 	{
 		while (line[*i] && !is_space(line[*i]) && line[*i] != '|'
 			&& line[*i] != '>' && line[*i] != '<')
-				(*i)++;
+			{
+				if (set_quote_type(line, *i))
+				{
+					quote = line[*i];
+					(*i)++;
+					while (line[*i] && line[*i] != quote)
+						(*i)++;
+					if (line[*i] == quote)
+						(*i)++;
+				}
+				else
+					(*i)++;
+			}
 		node->content = ft_substr(line, start, *i - start);
 	}
 	return (node);
