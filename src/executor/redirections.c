@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:30:41 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 18:18:46 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/20 12:03:44 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ int	dup_in(t_minishell *data, t_tree *node)
 	if (dup2(new_fd, data->exec.curr_fd_in) == -1)
 		return (close(new_fd), perror(IN_DUP_ERROR), 1);
 	close(new_fd);
-	//CHECK WHATS WRONG
 	if (!node->right->content || node->right->type != WORD)
 		return (process_node(data, node->right));
+	else
+		return (process_node(data, node->right->right));
 	return (0);
 }
 
@@ -41,7 +42,8 @@ int redir_in(t_minishell *data, t_tree *node)
 		status = dup_in(data, node);
 		if (status != 0)
 			return (status);
-		status = process_node(data, node->left);
+		if (node->left)
+			status = process_node(data, node->left);
 	}
 	else
 		status = dup_in(data, node);
@@ -68,6 +70,8 @@ int dup_out(t_minishell *data, t_tree *node, bool append)
 	close(new_fd);
 	if (!node->right->content || node->right->type != WORD)
     	return (process_node(data, node->right));
+	else
+		return (process_node(data, node->right->right));
   	return (0);
 }
 
@@ -80,8 +84,8 @@ int redir_out(t_minishell *data, t_tree *node, bool append)
 	{
     	status = dup_out(data, node, append);
     	if (status != 0)
-      		return (status);
-		else
+			return (status);
+		if (node->left)
 			status = process_node(data, node->left);
   	}
   	else
