@@ -6,11 +6,23 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/19 15:21:20 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:40:09 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*expand_heredoc(char *line, char *delim, t_minishell *data)
+{
+	char	*expanded;
+
+	if (set_quote_type(delim, 0))
+		return (ft_strdup(line));
+	expanded = expand_token(line, data);
+	if (!expanded)
+		return (ft_strdup(""));
+	return (expanded);
+}
 
 static void	append_splitted_tokens(t_token_list *node, char **splitted)
 {

@@ -6,32 +6,18 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:56:20 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/19 19:52:17 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:20:14 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_quote_type	is_unquoted(char *line)
+int	check_heredoc_syntax_errors(t_token_list *token)
 {
-	t_quote_type	type;
-	int				i;
-
-	i = 0;
-	type = UNQUOTED;
-	while (line[i])
-	{
-		if (line[i] == '"' && type == UNQUOTED)
-			type = DOUBLE_O;
-		else if (line[i] == '"' && type == DOUBLE_O)
-			type = UNQUOTED;
-		else if (line[i] == '\'' && type == UNQUOTED)
-			type = SINGLE_O;
-		else if (line[i] == '\'' && type == SINGLE_O)
-			type = UNQUOTED;
-		i++;
-	}
-	return (type);
+	if (token->token_type == HERE_DOC)
+		if (!token->next || token->next->token_type != WORD)
+			return (1);
+	return (0);
 }
 
 int	check_and_or_syntax_errors(t_token_list *token, t_token_list *prev)
@@ -87,6 +73,11 @@ int	check_syntax_errors(t_token_list *list)
 			return (1);
 		}
 		else if (check_pipe_syntax_errors(list, prev))
+		{
+			put_token_syntax_error(list);
+			return (1);
+		}
+		else if (check_heredoc_syntax_errors(list))
 		{
 			put_token_syntax_error(list);
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/19 18:55:07 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:11:52 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef enum e_token_type
 	HERE_DOC,
 	AND,
 	OR,
+	SUBSHELL,
 	WORD,
 }				t_token_type;
 

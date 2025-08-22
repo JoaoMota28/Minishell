@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:08:47 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/20 11:27:20 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:17:33 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,26 @@ t_quote_type	set_quote_type(char *line, int index)
 		return (DOUBLE_O);
 	else
 		return (UNQUOTED);
+}
+
+t_quote_type	is_unquoted(char *line)
+{
+	t_quote_type	type;
+	int				i;
+
+	i = 0;
+	type = UNQUOTED;
+	while (line[i])
+	{
+		if (line[i] == '"' && type == UNQUOTED)
+			type = DOUBLE_O;
+		else if (line[i] == '"' && type == DOUBLE_O)
+			type = UNQUOTED;
+		else if (line[i] == '\'' && type == UNQUOTED)
+			type = SINGLE_O;
+		else if (line[i] == '\'' && type == SINGLE_O)
+			type = UNQUOTED;
+		i++;
+	}
+	return (type);
 }
