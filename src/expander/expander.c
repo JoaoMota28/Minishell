@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 05:41:46 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/23 07:34:08 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	matches_extension(char *extension, char *file_name)
 		{
 			if (matches_extension(extension, file_name))
 				return (1);
-			*file_name++;
+			file_name++;
 		}
 		return (0);
 	}
@@ -35,10 +35,44 @@ int	matches_extension(char *extension, char *file_name)
 	return (0);
 }
 
-char	*expand_wildcard(char *extension)
+char	**expand_wildcard(char *extension)
 {
-	DIR	*dir;
-	struct dirent	*
+	DIR				*dir;
+	int				hidden;
+	char			*res;
+	char			*tmp;
+	char			**splitted;
+	struct dirent	*entry;
+
+	//porfavor muda isto senao meu eu do futuro mata se
+	dir = opendir(".");
+	if (!dir)
+		return (NULL);
+	res = ft_strdup("");
+	hidden = (extension[0] == '.');
+	while ((entry = readdir(dir)))
+	{
+		if (!hidden && entry->d_name[0] == '.')
+			continue ;
+		if (matches_extension(extension, entry->d_name))
+		{
+			tmp = res;
+			res = ft_strjoin(res, entry->d_name);
+			free(tmp);
+			tmp = res;
+			res = ft_strjoin(res, " ");
+			free(tmp);
+		}
+	}
+	closedir(dir);
+	if (!*res)
+		return (free(res), NULL);
+	tmp = ft_strtrim(res, " ");
+	free(res);
+	res = tmp;
+	splitted = ft_split(res, ' ');
+	free(tmp);
+	return (splitted);
 }
 
 char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
