@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:12:16 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/23 03:50:53 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 10:44:05 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int run_parent(t_minishell *data, pid_t last_pid)
     int     wstatus;
 
     status = 0;
+    (void)data;
     init_ignore_signals();
     restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in);
     restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out);
