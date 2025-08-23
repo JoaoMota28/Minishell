@@ -6,13 +6,13 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:12:16 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 11:20:09 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:05:03 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int manage_errors(t_minishell *data, char type)
+static int manage_errors(t_minishell *data, char type)
 {
     if (type == 'p')
     {

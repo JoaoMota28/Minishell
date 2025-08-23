@@ -6,11 +6,25 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 12:27:57 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/16 23:52:38 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:41:04 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	handle_child_sig(int signo)
+{
+	int	signal;
+
+	signal = WTERMSIG(signo);
+	if (WIFSIGNALED(signo))
+	{
+		if (signal == SIGINT)
+			ft_putstr_fd("\n", 2);
+		else if (sig == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", 2);
+	}
+}
 
 void	handle_sigint_h(int signo)
 {

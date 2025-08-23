@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/22 23:40:09 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/23 00:57:30 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*expand_heredoc(char *line, char *delim, t_minishell *data)
 {
 	char	*expanded;
 
+	printf("quote type -> %d\n", set_quote_type(delim, 0));
 	if (set_quote_type(delim, 0))
 		return (ft_strdup(line));
 	expanded = expand_token(line, data);

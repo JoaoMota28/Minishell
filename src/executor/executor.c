@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/20 11:52:32 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:54:17 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ int	process_node(t_minishell *data, t_tree *node)
 	else if (node->type == R_IN)
 		return (redir_in(data, node));
 	else if (node->type == R_OUT)
-		return (redir_out(data, node, false));
+		return (redir_out(data, node));
 	else if (node->type == AP_R_OUT)
-		return (redir_out(data, node, true));
-	/*else if (node->type == HERE_DOC)
-		return (here_doc(data, node));
+		return (redir_out(data, node));
+	else if (node->type == HERE_DOC)
+		return (redir_in(data, node));
 	else if (node->type == AND)
 		return (logical_and(data, node));
 	else if (node->type == OR)
-		return (logical_or(data, node));*/
+		return (logical_or(data, node));
 	else
 		return (process_command(data, node));
 }

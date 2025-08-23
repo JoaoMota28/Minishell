@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 11:19:42 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:45:06 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int fork_command(t_minishell *data, t_tree *node)
     restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out);
     waitpid(pid, &wstatus, 0);
     init_interactive_signals();
+    handle_child_sig(wstatus);
     if (WIFSIGNALED(wstatus))
 		return (128 + WTERMSIG(wstatus));
 	if (WIFEXITED(wstatus))

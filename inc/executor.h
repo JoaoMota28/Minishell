@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:26:54 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 11:19:13 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:55:10 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # define OUT_OPEN_ERROR "Error opening outfile"
 # define IN_DUP_ERROR "Error redirecting stdin"
 # define OUT_DUP_ERROR "Error redirecting stdout"
+# define HERE_DOC_ERROR_PREFIX "minishell: warning: here-document delimited by end-of-file (wanted \'"
+# define HERE_DOC_ERROR_SUFFIX "\')\n"
 
 typedef struct s_minishell  t_minishell;
 
@@ -45,10 +47,11 @@ int	process_node(t_minishell *data, t_tree *node);
 int	process_command(t_minishell *data, t_tree *node);
 int exec_command(t_minishell *data, t_tree *node);
 int redir_in(t_minishell *data, t_tree *node);
-int redir_out(t_minishell *data, t_tree *node, bool append);
+int redir_out(t_minishell *data, t_tree *node);
 int run_pipeline(t_minishell *data, t_tree *pipe_root);
 int	logical_and(t_minishell *data, t_tree *node);
 int	logical_or(t_minishell *data, t_tree *node);
+int	heredoc(t_minishell *data, t_tree *node);
 
 //utils
 char	*test_cmd(t_minishell *data, t_tree *node);
