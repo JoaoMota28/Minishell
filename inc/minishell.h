@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/22 23:46:39 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 01:29:28 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		executor(t_minishell *data, t_tree *root);
 //expander
 char	*expand_token(char *content, t_minishell *data);
 int		get_exp_length(char *content, t_minishell *data);
-char	*expand_heredoc(char *line, char *delim, t_minishell *data);
+char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data);
 
 //inits
 void    data_init(t_minishell *data, char **envp);
