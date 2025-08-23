@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:45:01 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/22 23:22:16 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/23 10:19:40 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	free_tokens(t_token_list *list)
 	while (list)
 	{
 		tmp = list->next;
-		if (list->content && list->token_type == WORD)
+		if (list->content)
 			free(list->content);
 		free(list);
 		list = tmp;
