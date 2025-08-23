@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 11:15:03 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 11:18:19 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 10:15:53 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*test_cmd(t_minishell *data, t_tree *node)
 	if (!node || !node->content)
 		return (NULL);
 	if (access(node->content, X_OK) == 0)
-		return (node->content);
+		return (ft_strdup(node->content));
 	while (data->exec.spath[i])
 	{
 		tmp = ft_strjoin(data->exec.spath[i], "/");
