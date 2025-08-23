@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/09 23:09:05 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 01:22:19 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 t_tree	*build_word_node(t_token_list *list)
 {
@@ -25,6 +24,7 @@ t_tree	*build_word_node(t_token_list *list)
 		return (NULL);
 	node->type = WORD;
 	node->content = ft_strdup(list->content);
+	node->quote_type = list->quote_type;
 	right = list->next;
 	free(list->content);
 	free(list);
@@ -57,6 +57,7 @@ t_tree	*split_and_build(t_token_list *target, t_token_list *left, t_token_type t
 		return (NULL);
 	node->type = type;
 	node->content = target->content;
+	node->quote_type = target->quote_type;
 	free (target);
 	node->left = build_tree(left);
 	node->right = build_tree(right);

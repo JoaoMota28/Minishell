@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 00:57:30 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 01:23:46 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_heredoc(char *line, char *delim, t_minishell *data)
+char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 {
 	char	*expanded;
 
 	printf("quote type -> %d\n", set_quote_type(delim, 0));
-	if (set_quote_type(delim, 0))
+	if (delim->quote_type)
 		return (ft_strdup(line));
 	expanded = expand_token(line, data);
 	if (!expanded)
