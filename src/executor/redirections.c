@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:30:41 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/23 00:08:51 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 05:28:26 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,17 @@ int	dup_in(t_minishell *data, t_tree *node)
 {
 	int	new_fd;
 
-	if (node->right->type != WORD)
-		new_fd = open(node->right->left->content, O_RDONLY);
+	if (node->type == R_IN)
+	{
+		if (node->right->type != WORD)
+			new_fd = open(node->right->left->content, O_RDONLY);
+		else
+			new_fd = open(node->right->content, O_RDONLY);
+		if (new_fd == -1)
+			return (perror(IN_OPEN_ERROR), 1);
+	}
 	else
-		new_fd = open(node->right->content, O_RDONLY);
-	if (new_fd == -1)
-		return (perror(IN_OPEN_ERROR), 1);
+		new_fd = node->pipe_hd[0];
 	if (dup2(new_fd, data->exec.curr_fd_in) == -1)
 		return (close(new_fd), perror(IN_DUP_ERROR), 1);
 	close(new_fd);
@@ -39,10 +44,7 @@ int redir_in(t_minishell *data, t_tree *node)
 	data->exec.redir_num++;
 	if (data->exec.redir_num == 1)
 	{
-		if (node->type == R_IN)
-			status = dup_in(data, node);
-		else
-			status = heredoc(data, node);
+		status = dup_in(data, node);
 		if (status != 0)
 			return (status);
 		if (node->left)

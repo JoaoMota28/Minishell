@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/22 23:54:17 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 05:40:50 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ int	executor(t_minishell *data, t_tree *root)
 		data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
 	else
 		data->exec.spath = ft_split(PRIVATE_PATH, ':');
+	search_heredoc(data, root);
 	ret = process_node(data, root);
+	close_heredoc(data->root);
 	free_ar((void **)data->exec.spath);
 	data->exec.spath = NULL;
 	data->exec.redir_num = 0;

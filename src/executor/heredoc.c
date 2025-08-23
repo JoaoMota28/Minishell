@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/23 01:29:10 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 05:43:44 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,29 @@ static int manage_errors(t_minishell *data, t_tree *node, char type)
     return (1);
 }
 
-int	heredoc(t_minishell *data, t_tree *node)
+int	close_heredoc(t_tree *node)
+{
+	if (!node)
+		return (0);
+	if (node->type == HERE_DOC)
+		close(node->pipe_hd[0]);
+	close_heredoc(node->left);
+	close_heredoc(node->right);
+	return (0);
+}
+
+int	heredoc_loop(t_minishell *data, t_tree *node)
 {
 	char	*line;
 	char	*parsed_line;
-	char	*delim;
+	t_tree	*delim;
 
-	data->exec.pipefd[0] = -1;
-	data->exec.pipefd[1] = -1;
-	if (pipe(data->exec.pipefd) == -1)
-		return(manage_errors(data, node, 'p'));
+	parsed_line = NULL;
+	line = NULL;
+	if (node->right->type != WORD)
+		delim = node->right->left;
+	else
+		delim = node->right;
 	init_heredoc_signals();
 	while (1)
 	{
@@ -51,39 +64,36 @@ int	heredoc(t_minishell *data, t_tree *node)
 			manage_errors(data, node, 'l');
 			break ;
 		}
-		if (node->right->type != WORD)
-		{
-			delim = node->right->left->content;
-			if (!ft_strncmp(delim, line, ft_strlen(delim)))
-				break ;
-			parsed_line = expand_heredoc(line, node->right->left, data);
-		}
-		else
-		{
-			delim = node->right->content;
-			if (!ft_strncmp(delim, line, ft_strlen(delim)))
-				break ;
-			parsed_line = expand_heredoc(line, node->right, data);
-		}
+		parsed_line = expand_heredoc(line, delim, data);
+		if (!ft_strncmp(delim->content, parsed_line, ft_strlen(delim->content)))
+			break ;
 		free(line);
 		line = NULL;
-		ft_putstr_fd(parsed_line, data->exec.pipefd[1]);
-		ft_putstr_fd("\n", data->exec.pipefd[1]);
+		ft_putstr_fd(parsed_line, node->pipe_hd[1]);
+		ft_putstr_fd("\n", node->pipe_hd[1]);
 		free(parsed_line);
 		parsed_line = NULL;
 	}
+	init_interactive_signals();
 	if (line)
 		free(line);
 	if (parsed_line)
 		free(parsed_line);
-	close(data->exec.pipefd[1]);
-	if (dup2(data->exec.pipefd[0], data->exec.curr_fd_in) == -1)
-		return (close(data->exec.pipefd[0]), perror(IN_DUP_ERROR), 1);
-	close(data->exec.pipefd[0]);
-	init_interactive_signals();
-	if (node->right && node->right->type != WORD)
-		return (process_node(data, node->right));
-	else if (node->right->right)
-		return (process_node(data, node->right->right));
+	close(node->pipe_hd[1]);
+	return (0);
+}
+
+int	search_heredoc(t_minishell *data, t_tree *node)
+{
+	if (!node)
+		return (0);
+	if (node->type == HERE_DOC)
+	{
+		if (pipe(node->pipe_hd) == -1)
+			return(manage_errors(data, node, 'p'));
+		return(heredoc_loop(data, node));
+	}
+	search_heredoc(data, node->left);
+	search_heredoc(data, node->right);
 	return (0);
 }
