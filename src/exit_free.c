@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:16:06 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/19 16:28:38 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 05:37:05 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ void	free_msh(t_minishell *data)
 
 void	exit_msh(t_minishell *data, int exit_code)
 {
-	free_msh(data);
 	close_parent_fds(data);
+	close_heredoc(data->root);
+	free_msh(data);
 	if (data->exec.curr_fd_in != 0)
 		close(data->exec.curr_fd_in);
 	if (data->exec.curr_fd_out != 1)

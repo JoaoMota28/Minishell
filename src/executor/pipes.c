@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:12:16 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/22 23:05:03 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/23 03:50:53 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int run_parent(t_minishell *data, pid_t last_pid)
             break ;
     }
     init_interactive_signals();
+    handle_child_sig(wstatus);
     if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
 	if (WIFEXITED(status))

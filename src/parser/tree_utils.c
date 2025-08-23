@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 01:22:19 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/23 05:42:43 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_tree	*build_word_node(t_token_list *list)
 	node->left = NULL;
 	node->right = build_tree(right);
 	node->subshell = NULL;
-	node->visited = 0;
 	return (node);
 }
 
@@ -62,7 +61,6 @@ t_tree	*split_and_build(t_token_list *target, t_token_list *left, t_token_type t
 	node->left = build_tree(left);
 	node->right = build_tree(right);
 	node->subshell = NULL;
-	node->visited = 0;
 	return (node);
 }
 

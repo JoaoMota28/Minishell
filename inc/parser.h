@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:38:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 01:20:12 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/23 04:55:12 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_tree
 	char			*content;
 	t_token_type	type;
 	t_quote_type	quote_type;
-	int				visited;
+	int				pipe_hd[2];
 }				t_tree;
 
 //tree build
