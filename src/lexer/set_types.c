@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:08:47 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/22 23:17:33 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/25 19:27:47 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,18 @@ t_quote_type	is_unquoted(char *line)
 		i++;
 	}
 	return (type);
+}
+
+t_quote_type	detect_quote_type(char *word)
+{
+	int i = 0;
+	while (word[i])
+	{
+		if (word[i] == '\'')
+			return (SINGLE_O);
+		if (word[i] == '"')
+			return (DOUBLE_O);
+		i++;
+	}
+	return (UNQUOTED);
 }

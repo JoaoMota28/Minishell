@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/22 23:11:52 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/25 19:31:50 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int				check_syntax_errors(t_token_list *list);
 //Utils
 void			set_type(t_token_list *node, char *line, int *i);
 t_quote_type    set_quote_type(char *line, int index);
+t_quote_type	detect_quote_type(char *word);
 
 //Errors
 void			put_unclosed_syntax_error(t_quote_type type);

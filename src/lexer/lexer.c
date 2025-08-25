@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 18:28:56 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/25 19:32:27 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_token_list	*lex_node(char *line, int *i)
 	node->next = NULL;
 	start = *i;
 	set_type(node, line, i);
-	node->quote_type = set_quote_type(line, start);
+	node->quote_type = detect_quote_type(line);
 	if (node->token_type != WORD)
 		add_content(node, i);
 	else
