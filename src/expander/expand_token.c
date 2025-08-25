@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 18:28:17 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 01:00:44 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:19:21 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ static void	handle_dollar(char *content, char *new, int *i, int *k, t_minishell 
 	int		j;
 
 	(*i)++;
+	if (!content[*i])
+	{
+		new[(*k)++] = '$';
+		return ;
+	}
 	if (content[*i] == '"' || content[*i] == '\'')
 		return ;
 	if (content[*i] == '?')
@@ -95,7 +100,7 @@ char	*expand_token(char *content, t_minishell *data)
 		return NULL;
 	i = 0;
 	k = 0;
-	while (content[i])
+	while (content && content[i])
 	{
 		if (content[i] == '\'')
 			handle_single(content, new, &i, &k);

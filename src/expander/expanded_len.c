@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_len.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:19:51 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/16 23:49:44 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:18:00 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ static int	handle_dollar_len(char *content, int *i, t_minishell *data)
 
 	len = 0;
 	(*i)++;
+	if (!content[*i])
+		return (1);
 	if (content[*i] == '"' || content[*i] == '\'')
 		return (0);
 	if (content[*i] == '?')
@@ -92,12 +94,12 @@ int	get_exp_length(char *content, t_minishell *data)
 
 	i = 0;
 	len = 0;
-	while (content[i])
+	while (content && content[i])
 	{
 		if (content[i] == '\'')
 		{
 			i++;
-			while (content[i] && content[i] != '\'')
+			while (content && content[i] && content[i] != '\'')
 			{
 				len++;
 				i++;
