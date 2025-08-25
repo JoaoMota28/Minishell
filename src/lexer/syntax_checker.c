@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:56:20 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 11:03:06 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/22 23:20:14 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,9 @@ int	check_pipe_syntax_errors(t_token_list *token, t_token_list *prev)
 
 int	check_redir_syntax_errors(t_token_list *token)
 {
-	if (token->token_type == R_IN
-		|| token->token_type == R_OUT
-		|| token->token_type == AP_R_OUT
-		|| token->token_type == HERE_DOC)
-	{
-		if (!token->next)
+	if (token->token_type != PIPE && token->token_type != WORD)
+		if (!token->next || token->next->token_type != WORD)
 			return (1);
-		if (token->next->token_type == WORD)
-			return (0);
-		if (token->token_type == R_OUT
-			&& token->next->token_type == PIPE
-			&& token->next->next
-			&& token->next->next->token_type == WORD)
-			return (0);
-		if (token->next->token_type == PIPE
-			&& token->next->next
-			&& token->next->next->token_type == WORD)
-			return (1);
-		return (1);	
-	}
 	return (0);
 }
 
