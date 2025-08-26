@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/25 19:30:48 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/26 18:26:00 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,17 @@ int exec_command(t_minishell *data, t_tree *node)
     int     status;
 
     path = test_cmd(data, node);
-    if (!path)
+    if (!path || !ft_strcmp(node->content, ".."))
     {
         ft_putstr_fd("minishell: ", 2);
         ft_putstr_fd(node->content, 2);
         ft_putstr_fd(": command not found\n", 2);
-        exit_msh(data, 127);
+        return(free(path), exit_msh(data, 127), 127);
+    }
+    if (!ft_strcmp(node->content, "."))
+    {
+        ft_putstr_fd("minishell: .: filename argument required\n", 2);
+        return(free(path), exit_msh(data, 2), 2);
     }
     cmd = get_cmd_line(node);
     execve(path, cmd, data->envp);
@@ -60,9 +65,7 @@ int exec_command(t_minishell *data, t_tree *node)
 		status = 127;
 	else
 		status = 126;
-    free(path);
-    free_ar((void **) cmd);
-    return(exit_msh(data, status), status);
+    return(free(path), free_ar((void **) cmd), exit_msh(data, status), status);
 }
 
 int fork_command(t_minishell *data, t_tree *node)
