@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:05 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/25 18:27:36 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/26 18:58:00 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,15 @@ void	replace_val(char ***arr, char *key, char *val)
 			if (!str)
 				str = ft_strdup(tmp);
 			free(tmp);
+			tmp = NULL;
 			free((*arr)[i]);
 			(*arr)[i] = str;
 			break;
 		}
 		i++;
 	}
+	if (tmp)
+		free(tmp);
 }
 
 int	add_val(char ***arr, char *key, char *val)
