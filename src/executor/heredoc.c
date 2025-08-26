@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 19:26:12 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/26 21:13:35 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	heredoc_loop(t_minishell *data, t_tree *node)
 			break ;
 		}
 		parsed_line = expand_heredoc(line, delim, data);
-		if (!ft_strncmp(delim->content, parsed_line, ft_strlen(delim->content)))
+		if (!ft_strncmp(delim->content, parsed_line, ft_strlen(delim->content) + 1))
 			break ;
 		free(line);
 		line = NULL;
