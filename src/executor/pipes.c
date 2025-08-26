@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:12:16 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/23 10:44:05 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/25 19:31:34 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int run_last_pipe(t_minishell *data, t_tree *node)
         data->exec.pipeline_child = true;
         restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out);
         process_node(data, node->right);
+        exit_msh(data, 0);
     }
     return (run_parent(data, pid));
 }
@@ -89,6 +90,7 @@ void run_child(t_minishell *data, t_tree *node)
         manage_errors(data, 'd');
     close(data->exec.pipefd[1]);
     process_node(data, node->left);
+    exit_msh(data, 0);
 }
 
 int run_pipeline(t_minishell *data, t_tree *node)

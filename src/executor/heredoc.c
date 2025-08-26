@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/23 05:43:44 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/26 15:52:27 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,15 @@ int	heredoc_loop(t_minishell *data, t_tree *node)
 	parsed_line = NULL;
 	line = NULL;
 	if (node->right->type != WORD)
+	{
 		delim = node->right->left;
+		node->right->left->visited = true;
+	}
 	else
+	{
 		delim = node->right;
+		node->right->visited = true;
+	}
 	init_heredoc_signals();
 	while (1)
 	{

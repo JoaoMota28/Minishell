@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:38:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 05:53:01 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/26 11:40:19 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_tree
 	t_token_type	type;
 	t_quote_type	quote_type;
 	int				pipe_hd[2];
+	bool			visited;
 }				t_tree;
 
 //tree build

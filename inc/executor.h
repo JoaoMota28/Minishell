@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:26:54 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/23 05:41:41 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/26 15:31:45 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ int	restore_fd(int src, int dest);
 void	close_parent_fds(t_minishell *data);
 int	search_heredoc(t_minishell *data, t_tree *node);
 int	close_heredoc(t_tree *node);
+void attach_to_cmd(t_tree *node, t_tree *head);
+void collect_to_list(t_tree *root, t_tree **head, t_tree **tail);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:05 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 16:59:08 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:27:36 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 char	*fetch_val(char **arr, char *search)
 {
-	//testar com getenv da bea se funcionar ok yupi 
 	int		i;
 	int		n;
 	char	*fstring;

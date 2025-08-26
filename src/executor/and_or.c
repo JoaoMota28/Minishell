@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   and_or.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 13:09:05 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/18 18:21:48 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/25 19:29:29 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	logical_and(t_minishell *data, t_tree *node)
 	ret = process_node(data, node->left);
 	if (ret == 0)
 		ret = process_node(data, node->right);
+	else if (node->right && node->right->type == OR)
+		ret = process_node(data, node->right->right);
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/23 05:40:50 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:47:34 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	process_node(t_minishell *data, t_tree *node)
 {
+	node->visited = true;
 	if (!node || (node && node->content && !node->content[0]))
 	{
 		if (data->exec.pipeline_child)
@@ -43,10 +44,7 @@ int	executor(t_minishell *data, t_tree *root)
 	int		ret;
 
 	data->root = root;
-	if (fetch_val(data->envp, "PATH"))
-		data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
-	else
-		data->exec.spath = ft_split(PRIVATE_PATH, ':');
+	data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
 	search_heredoc(data, root);
 	ret = process_node(data, root);
 	close_heredoc(data->root);
