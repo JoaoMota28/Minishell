@@ -6,11 +6,26 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 16:47:34 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/27 17:34:35 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	close_executor(t_minishell *data, t_tree *root)
+{
+	close_heredoc(data->root);
+	free_ar((void **)data->exec.spath);
+	data->exec.spath = NULL;
+	data->exec.redir_num = 0;
+	free_tree(root);
+	data->root = NULL;
+	if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in) == 1)
+		return (1);
+	if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out) == 1)
+		return (1);
+	return (0);
+}
 
 int	process_node(t_minishell *data, t_tree *node)
 {
@@ -46,16 +61,13 @@ int	executor(t_minishell *data, t_tree *root)
 	data->root = root;
 	data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
 	search_heredoc(data, root);
+	if (sig)
+	{
+		close_executor(data, root);
+		return (130);
+	}
 	ret = process_node(data, root);
-	close_heredoc(data->root);
-	free_ar((void **)data->exec.spath);
-	data->exec.spath = NULL;
-	data->exec.redir_num = 0;
-	free_tree(root);
-	data->root = NULL;
-	if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in) == 1)
-		return (1);
-	if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out) == 1)
-		return (1);
+	if (close_executor(data, root))
+		ret = 1;
 	return(ret);
 }

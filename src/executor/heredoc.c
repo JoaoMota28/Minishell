@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 21:13:35 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/27 18:04:52 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int manage_errors(t_minishell *data, t_tree *node, char type)
     }
     else if (type == 'l')
 	{
+		if (sig)
+			return (1);
 		ft_putstr_fd(HERE_DOC_ERROR_PREFIX, 2);
 		if (!node->right->content || node->right->type != WORD)
 			ft_putstr_fd(node->right->left->content, 2);
@@ -70,9 +72,9 @@ int	heredoc_loop(t_minishell *data, t_tree *node)
 			manage_errors(data, node, 'l');
 			break ;
 		}
-		parsed_line = expand_heredoc(line, delim, data);
-		if (!ft_strncmp(delim->content, parsed_line, ft_strlen(delim->content) + 1))
+		if (!ft_strncmp(delim->content, line, ft_strlen(delim->content) + 1))
 			break ;
+		parsed_line = expand_heredoc(line, delim, data);
 		free(line);
 		line = NULL;
 		ft_putstr_fd(parsed_line, node->pipe_hd[1]);
@@ -80,7 +82,8 @@ int	heredoc_loop(t_minishell *data, t_tree *node)
 		free(parsed_line);
 		parsed_line = NULL;
 	}
-	init_interactive_signals();
+	init_interactive_signals2();
+	restore_fd(data->exec.parent_fd_in, STDIN_FILENO);
 	if (line)
 		free(line);
 	if (parsed_line)
@@ -100,6 +103,8 @@ int	search_heredoc(t_minishell *data, t_tree *node)
 		if (pipe(node->pipe_hd) == -1)
 			return(manage_errors(data, node, 'p'));
 		heredoc_loop(data, node);
+		if (sig)
+			return (0);
 	}
 	search_heredoc(data, node->left);
 	search_heredoc(data, node->right);

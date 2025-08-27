@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 05:21:15 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/27 18:10:56 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,13 @@ void    exit_msh(t_minishell *data, int exit_code);
 void	free_tree(t_tree *node);
 
 //signals
+void	set_handler(int signum, void (*handler)(int), int flags);
 void	handle_sigint_h(int signo);
 void	handle_sigint_i(int signo);
+void	handle_sigint_i2(int signo);
 void	handle_child_sig(int signo);
 void	init_interactive_signals();
+void	init_interactive_signals2();
 void	init_child_signals();
 void	init_heredoc_signals();
 void	init_ignore_signals();

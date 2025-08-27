@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:53:16 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/18 15:33:43 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/27 18:09:15 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ void    msh_loop(t_minishell *data)
 {
 	char *line;
 
+	init_interactive_signals();
 	while (1)
 	{
-		init_interactive_signals();
 		line = readline(data->prompt);
 		if (sig)
 		{
-			data->exit_code = 128 + sig;
+			init_interactive_signals();
+			data->exit_code = 130;
 			sig = 0;
 		}
 		if (!line)
@@ -35,6 +36,7 @@ void    msh_loop(t_minishell *data)
 		}
 		if (*line)
 		{
+			init_interactive_signals();
 			add_history(line);
 			data->exit_code = lexer(line, data);
 		}
