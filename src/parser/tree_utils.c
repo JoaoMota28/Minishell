@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/26 11:41:19 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/08/28 19:42:20 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,64 @@ t_tree	*split_and_build(t_token_list *target, t_token_list *left, t_token_type t
 	node->subshell = NULL;
 	node->visited = false;
 	return (node);
+}
+
+t_token_list	*extract_subshell_tokens(t_token_list **list)
+{
+	int				level;
+	t_token_list	*last;
+	t_token_list	*tmp;
+	t_token_list	*extracted;
+	t_token_list	*next;
+	t_token_list	*closing;
+
+	tmp = *list;
+	extracted = NULL;
+	last = NULL;
+	level = 1;
+	next = NULL;
+	while (tmp && level > 0)
+	{
+		//acho q da para usar o meu set type da subshell 
+		//do lexer mas so quero por a funcionar first eu sei
+		//eu sei q ta feio </3
+		if (tmp->token_type == SUBSHELL && tmp->p_type == P_OPEN)
+			level++;
+		else if (tmp->token_type == SUBSHELL && tmp->p_type == P_CLOSED)
+		{
+			level--;
+			if (!level)
+			{
+				closing = tmp;
+				tmp = tmp->next;
+				free(closing->content);
+				free(closing);
+				break ;
+			}
+		}
+		if (level > 0)
+		{
+			next = tmp->next;
+			tmp->next = NULL;
+			if (!extracted)
+				extracted = tmp;
+			else
+				last->next = tmp;
+			last = tmp;
+			tmp = next;
+		}
+	}
+	*list = tmp;
+	return (extracted);
+}
+
+void	set_subshell_level(t_tree *node, int level)
+{
+	if (!node)
+		return ;
+	node->subshell_level = level;
+	set_subshell_level(node->left, level);
+	set_subshell_level(node->right, level);
 }
 
 void print_tree(t_tree *node, int level, char *leaf)

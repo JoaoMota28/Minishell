@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:56:20 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/22 23:20:14 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/28 22:47:06 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	check_and_or_syntax_errors(t_token_list *token, t_token_list *prev)
 			&& token->next->token_type != R_IN
 			&& token->next->token_type != R_OUT
 			&& token->next->token_type != AP_R_OUT
-			&& token->next->token_type != HERE_DOC)
+			&& token->next->token_type != HERE_DOC
+			&& token->next->token_type != SUBSHELL)
 			return (1);
 	}
 	return (0);
@@ -47,9 +48,43 @@ int	check_pipe_syntax_errors(t_token_list *token, t_token_list *prev)
 
 int	check_redir_syntax_errors(t_token_list *token)
 {
-	if (token->token_type != PIPE && token->token_type != WORD)
+	if (token->token_type != PIPE && token->token_type != WORD
+		&& token->token_type != AND && token->token_type != OR
+		&& token->token_type != SUBSHELL && token->token_type != HERE_DOC)
 		if (!token->next || token->next->token_type != WORD)
 			return (1);
+	return (0);
+}
+
+int	check_subshell_syntax_errors(t_token_list *token, t_token_list *prev)
+{
+	printf("token: %s\n", token->content);
+	if (token->token_type != SUBSHELL)
+		return (0);
+	if (!ft_strcmp(token->content, "("))
+	{
+		if (token->next && token->next->token_type == SUBSHELL
+			&& !ft_strcmp(token->content, ")"))
+			return (1);
+		if (prev && prev->token_type == WORD)
+			return (1);
+		if (prev && (prev->token_type == R_IN || prev->token_type == R_OUT
+			|| prev->token_type == AP_R_OUT || prev->token_type == HERE_DOC))
+			return (1);
+		if (token->next && (token->next->token_type == AND
+			|| token->next->token_type == OR
+			|| token->next->token_type == PIPE))
+			return (1);
+	}
+	if (!ft_strcmp(token->content, ")"))
+	{
+		if (prev && (prev->token_type == AND
+			|| prev->token_type == OR
+			|| prev->token_type == PIPE))
+			return (1);
+		if (token->next && token->next->token_type == WORD)
+			return (1);
+	}
 	return (0);
 }
 
@@ -73,6 +108,11 @@ int	check_syntax_errors(t_token_list *list)
 			return (1);
 		}
 		else if (check_pipe_syntax_errors(list, prev))
+		{
+			put_token_syntax_error(list);
+			return (1);
+		}
+		else if (check_subshell_syntax_errors(list, prev))
 		{
 			put_token_syntax_error(list);
 			return (1);

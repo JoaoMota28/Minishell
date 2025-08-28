@@ -6,11 +6,30 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/19 18:32:58 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/28 19:46:34 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_tree	*build_subshell_tree(t_token_list **list)
+{
+	int				level;
+	t_token_list	*start;
+	t_token_list	*sub_list;
+	t_tree			*sub_tree;
+
+	start = *list;
+	*list = start->next;
+	level = start->subshell_level;
+	free(start->content);
+	free(start);
+	sub_list = extract_subshell_tokens(list);
+	sub_tree = build_tree(sub_list);
+	if (sub_tree && sub_list)
+		set_subshell_level(sub_tree, level);
+	return (sub_tree);
+}
 
 t_tree	*build_tree(t_token_list *list)
 {
@@ -19,6 +38,8 @@ t_tree	*build_tree(t_token_list *list)
 	if (!list)
 		return (NULL);
 	tmp = list;
+	if (list->token_type == SUBSHELL && list->p_type == P_OPEN)
+		return (build_subshell_tree(&list));
 	while (tmp)
 	{
 		if (tmp->token_type == AND || tmp->token_type == OR)

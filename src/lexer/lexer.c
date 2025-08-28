@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/25 19:32:27 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/28 23:06:26 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ static void	add_content(t_token_list *node, int *i)
 		node->content = "&&";
 	else if (node->token_type == OR)
 		node->content = "||";
+	else if (node->token_type == SUBSHELL && node->p_type == P_OPEN)
+		node->content = "(";
+	else if (node->token_type == SUBSHELL && node->p_type == P_CLOSED)
+		node->content = ")";
 	else
 		return ;
 }
@@ -40,18 +44,21 @@ static t_token_list	*lex_node(char *line, int *i)
 	char			quote;
 
 	node = malloc(sizeof(*node));
+	ft_memset(node, 0, sizeof(*node));
 	if (!node)
 		return (NULL);
 	node->next = NULL;
+	node->content = NULL;
 	start = *i;
 	set_type(node, line, i);
+	node->subshell_level = 0;
 	node->quote_type = detect_quote_type(line);
 	if (node->token_type != WORD)
 		add_content(node, i);
 	else
 	{
 		while (line[*i] && !is_space(line[*i]) && line[*i] != '|'
-			&& line[*i] != '>' && line[*i] != '<')
+			&& line[*i] != '>' && line[*i] != '<' && line[*i] != '(' && line[*i] != ')')
 			{
 				if (set_quote_type(line, *i))
 				{
@@ -70,20 +77,48 @@ static t_token_list	*lex_node(char *line, int *i)
 	return (node);
 }
 
+static void	assign_subshell(t_token_list *node, int *current_level)
+{
+	if (node->token_type == SUBSHELL && node->p_type == P_OPEN)
+	{
+		node->subshell_level = *current_level;
+		(*current_level)++;
+	}
+	else if (node->token_type == SUBSHELL && node->p_type == P_CLOSED)
+	{
+		(*current_level)--;
+			node->subshell_level = *current_level;
+	}
+	else
+	{
+		node->subshell_level = *current_level;
+		if (*current_level > 0)
+			node->p_type = P_OPEN;
+		else
+			node->p_type = P_CLOSED;
+	}
+}
+
 int	lexer(char *line, t_minishell *data)
 {
 	int				i;
+	int				current_level;
 	t_token_list	*node;
 	t_token_list	*head;
 	t_quote_type	type;
+	t_p_type		parentheses;
 
 	(void)data;
 	i = 0;
 	head = NULL;
 	node = NULL;
 	type = is_unquoted(line);
+	parentheses = check_balance_p(line);
+	current_level = 0;
 	if (type)
-		return(/*printf("%d\n", data->exit_code), */put_unclosed_syntax_error(type), 2);
+		return(/*printf("%d\n", data->exit_code), */put_unclosed_syntax_error(type, parentheses), 2);
+	if (parentheses)
+		return (put_unclosed_syntax_error(type, parentheses), 2);
 	while (line[i])
 	{
 		if (is_space(line[i]))
@@ -92,7 +127,7 @@ int	lexer(char *line, t_minishell *data)
 			continue ;
 		}
 		node = lex_node(line, &i);
-		//printf("Token: [%s]\n\n", node->content);
+		assign_subshell(node, &current_level);
 		expander(node, data);
 		if (node->token_type == WORD && !node->content)
 		{
@@ -100,9 +135,14 @@ int	lexer(char *line, t_minishell *data)
 			continue;
 		}
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
-		//printf("%s\n -> %d\n", node->content, node->token_type);
+		printf("Token Content -> %s\n", node->content);
 	}
 	if (check_syntax_errors(head))
 		return (/*printf("%d\n", data->exit_code),*/free_tokens(head), 2);
+	if (node)
+	{
+		free(node->content);
+		free(node);
+	}
 	return (parser(data, head));
 }

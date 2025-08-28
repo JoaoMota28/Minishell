@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/25 19:31:50 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/28 21:51:19 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # define SYNTAX_ERROR_PIPE "Minishell: syntax error near unexpected token `|'\n"
+# define SYNTAX_ERROR_P_OPEN "Minishell: syntax error near unexpected token `('\n"
+# define SYNTAX_ERROR_P_CLOSED "Minishell: syntax error near unexpected token `)'\n"
 # define SYNTAX_ERROR_R_IN "Minishell: syntax error near unexpected token `<'\n"
 # define SYNTAX_ERROR_R_OUT "Minishell: syntax error near unexpected token `>'\n"
 # define SYNTAX_ERROR_AP_R_OUT "Minishell: syntax error near unexpected token `>>'\n"
@@ -28,6 +30,7 @@
 # define SYNTAX_ERROR_OR "Minishell: syntax error near unexpected token `||'\n"
 # define SYNTAX_ERROR_OPEN_SQUOTE "Minishell: syntax error unclosed single quote\n"
 # define SYNTAX_ERROR_OPEN_DQUOTE "Minishell: syntax error unclosed double quotes\n"
+# define SYNTAX_ERROR_OPEN_P "Minishell: syntax error unclosed parentheses\n"
 
 typedef enum e_token_type
 {
@@ -42,6 +45,12 @@ typedef enum e_token_type
 	WORD,
 }				t_token_type;
 
+typedef enum e_p_type
+{
+	P_CLOSED,
+	P_OPEN,
+}				t_p_type;
+
 typedef enum e_quote_type
 {
 	UNQUOTED,
@@ -53,8 +62,10 @@ typedef struct s_token_list
 {
 	char				*content;
 	struct s_token_list *next;
+	int					subshell_level;
 	t_token_type		token_type;
 	t_quote_type		quote_type;
+	t_p_type				p_type;
 }				t_token_list;
 
 //Checks
@@ -67,9 +78,11 @@ int				check_syntax_errors(t_token_list *list);
 void			set_type(t_token_list *node, char *line, int *i);
 t_quote_type    set_quote_type(char *line, int index);
 t_quote_type	detect_quote_type(char *word);
+t_p_type		check_balance_p(char *line);
+t_p_type		set_p_type(char *line, int index);
 
 //Errors
-void			put_unclosed_syntax_error(t_quote_type type);
+void			put_unclosed_syntax_error(t_quote_type type, t_p_type parentheses);
 void			put_token_syntax_error(t_token_list *token);
 //Memory handle
 void			free_tokens(t_token_list *list);

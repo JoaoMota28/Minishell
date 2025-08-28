@@ -6,27 +6,34 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:45:01 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/23 10:19:40 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/28 21:39:18 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	put_unclosed_syntax_error(t_quote_type type)
+void	put_unclosed_syntax_error(t_quote_type type, t_p_type paretheses)
 {
 	if (type == SINGLE_O)
 		ft_putstr_fd(SYNTAX_ERROR_OPEN_SQUOTE, 2);
 	else if (type == DOUBLE_O)
 		ft_putstr_fd(SYNTAX_ERROR_OPEN_DQUOTE, 2);
+	else if (paretheses == P_OPEN)
+		ft_putstr_fd(SYNTAX_ERROR_OPEN_P, 2);
 }
 
 void	put_token_syntax_error(t_token_list *token)
 {
-		
 	if (token->token_type == AND)
 		ft_putstr_fd(SYNTAX_ERROR_AND, 2);
 	else if (token->token_type == OR)
 		ft_putstr_fd(SYNTAX_ERROR_OR, 2);
+	else if (token->token_type == SUBSHELL && token->p_type == P_OPEN)
+	{
+		ft_putstr_fd(SYNTAX_ERROR_P_OPEN, 2);
+	}
+	else if (token->token_type == SUBSHELL && token->p_type == P_CLOSED)
+		ft_putstr_fd(SYNTAX_ERROR_P_CLOSED, 2);
 	else if (token->token_type == PIPE)
 		ft_putstr_fd(SYNTAX_ERROR_PIPE, 2);
 	else if (token->token_type ==  AP_R_OUT)
