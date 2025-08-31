@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/28 23:06:26 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/31 16:42:17 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ static t_token_list	*lex_node(char *line, int *i)
 	char			quote;
 
 	node = malloc(sizeof(*node));
-	ft_memset(node, 0, sizeof(*node));
 	if (!node)
 		return (NULL);
+	ft_memset(node, 0, sizeof(*node));
 	node->next = NULL;
 	node->content = NULL;
 	start = *i;
@@ -139,10 +139,10 @@ int	lexer(char *line, t_minishell *data)
 	}
 	if (check_syntax_errors(head))
 		return (/*printf("%d\n", data->exit_code),*/free_tokens(head), 2);
-	if (node)
-	{
-		free(node->content);
-		free(node);
-	}
+//	if (node)
+//	{
+//		free(node->content);
+//		free(node);
+//	}
 	return (parser(data, head));
 }

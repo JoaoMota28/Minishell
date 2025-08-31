@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/25 18:05:19 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/31 16:35:35 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,21 @@ static void	append_splitted_tokens(t_token_list *node, char **splitted)
 	t_token_list	*tmp;
 	int				i;
 
+	if (!node || !splitted)
+		return ;
 	i = 1;
+	if (node->content)
+		free(node->content);
 	node->content = ft_strdup(splitted[0]);
 	tmp = node;
 	while(splitted[i])
 	{
 		tmp->next = malloc(sizeof(*tmp));
+		if (!tmp->next)
+		{
+			free_ar((void **)splitted);
+			return ;
+		}
 		tmp = tmp->next;
 		tmp->content = ft_strdup(splitted[i++]);
 		tmp->quote_type = UNQUOTED;
@@ -112,9 +121,14 @@ void	expander(t_token_list *node, t_minishell *data)
 	char		*expanded;
 	char		**splitted;
 
+	if (!node)
+		return ;
 	expanded = expand_token(node->content, data);
-	if (node->token_type == WORD)
+	if (node->content && node->token_type == WORD)
 		free(node->content);
+	node->content = NULL;
+	if (!expanded)
+		return ;
 	if (ft_strchr(expanded, '*') && !node->quote_type)
 	{
 		splitted = expand_wildcard(expanded);

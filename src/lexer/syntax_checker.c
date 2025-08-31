@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:56:20 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/28 22:47:06 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/28 23:15:42 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	check_redir_syntax_errors(t_token_list *token)
 
 int	check_subshell_syntax_errors(t_token_list *token, t_token_list *prev)
 {
-	printf("token: %s\n", token->content);
 	if (token->token_type != SUBSHELL)
 		return (0);
 	if (!ft_strcmp(token->content, "("))

@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:38:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/28 19:43:54 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/31 14:27:10 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 typedef struct s_tree
 {
-	struct s_tree	*subshell;
 	struct s_tree	*left;
 	struct s_tree	*right;
 	char			*content;
@@ -35,10 +34,9 @@ typedef struct s_tree
 }				t_tree;
 
 //tree build
-t_tree			*build_tree(t_token_list *list);
-t_tree			*split_and_build(t_token_list *target, t_token_list *left, t_token_type type);
-t_tree			*build_word_node(t_token_list *list);
-t_token_list	*extract_subshell_tokens(t_token_list **list);
+t_tree			*build_tree(t_token_list *list, int level, int max_level);
+t_tree			*split_and_build(t_token_list *target, t_token_list *left, t_token_type type, int level, int max_level);
+t_tree			*build_word_node(t_token_list *list, int level, int max_level);
 void 			print_tree(t_tree *node, int level, char *leaf);
 void			set_subshell_level(t_tree *node, int level);
 #endif
