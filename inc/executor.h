@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:26:54 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 15:31:45 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:35:58 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define OUT_DUP_ERROR "Error redirecting stdout"
 # define HERE_DOC_ERROR_PREFIX "minishell: warning: here-document delimited by end-of-file (wanted \'"
 # define HERE_DOC_ERROR_SUFFIX "\')\n"
+# define SHLVL_ERROR "minishell: warning: shell level (2147483647) too high, resetting to 1\n"
 
 typedef struct s_minishell  t_minishell;
 
@@ -40,6 +41,7 @@ typedef struct s_exec
 	int		pid_count;
 	int		redir_num;
 	int		pipeline_child;
+	int		subshell_lvl;
 } t_exec;
 
 //processing
@@ -52,6 +54,7 @@ int run_pipeline(t_minishell *data, t_tree *pipe_root);
 int	logical_and(t_minishell *data, t_tree *node);
 int	logical_or(t_minishell *data, t_tree *node);
 int	heredoc(t_minishell *data, t_tree *node);
+int	subshell(t_minishell *data, t_tree *node);
 
 //utils
 char	*test_cmd(t_minishell *data, t_tree *node);

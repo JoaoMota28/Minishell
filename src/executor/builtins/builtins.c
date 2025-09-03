@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:11:09 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/25 19:28:23 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:39:51 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	exec_builtin(t_minishell *data, t_tree *root)
 	fn = buitin_arr(root->content);
 	if (fn)
 		status = fn(data, root->right);
-	if (status == 0)
+	if (status == 0 && !data->exec.pipeline_child)
 	{
 		if (data->exec.parent_fd_in != -1)
 			if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in) == 1)
@@ -56,8 +56,6 @@ int	exec_builtin(t_minishell *data, t_tree *root)
 			if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out) == 1)
 				return (1);
 	}
-	if (data->exec.pipeline_child)
-      	exit_msh(data, status);
 	return (status);
 }
 

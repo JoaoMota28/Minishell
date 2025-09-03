@@ -6,13 +6,13 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:22 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 17:12:36 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:40:34 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_within_llong(const char *str)
+int	is_within_llong(const char *str)
 {
     int		negative;
 	size_t	len;

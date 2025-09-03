@@ -31,7 +31,7 @@ BUILTIN_SRCS	= builtin_utils.c echo_builtin.c pwd_builtin.c env_builtin.c cd_bui
 BUILTIN_PATH	= src/executor/builtins
 BUILTIN			= $(addprefix $(BUILTIN_PATH), $(BUILTIN_SRCS))
 
-EXEC_SRCS		= executor.c exec.c exec_utils.c redirections.c pipes.c and_or.c heredoc.c redir_cmd.c
+EXEC_SRCS		= executor.c exec.c exec_utils.c redirections.c pipes.c and_or.c heredoc.c redir_cmd.c subshell.c shlvl.c
 EXEC_PATH		= src/executor
 EXEC			= $(addprefix $(EXEC_PATH), $(EXEC_SRCS))
 

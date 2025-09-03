@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/19 19:50:45 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:47:05 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	exec_init(t_minishell *data)
 	}
 	data->exec.pid_count = 0;
 	data->exec.pipeline_child = false;
+	data->exec.subshell_lvl = 0;
 	return (0);
 }
 
@@ -54,9 +55,35 @@ char	**private_envp()
 
 void	data_init(t_minishell *data, char **envp)
 {
+	char    *pwd;
+	char	*shlvl;
+
+	pwd = NULL;
+	shlvl = NULL;
 	data->envp = dp_dup(envp);
 	if (!data->envp || !data->envp[0])
 		data->envp = private_envp(data);
+	if (!fetch_val(data->envp, "PWD"))
+	{
+		pwd = getcwd(NULL, 0);
+		add_val(&data->envp, "PWD", pwd);
+		free(pwd);
+	}
+	if (!fetch_val(data->envp, "SHLVL"))
+		add_val(&data->envp, "SHLVL", "1");
+	else
+	{
+		shlvl = shlvl_val(fetch_val(data->envp, "SHLVL"));
+		if (!shlvl)
+			replace_val(&data->envp, "SHLVL", "1");
+		else
+			replace_val(&data->envp, "SHLVL", shlvl);
+		free(shlvl);
+	}
+	if (!fetch_val(data->envp, "PATH"))
+		add_val(&data->envp, "PATH", PRIVATE_PATH);
+	if (!fetch_val(data->envp, "_"))
+		add_val(&data->envp, "_", "/usr/bin/env");
 	data->export = dp_dup(data->envp);
 	if (!fetch_val(data->export, "OLDPWD"))
       add_val(&data->export, "OLDPWD", "");

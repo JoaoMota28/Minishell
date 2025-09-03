@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:21:30 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/25 19:29:50 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:32:06 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ int		add_val(char ***arr, char *key, char *val);
 void	remove_val(char ***arr, char *search);
 void	insertion_sort(char **arr);
 bool	is_builtin(t_tree *root);
+int		is_within_llong(const char *str);
 
 #endif

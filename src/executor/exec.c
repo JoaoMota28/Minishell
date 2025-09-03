@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 18:26:00 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:42:50 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,11 @@ int fork_command(t_minishell *data, t_tree *node)
         exec_command(data, node);
     }
     init_ignore_signals();
-    restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in);
-    restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out);
+    if (!data->exec.pipeline_child)
+    {
+        restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in);
+        restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out);
+    }
     waitpid(pid, &wstatus, 0);
     init_interactive_signals();
     handle_child_sig(wstatus);
@@ -108,12 +111,12 @@ int process_command(t_minishell *data, t_tree *node)
         return (0);
     }
     if (node->content[0] && !is_builtin(node))
-    {
+    /*{
         if (data->exec.pipeline_child)
             return (exec_command(data, node));
-        else
+        else*/
             return (fork_command(data, node));
-    }
+    /*}*/
     else
     {
         if (data->exec.pipeline_child)

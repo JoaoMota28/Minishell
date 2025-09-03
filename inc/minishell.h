@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 16:07:24 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:36:25 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ int		is_operator(t_token_type type);
 char	**dp_dup(char **dp);
 int		dp_len(char **dp);
 char	*get_env(char **envp, char *name);
+char	*shlvl_val(char *oldval);
 
 #endif

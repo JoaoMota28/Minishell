@@ -1,35 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   and_or.c                                           :+:      :+:    :+:   */
+/*   shlvl.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/29 13:09:05 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/03 19:36:54 by jomanuel         ###   ########.fr       */
+/*   Created: 2025/08/28 13:37:38 by jomanuel          #+#    #+#             */
+/*   Updated: 2025/08/28 14:17:07 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	logical_and(t_minishell *data, t_tree *node)
+char	*shlvl_val(char *oldval)
 {
-	int		ret;
+	long	val;
+	int		shlvl;
 
-	ret = process_node(data, node->left);
-	if (ret == 0)
-		ret = process_node(data, node->right);
-	return (ret);
-}
-
-int	logical_or(t_minishell *data, t_tree *node)
-{
-	int		ret;
-
-	ret = process_node(data, node->left);
-	if (ret == 0)
-		return (ret);
+	val = ft_atoi(oldval);
+	if (is_within_llong(oldval))
+	{
+		if (val + 1 == INT_MAX)
+		{
+			ft_putstr_fd(SHLVL_ERROR, 2);
+			shlvl = 1;
+		}
+		else if (val < INT_MIN)
+			shlvl = 1;
+		else if (val < 0 || val >= INT_MAX)
+			shlvl = 0;
+		else
+			shlvl = val + 1;
+	}
 	else
-		ret = process_node(data, node->right);
-	return (ret);
+		shlvl = 1;
+	return (ft_itoa(shlvl));
 }
