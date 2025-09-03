@@ -6,12 +6,12 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 14:57:26 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/03 16:25:45 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 int	matches_extension(char *extension, char *file_name)
 {
 	if(!*extension)
@@ -155,3 +155,4 @@ void	expander(t_tree *node, t_minishell *data)
 	else
 		node->content = expanded;
 }
+*/

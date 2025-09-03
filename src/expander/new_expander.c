@@ -6,11 +6,86 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 15:57:14 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/03 16:24:54 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	handle_variable_len(char *content, int *i, t_minishell *data)
+{
+	char	*tmp;
+	char	*value;
+	int		var_len;
+	int		len;
+
+	if (ft_isdigit(content[*i]))
+	{
+		tmp = ft_substr(content, *i, 1);
+		value = ft_strdup(get_env(data->envp, tmp));
+		len = ft_strlen(value);
+		(*i)++;
+		return (free(tmp), free(value), len);
+	}
+	var_len = 0;
+	while (ft_isalnum(content[*i + var_len]) || content[*i + var_len] == '_')
+		var_len++;
+	tmp = ft_substr(content, *i, var_len);
+	value = ft_strdup(get_env(data->envp, tmp));
+	len = ft_strlen(value);
+	free(tmp);
+	free(value);
+	*i += var_len;
+	return (len);
+}
+
+static int	handle_dollar_len(char *content, int *i, t_minishell *data)
+{
+	int		len;
+	char	*tmp;
+
+	len = 0;
+	(*i)++;
+	if (!content[*i])
+		return (1);
+	if (content[*i] == '"' || content[*i] == '\'')
+		return (0);
+	if (content[*i] == '?')
+	{
+		tmp = ft_itoa(data->exit_code);
+		len += ft_strlen(tmp);
+		free(tmp);
+		(*i)++;
+	}
+	else if (ft_isalnum(content[*i]) || content[*i] == '_')
+		len += handle_variable_len(content, i, data);
+	else
+	{
+		len += 2;
+		(*i)++;
+	}
+	return (len);
+}
+
+static int	get_expanded_len(char *content, t_minishell *data)
+{
+	int	i;
+	int	len;
+
+	len = 0;
+	i = 0;
+	while (content && content[i])
+	{
+		if (content[i] == '$')
+			handle_dollar_len(content, &i, data);
+		else
+		{
+			len++;
+			i++;
+		}
+	}
+	return (len);
+}
 
 static void	handle_dollar(char *content, char *new, int *i, int *k, t_minishell *data)
 {
@@ -82,6 +157,8 @@ static char	*expand_nodes(char *content, t_minishell *data)
 		else
 			res[k++] = content[i++];
 	}
+	res[k] = '\0';
+	return (res);
 }
 
 int	matches_extension(char *extension, char *file_name)
