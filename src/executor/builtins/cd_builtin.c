@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:43:27 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/03 19:40:11 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 20:03:20 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	cd_builtin(t_minishell *data, t_tree *leaf)
 {
    char  *path;
 
+   if (data->exec.pipeline_child)
+      return (0);
    if (!leaf)
    {
       path = fetch_val(data->envp, "HOME");

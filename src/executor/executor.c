@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/03 19:44:34 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 20:03:01 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	process_node(t_minishell *data, t_tree *node)
 		return (ft_putstr_fd("minishell: : command not found\n", 2), 127);
 	}
 	else if (node->subshell_level > data->exec.subshell_lvl)
-		return(subshell(data, node));
+		return (subshell(data, node));
 	else if (node->type == PIPE)
 		return (run_pipeline(data, node));
 	else if (node->type == R_IN)
@@ -70,7 +70,7 @@ int	executor(t_minishell *data, t_tree *root)
 	}
 	ret = process_node(data, root);
 	if (data->exec.pipeline_child)
-		exit_msh(data, ret);
+      	exit_msh(data, ret);
 	if (close_executor(data, root))
 		ret = 1;
 	return(ret);
