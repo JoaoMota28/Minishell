@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_expander.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 16:24:54 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/03 23:47:38 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static int	handle_dollar_len(char *content, int *i, t_minishell *data)
 	(*i)++;
 	if (!content[*i])
 		return (1);
-	if (content[*i] == '"' || content[*i] == '\'')
-		return (0);
 	if (content[*i] == '?')
 	{
 		tmp = ft_itoa(data->exit_code);
@@ -77,7 +75,7 @@ static int	get_expanded_len(char *content, t_minishell *data)
 	while (content && content[i])
 	{
 		if (content[i] == '$')
-			handle_dollar_len(content, &i, data);
+			len += handle_dollar_len(content, &i, data);
 		else
 		{
 			len++;
@@ -151,7 +149,6 @@ static char	*expand_nodes(char *content, t_minishell *data)
 	k = 0;
 	while (content && content[i])
 	{
-
 		if (content[i] == '$')
 			handle_dollar(content, res, &i, &k, data);
 		else
@@ -256,12 +253,13 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 			free_ar((void **)splitted);
 			return ;
 		}
+		tmp->right->content = ft_strdup(splitted[i]);
+		tmp->right->quote_type = UNQUOTED;
+		tmp->right->type = WORD;
+		tmp->right->left = NULL;
+		tmp->right->right = NULL;
 		tmp = tmp->right;
-		tmp->content = ft_strdup(splitted[i++]);
-		tmp->quote_type = UNQUOTED;
-		tmp->type = WORD;
-		tmp->left = NULL;
-		tmp->right = NULL;
+		i++;
 	}
 	free_ar((void **)splitted);
 }
@@ -301,6 +299,13 @@ void	expander(t_tree *node, t_minishell *data)
 			return ;
 		}
 	}
+	if (node->quote_type == UNQUOTED && ft_strchr(expanded, ' '))
+	{
+		splitted = ft_split(expanded, ' ');
+		free(expanded);
+		append_splitted_tokens(node, splitted);
+	}
 	else
 		node->content = expanded;
+	expander(node->right, data);
 }
