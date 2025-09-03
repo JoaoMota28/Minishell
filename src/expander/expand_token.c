@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 18:28:17 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/25 18:19:21 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/31 18:16:13 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,13 @@ char	*expand_token(char *content, t_minishell *data)
 	{
 		if (content[i] == '\'')
 			handle_single(content, new, &i, &k);
-        else if (content[i] == '"')
-            handle_double(content, new, &i, &k, data);
+		else if (content[i] == '"')
+		    handle_double(content, new, &i, &k, data);
 		else if (content[i] == '$')
 			handle_dollar(content, new, &i, &k, data);
-        else 
-            new[k++] = content[i++];
+		else 
+			new[k++] = content[i++];
 	}
-    new[k] = '\0';
-    return (new);
+	new[k] = '\0';
+	return (new);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/27 18:10:56 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:58:11 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_minishell
 /// @param line interactive line written by the minishell
 /// @return exit status to the next step -> Parser
 int 	lexer(char *line, t_minishell *data);
-void	expander(t_token_list *node, t_minishell *data);
+void	expander(t_tree *node, t_minishell *data);
 int		parser(t_minishell *data, t_token_list *list);
 int		executor(t_minishell *data, t_tree *root);
 

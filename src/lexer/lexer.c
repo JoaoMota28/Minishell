@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/31 16:42:17 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:31:29 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,41 @@ static void	add_content(t_token_list *node, int *i)
 		return ;
 }
 
+static char	*strip_quotes(char *content)
+{
+	int		i;
+	int		k;
+	char	quote;
+	char	*res;
+
+	if (!content)
+		return (NULL);
+	res = malloc(ft_strlen(content) + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	k = 0;
+	quote = 0;
+	while (content[i])
+	{
+		if (!quote && (content[i] == '\'' || content[i] == '"'))
+			quote = content[i];
+		else if (quote && content[i] == quote)
+			quote = 0;
+		else
+			res[k++] = content[i];
+		i++;
+	}
+	res[k] = '\0';
+	return (res);
+}
+
 static t_token_list	*lex_node(char *line, int *i)
 {
 	int				start;
 	t_token_list	*node;
 	char			quote;
+	char			*raw;
 
 	node = malloc(sizeof(*node));
 	if (!node)
@@ -52,7 +82,6 @@ static t_token_list	*lex_node(char *line, int *i)
 	start = *i;
 	set_type(node, line, i);
 	node->subshell_level = 0;
-	node->quote_type = detect_quote_type(line);
 	if (node->token_type != WORD)
 		add_content(node, i);
 	else
@@ -72,7 +101,10 @@ static t_token_list	*lex_node(char *line, int *i)
 				else
 					(*i)++;
 			}
-		node->content = ft_substr(line, start, *i - start);
+		raw = ft_substr(line, start, *i - start);
+		node->quote_type = detect_quote_type(raw);
+		node->content = strip_quotes(raw);
+		free(raw);
 	}
 	return (node);
 }
@@ -128,9 +160,10 @@ int	lexer(char *line, t_minishell *data)
 		}
 		node = lex_node(line, &i);
 		assign_subshell(node, &current_level);
-		expander(node, data);
-		if (node->token_type == WORD && !node->content)
+		if (node->token_type == WORD && (!node->content || !*node->content))
 		{
+			if (node->content)
+				free(node->content);
 			free(node);
 			continue;
 		}

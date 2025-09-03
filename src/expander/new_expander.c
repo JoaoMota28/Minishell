@@ -1,16 +1,88 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   new_expander.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 14:57:26 by bpires-r         ###   ########.fr       */
+/*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
+/*   Updated: 2025/09/03 15:57:14 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	handle_dollar(char *content, char *new, int *i, int *k, t_minishell *data)
+{
+	char	*tmp;
+	char	*aux;
+	int		j;
+
+	(*i)++;
+	if (!content[*i])
+	{
+		new[(*k)++] = '$';
+		return ;
+	}
+	if (content[*i] == '?')
+	{
+		tmp = ft_itoa(data->exit_code);
+		ft_memcpy(new + *k, tmp, ft_strlen(tmp));
+		*k = *k + ft_strlen(tmp);
+		free(tmp);
+		(*i)++;
+	}
+	else if (ft_isalnum(content[*i]) || content[*i] == '_')
+	{
+		if (ft_isdigit(content[*i]))
+		{
+			aux = ft_substr(content, *i, 1);
+			(*i)++;
+		}
+		else
+		{
+			j = 0;
+			while (content[*i + j] && 
+				(ft_isalnum(content[*i + j]) || content[*i + j] == '_'))
+				j++;
+			aux = ft_substr(content, *i, j);
+			*i = *i + j;
+		}
+		tmp = ft_strdup(get_env(data->envp, aux));
+		ft_memcpy(new + *k, tmp, ft_strlen(tmp));
+		*k += ft_strlen(tmp);
+		free(aux);
+		free(tmp);
+	}
+	else
+	{
+		new[(*k)++] = '$';
+		new[(*k)++] = content[(*i)++];
+	}
+}
+
+static char	*expand_nodes(char *content, t_minishell *data)
+{
+	int		len;
+	char	*res;
+	int		i;
+	int		k;
+
+	if (!content)
+		return (NULL);
+	len = get_expanded_len(content, data);
+	res = malloc(len + 1);
+	i = 0;
+	k = 0;
+	while (content && content[i])
+	{
+
+		if (content[i] == '$')
+			handle_dollar(content, res, &i, &k, data);
+		else
+			res[k++] = content[i++];
+	}
+}
 
 int	matches_extension(char *extension, char *file_name)
 {
@@ -81,7 +153,7 @@ char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 
 	if (delim->quote_type)
 		return (ft_strdup(line));
-	expanded = expand_token(line, data);
+	expanded = expand_nodes(line, data);
 	if (!expanded)
 		return (ft_strdup(""));
 	return (expanded);
@@ -119,12 +191,24 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 
 void	expander(t_tree *node, t_minishell *data)
 {
-	char		*expanded;
-	char		**splitted;
+	char	*expanded;
+	char	**splitted;
 
 	if (!node || node->type != WORD)
 		return ;
-	expanded = expand_token(node->content, data);
+	if (node->quote_type == SINGLE_O)
+		return ;
+	if (node->quote_type == DOUBLE_O)
+	{
+		expanded = expand_nodes(node->content, data);
+		if (node->content)
+			free(node->content);
+		if (expanded)
+			node->content = expanded;
+		else
+			node->content = ft_strdup("");
+	}
+	expanded = expand_nodes(node->content, data);
 	if (node->content)
 		free(node->content);
 	node->content = NULL;
@@ -139,18 +223,6 @@ void	expander(t_tree *node, t_minishell *data)
 			append_splitted_tokens(node, splitted);
 			return ;
 		}
-	}
-	if (!expanded[0] && !node->quote_type)
-	{
-		free(expanded);
-		node->content = NULL;
-		return ;
-	}
-	if (node->quote_type == UNQUOTED && ft_strchr(expanded, ' '))
-	{
-		splitted = ft_split(expanded, ' ');
-		free(expanded);
-		append_splitted_tokens(node, splitted);
 	}
 	else
 		node->content = expanded;

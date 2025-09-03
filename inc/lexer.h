@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/28 21:51:19 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:58:01 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void			set_type(t_token_list *node, char *line, int *i);
 t_quote_type    set_quote_type(char *line, int index);
 t_quote_type	detect_quote_type(char *word);
 t_p_type		check_balance_p(char *line);
-t_p_type		set_p_type(char *line, int index);
 
 //Errors
 void			put_unclosed_syntax_error(t_quote_type type, t_p_type parentheses);

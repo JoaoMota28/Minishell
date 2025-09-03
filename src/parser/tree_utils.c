@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/31 14:33:12 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/08/31 17:09:26 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void print_tree(t_tree *node, int level, char *leaf)
 	for (int i = 0; i < level; i++)
 		printf("  ");
     if (leaf){
-        printf("%s -> subshell_level: %d", leaf, node->subshell_level);
+        printf("%s -> quote type: %d", leaf, node->quote_type);
     }
     printf("[%s]\n", node->content);
 	print_tree(node->left, level + 1, "left : ");
