@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:16:06 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/04 00:06:18 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 00:53:20 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    free_tree(t_tree *node)
 		return;
 	free_tree(node->left);
 	free_tree(node->right);
-	if (node->content)
+	if (node->content && node->type == WORD)
 		free(node->content);
 	free(node);
 }

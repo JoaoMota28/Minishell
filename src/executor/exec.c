@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/03 20:18:36 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 02:04:17 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int process_command(t_minishell *data, t_tree *node)
         return (0);
     }
     expander(node, data);
-    print_tree(node, 0, "root: ");
+    //print_tree(node, 0, "root: ");
     if (node->content[0] && !is_builtin(node))
     /*{
         if (data->exec.pipeline_child)

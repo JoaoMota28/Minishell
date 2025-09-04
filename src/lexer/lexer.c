@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 14:31:29 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/04 00:36:22 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int	lexer(char *line, t_minishell *data)
 	parentheses = check_balance_p(line);
 	current_level = 0;
 	if (type)
-		return(/*printf("%d\n", data->exit_code), */put_unclosed_syntax_error(type, parentheses), 2);
+		return(put_unclosed_syntax_error(type, parentheses), 2);
 	if (parentheses)
 		return (put_unclosed_syntax_error(type, parentheses), 2);
 	while (line[i])
@@ -168,10 +168,10 @@ int	lexer(char *line, t_minishell *data)
 			continue;
 		}
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
-		printf("Token Content -> %s\n", node->content);
+		//printf("Token Content -> %s\n", node->content);
 	}
 	if (check_syntax_errors(head))
-		return (/*printf("%d\n", data->exit_code),*/free_tokens(head), 2);
+		return (free_tokens(head), 2);
 //	if (node)
 //	{
 //		free(node->content);

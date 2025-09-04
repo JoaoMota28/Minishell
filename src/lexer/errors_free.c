@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:45:01 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/28 21:39:18 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/04 00:51:21 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ void	free_tokens(t_token_list *list)
 	while (list)
 	{
 		tmp = list->next;
-		if (list->content)
+		if (list->content && list->token_type == WORD)
 			free(list->content);
-		free(list);
+		if (list)
+			free(list);
 		list = tmp;
 	}
 }
