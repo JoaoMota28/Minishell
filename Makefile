@@ -19,7 +19,7 @@ LEXER_SRCS		= errors_free.c lexer.c syntax_checker.c set_types.c
 LEXER_PATH 		= src/lexer/
 LEXER			= $(addprefix $(LEXER_PATH), $(LEXER_SRCS))
 
-EXP_SRCS		= expander.c expand_token.c expanded_len.c new_expander.c
+EXP_SRCS		= expander.c expand_token.c expanded_len.c
 EXP_PATH		= src/expander/
 EXP				= $(addprefix $(EXP_PATH), $(EXP_SRCS))
 
@@ -105,13 +105,13 @@ fclean: 		clean
 
 re: 			fclean all
 
-v:	$(NAME)
-	clear && valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --track-origins=yes --suppressions=readline.supp ./minishell
+v:				$(NAME)
+				clear && valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --track-origins=yes --suppressions=readline.supp ./minishell
 
-ch:	$(NAME)
-	valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --track-origins=yes --suppressions=readline.supp --trace-children=yes ./minishell
+ch:				$(NAME)
+				valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --track-origins=yes --suppressions=readline.supp --trace-children=yes ./minishell
 
-.PHONY: 		all clean fclean re
+.PHONY: 		all clean fclean re v ch
 
 define PRINT_PROGRESS
     if [ "$(FILES)" -eq "1" ]; then \
