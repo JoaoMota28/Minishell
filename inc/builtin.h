@@ -6,14 +6,15 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:21:30 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/03 20:00:01 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:52:47 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-# define PWD_ERROR "pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
+# define PWD_ERROR "pwd: error retrieving current directory: getcwd: cannot \
+access parent directories: No such file or directory\n"
 
 # define ENV_PREFIX "env: ‘"
 # define ENV_SUFFIX "’: No such file or directory\n"
@@ -40,20 +41,20 @@
 # include <stdlib.h>
 # include "parser.h"
 
-typedef struct s_minishell  t_minishell;
+typedef struct s_minishell	t_minishell;
 
 // Main func
-int	(*buitin_arr(char *command))(t_minishell *data, t_tree *leaf);
-int	exec_builtin(t_minishell *data, t_tree *root);
+int		(*buitin_arr(char *command))(t_minishell *data, t_tree *leaf);
+int		exec_builtin(t_minishell *data, t_tree *root);
 
 // Builtins list
-int	echo_builtin(t_minishell *data, t_tree *leaf);
-int	pwd_builtin(t_minishell *data, t_tree *leaf);
-int	env_builtin(t_minishell *data, t_tree *leaf);
-int	cd_builtin(t_minishell *data, t_tree *leaf);
-int	exit_builtin(t_minishell *data, t_tree *leaf);
-int	unset_builtin(t_minishell *data, t_tree *leaf);
-int	export_builtin(t_minishell *data, t_tree *leaf);
+int		echo_builtin(t_minishell *data, t_tree *leaf);
+int		pwd_builtin(t_minishell *data, t_tree *leaf);
+int		env_builtin(t_minishell *data, t_tree *leaf);
+int		cd_builtin(t_minishell *data, t_tree *leaf);
+int		exit_builtin(t_minishell *data, t_tree *leaf);
+int		unset_builtin(t_minishell *data, t_tree *leaf);
+int		export_builtin(t_minishell *data, t_tree *leaf);
 
 // Utils
 char	*fetch_val(char **arr, char *search);

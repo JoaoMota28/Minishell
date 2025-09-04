@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 11:15:03 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 16:48:53 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:32:07 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	count_nodes(t_tree *node)
 	i = 0;
 	while (node)
 	{
-		i++;
+		if (*node->content || node->quote_type != UNQUOTED)
+			i++;
 		node = node->right;
 	}
 	return (i);
@@ -64,7 +65,9 @@ char	**get_cmd_line(t_tree *node)
 	while (node)
 	{
 		node->visited = true;
-		cmd[++i] = ft_strdup(node->content);
+		printf("%s, %i\n", node->content, node->quote_type);
+		if (*node->content || node->quote_type != UNQUOTED)
+			cmd[++i] = ft_strdup(node->content);
 		node = node->right;
 	}
 	cmd[++i] = NULL;

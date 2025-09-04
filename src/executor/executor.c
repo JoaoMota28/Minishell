@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/04 02:04:33 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:33:33 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	executor(t_minishell *data, t_tree *root)
 	int		ret;
 
 	data->root = root;
-	//print_tree(root, 0, "root: ");
+	print_tree(root, 0, "root: ");
 	data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
 	search_heredoc(data, root);
 	if (sig)

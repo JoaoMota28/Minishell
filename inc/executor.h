@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:26:54 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/03 20:00:38 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:55:01 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@
 # define OUT_OPEN_ERROR "Error opening outfile"
 # define IN_DUP_ERROR "Error redirecting stdin"
 # define OUT_DUP_ERROR "Error redirecting stdout"
-# define HERE_DOC_ERROR_PREFIX "minishell: warning: here-document delimited by end-of-file (wanted \'"
+# define HERE_DOC_ERROR_PREFIX "minishell: warning: here-document delimited \
+by end-of-file (wanted \'"
 # define HERE_DOC_ERROR_SUFFIX "\')\n"
-# define SHLVL_ERROR "minishell: warning: shell level (2147483647) too high, resetting to 1\n"
+# define SHLVL_ERROR "minishell: warning: shell level (2147483647) too high, \
+resetting to 1\n"
 
-typedef struct s_minishell  t_minishell;
+typedef struct s_minishell	t_minishell;
 
 typedef struct s_exec
 {
@@ -42,29 +44,29 @@ typedef struct s_exec
 	int		redir_num;
 	int		pipeline_child;
 	int		subshell_lvl;
-} t_exec;
+}	t_exec;
 
 //processing
-int	process_node(t_minishell *data, t_tree *node);
-int	process_command(t_minishell *data, t_tree *node);
-int exec_command(t_minishell *data, t_tree *node);
-int redir_in(t_minishell *data, t_tree *node);
-int redir_out(t_minishell *data, t_tree *node);
-int run_pipeline(t_minishell *data, t_tree *pipe_root);
-int	logical_and(t_minishell *data, t_tree *node);
-int	logical_or(t_minishell *data, t_tree *node);
-int	heredoc(t_minishell *data, t_tree *node);
-int	subshell(t_minishell *data, t_tree *node);
+int		process_node(t_minishell *data, t_tree *node);
+int		process_command(t_minishell *data, t_tree *node);
+int		exec_command(t_minishell *data, t_tree *node);
+int		redir_in(t_minishell *data, t_tree *node);
+int		redir_out(t_minishell *data, t_tree *node);
+int		run_pipeline(t_minishell *data, t_tree *pipe_root);
+int		logical_and(t_minishell *data, t_tree *node);
+int		logical_or(t_minishell *data, t_tree *node);
+int		heredoc(t_minishell *data, t_tree *node);
+int		subshell(t_minishell *data, t_tree *node);
 
 //utils
 char	*test_cmd(t_minishell *data, t_tree *node);
-int	count_nodes(t_tree *node);
+int		count_nodes(t_tree *node);
 char	**get_cmd_line(t_tree *node);
-int	restore_fd(int src, int dest);
+int		restore_fd(int src, int dest);
 void	close_parent_fds(t_minishell *data);
-int	search_heredoc(t_minishell *data, t_tree *node);
-int	close_heredoc(t_tree *node);
-void attach_to_cmd(t_tree *node, t_tree *head);
-void collect_to_list(t_tree *root, t_tree **head, t_tree **tail);
+int		search_heredoc(t_minishell *data, t_tree *node);
+int		close_heredoc(t_tree *node);
+void	attach_to_cmd(t_tree *node, t_tree *head);
+void	collect_to_list(t_tree *root, t_tree **head, t_tree **tail);
 
 #endif
