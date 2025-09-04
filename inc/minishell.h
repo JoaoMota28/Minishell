@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 20:00:46 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:19:44 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,10 @@ int		parser(t_minishell *data, t_token_list *list);
 int		executor(t_minishell *data, t_tree *root);
 
 //expander
-char	*expand_token(char *content, t_minishell *data);
-int		get_exp_length(char *content, t_minishell *data);
+char	*expand_nodes(char *content, t_minishell *data);
 char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data);
+char	**expand_wildcard(char *extension);
+int		get_expanded_len(char *content, t_minishell *data);
 
 //inits
 void    data_init(t_minishell *data, char **envp);

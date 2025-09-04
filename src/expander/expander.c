@@ -3,77 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/11 17:45:53 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 16:25:45 by bpires-r         ###   ########.fr       */
+/*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
+/*   Updated: 2025/09/04 16:27:56 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-int	matches_extension(char *extension, char *file_name)
-{
-	if(!*extension)
-		return (!*file_name);
-	if (*extension == '*')
-	{
-		while (*extension == '*')
-			extension++;
-		if (!*extension)
-			return (1);
-		while (*file_name)
-		{
-			if (matches_extension(extension, file_name))
-				return (1);
-			file_name++;
-		}
-		return (0);
-	}
-	if (*extension == *file_name)
-		return (matches_extension(extension + 1, file_name + 1));
-	return (0);
-}
-
-char	**expand_wildcard(char *extension)
-{
-	DIR				*dir;
-	int				hidden;
-	char			*res;
-	char			*tmp;
-	char			**splitted;
-	struct dirent	*entry;
-
-	//porfavor muda isto senao meu eu do futuro mata se
-	dir = opendir(".");
-	if (!dir)
-		return (NULL);
-	res = ft_strdup("");
-	hidden = (extension[0] == '.');
-	while ((entry = readdir(dir)))
-	{
-		if (!hidden && entry->d_name[0] == '.')
-			continue ;
-		if (matches_extension(extension, entry->d_name))
-		{
-			tmp = res;
-			res = ft_strjoin(res, entry->d_name);
-			free(tmp);
-			tmp = res;
-			res = ft_strjoin(res, " ");
-			free(tmp);
-		}
-	}
-	closedir(dir);
-	if (!*res)
-		return (free(res), NULL);
-	tmp = ft_strtrim(res, " ");
-	free(res);
-	res = tmp;
-	splitted = ft_split(res, ' ');
-	free(tmp);
-	return (splitted);
-}
 
 char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 {
@@ -81,7 +18,7 @@ char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 
 	if (delim->quote_type)
 		return (ft_strdup(line));
-	expanded = expand_token(line, data);
+	expanded = expand_nodes(line, data);
 	if (!expanded)
 		return (ft_strdup(""));
 	return (expanded);
@@ -107,24 +44,37 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 			free_ar((void **)splitted);
 			return ;
 		}
+		tmp->right->content = ft_strdup(splitted[i]);
+		tmp->right->quote_type = UNQUOTED;
+		tmp->right->type = WORD;
+		tmp->right->left = NULL;
+		tmp->right->right = NULL;
 		tmp = tmp->right;
-		tmp->content = ft_strdup(splitted[i++]);
-		tmp->quote_type = UNQUOTED;
-		tmp->type = WORD;
-		tmp->left = NULL;
-		tmp->right = NULL;
+		i++;
 	}
 	free_ar((void **)splitted);
 }
 
 void	expander(t_tree *node, t_minishell *data)
 {
-	char		*expanded;
-	char		**splitted;
+	char	*expanded;
+	char	**splitted;
 
 	if (!node || node->type != WORD)
 		return ;
-	expanded = expand_token(node->content, data);
+	if (node->quote_type == SINGLE_O)
+		return ;
+	if (node->quote_type == DOUBLE_O)
+	{
+		expanded = expand_nodes(node->content, data);
+		if (node->content)
+			free(node->content);
+		if (expanded)
+			node->content = expanded;
+		else
+			node->content = ft_strdup("");
+	}
+	expanded = expand_nodes(node->content, data);
 	if (node->content)
 		free(node->content);
 	node->content = NULL;
@@ -140,12 +90,6 @@ void	expander(t_tree *node, t_minishell *data)
 			return ;
 		}
 	}
-	if (!expanded[0] && !node->quote_type)
-	{
-		free(expanded);
-		node->content = NULL;
-		return ;
-	}
 	if (node->quote_type == UNQUOTED && ft_strchr(expanded, ' '))
 	{
 		splitted = ft_split(expanded, ' ');
@@ -154,5 +98,5 @@ void	expander(t_tree *node, t_minishell *data)
 	}
 	else
 		node->content = expanded;
+	expander(node->right, data);
 }
-*/
