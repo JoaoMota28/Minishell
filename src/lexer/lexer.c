@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/04 00:36:22 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 02:03:40 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,48 +87,27 @@ static t_token_list	*lex_node(char *line, int *i)
 	else
 	{
 		while (line[*i] && !is_space(line[*i]) && line[*i] != '|'
-			&& line[*i] != '>' && line[*i] != '<' && line[*i] != '(' && line[*i] != ')')
+			&& line[*i] != '>' && line[*i] != '<'
+			&& line[*i] != '(' && line[*i] != ')')
+		{
+			if (set_quote_type(line, *i))
 			{
-				if (set_quote_type(line, *i))
-				{
-					quote = line[*i];
+				quote = line[*i];
+				(*i)++;
+				while (line[*i] && line[*i] != quote)
 					(*i)++;
-					while (line[*i] && line[*i] != quote)
-						(*i)++;
-					if (line[*i] == quote)
-						(*i)++;
-				}
-				else
+				if (line[*i] == quote)
 					(*i)++;
 			}
+			else
+				(*i)++;
+		}
 		raw = ft_substr(line, start, *i - start);
 		node->quote_type = detect_quote_type(raw);
 		node->content = strip_quotes(raw);
 		free(raw);
 	}
 	return (node);
-}
-
-static void	assign_subshell(t_token_list *node, int *current_level)
-{
-	if (node->token_type == SUBSHELL && node->p_type == P_OPEN)
-	{
-		node->subshell_level = *current_level;
-		(*current_level)++;
-	}
-	else if (node->token_type == SUBSHELL && node->p_type == P_CLOSED)
-	{
-		(*current_level)--;
-			node->subshell_level = *current_level;
-	}
-	else
-	{
-		node->subshell_level = *current_level;
-		if (*current_level > 0)
-			node->p_type = P_OPEN;
-		else
-			node->p_type = P_CLOSED;
-	}
 }
 
 int	lexer(char *line, t_minishell *data)
@@ -148,7 +127,7 @@ int	lexer(char *line, t_minishell *data)
 	parentheses = check_balance_p(line);
 	current_level = 0;
 	if (type)
-		return(put_unclosed_syntax_error(type, parentheses), 2);
+		return (put_unclosed_syntax_error(type, parentheses), 2);
 	if (parentheses)
 		return (put_unclosed_syntax_error(type, parentheses), 2);
 	while (line[i])
@@ -165,17 +144,11 @@ int	lexer(char *line, t_minishell *data)
 			if (node->content)
 				free(node->content);
 			free(node);
-			continue;
+			continue ;
 		}
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
-		//printf("Token Content -> %s\n", node->content);
 	}
 	if (check_syntax_errors(head))
 		return (free_tokens(head), 2);
-//	if (node)
-//	{
-//		free(node->content);
-//		free(node);
-//	}
 	return (parser(data, head));
 }

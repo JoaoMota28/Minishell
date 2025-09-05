@@ -15,7 +15,7 @@ INCLUDE			= -I inc/
 SRCS	 		= $(LEXER_SRCS) $(EXP_SRCS) $(PARSER_SRCS) $(BUILTIN_SRCS) $(EXEC_SRCS) minishell.c inits.c utils.c exit_free.c handler.c signals.c
 SRC_PATH		= src/
 
-LEXER_SRCS		= errors_free.c lexer.c syntax_checker.c set_types.c
+LEXER_SRCS		= errors_free.c lexer.c syntax_checker.c operator_syntax.c set_types.c set_token_types.c
 LEXER_PATH 		= src/lexer/
 LEXER			= $(addprefix $(LEXER_PATH), $(LEXER_SRCS))
 
@@ -23,7 +23,7 @@ EXP_SRCS		= expander.c expand_token.c expanded_len.c
 EXP_PATH		= src/expander/
 EXP				= $(addprefix $(EXP_PATH), $(EXP_SRCS))
 
-PARSER_SRCS		= parser.c test.c tree_utils.c
+PARSER_SRCS		= parser.c tree_utils.c
 PARSER_PATH		= src/parser/
 PARSER			= $(addprefix $(PARSER_PATH), $(PARSER_SRCS))
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:45:01 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/04 00:51:21 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 01:31:54 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	put_token_syntax_error(t_token_list *token)
 		ft_putstr_fd(SYNTAX_ERROR_P_CLOSED, 2);
 	else if (token->token_type == PIPE)
 		ft_putstr_fd(SYNTAX_ERROR_PIPE, 2);
-	else if (token->token_type ==  AP_R_OUT)
+	else if (token->token_type == AP_R_OUT)
 		ft_putstr_fd(SYNTAX_ERROR_AP_R_OUT, 2);
-	else if (token->token_type ==  HERE_DOC)
+	else if (token->token_type == HERE_DOC)
 		ft_putstr_fd(SYNTAX_ERROR_HEREDOC, 2);
 	else if (token->token_type == R_IN)
 		ft_putstr_fd(SYNTAX_ERROR_R_IN, 2);
@@ -48,7 +48,7 @@ void	put_token_syntax_error(t_token_list *token)
 
 void	free_tokens(t_token_list *list)
 {
-	t_token_list    *tmp;
+	t_token_list	*tmp;
 
 	while (list)
 	{

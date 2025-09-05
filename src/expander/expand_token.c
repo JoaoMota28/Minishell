@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 18:28:17 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/04 15:19:53 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 01:29:36 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	matches_extension(char *extension, char *file_name)
 {
-	if(!*extension)
+	if (!*extension)
 		return (!*file_name);
 	if (*extension == '*')
 	{
@@ -44,7 +44,6 @@ char	**expand_wildcard(char *extension)
 	char			**splitted;
 	struct dirent	*entry;
 
-	//porfavor muda isto senao meu eu do futuro mata se
 	dir = opendir(".");
 	if (!dir)
 		return (NULL);
@@ -89,8 +88,8 @@ static void	handle_env_var(char *content, char *new, int *i, int *k, t_minishell
 	else
 	{
 		j = 0;
-		while (content[*i + j] && 
-			(ft_isalnum(content[*i + j]) || content[*i + j] == '_'))
+		while (content[*i + j]
+			&& (ft_isalnum(content[*i + j]) || content[*i + j] == '_'))
 			j++;
 		aux = ft_substr(content, *i, j);
 		*i = *i + j;

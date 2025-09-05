@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/04 16:27:56 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 01:30:13 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,14 @@ char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 static void	append_splitted_tokens(t_tree *node, char **splitted)
 {
 	t_tree	*tmp;
-	int				i;
+	int		i;
 
-	if (!node || !splitted)
-		return ;
 	i = 1;
 	if (node->content)
 		free(node->content);
 	node->content = ft_strdup(splitted[0]);
 	tmp = node;
-	while(splitted[i])
+	while (splitted[i])
 	{
 		tmp->right = malloc(sizeof(*tmp));
 		if (!tmp->right)
@@ -55,10 +53,33 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 	free_ar((void **)splitted);
 }
 
+static void	handle_unquoted(t_tree *node, char *expanded)
+{
+	char	**splitted;
+
+	if (ft_strchr(expanded, '*') && !node->quote_type)
+	{
+		splitted = expand_wildcard(expanded);
+		if (splitted)
+		{
+			free(expanded);
+			append_splitted_tokens(node, splitted);
+			return ;
+		}
+	}
+	if (node->quote_type == UNQUOTED && ft_strchr(expanded, ' '))
+	{
+		splitted = ft_split(expanded, ' ');
+		free(expanded);
+		append_splitted_tokens(node, splitted);
+	}
+	else
+		node->content = expanded;
+}
+
 void	expander(t_tree *node, t_minishell *data)
 {
 	char	*expanded;
-	char	**splitted;
 
 	if (!node || node->type != WORD)
 		return ;
@@ -80,23 +101,6 @@ void	expander(t_tree *node, t_minishell *data)
 	node->content = NULL;
 	if (!expanded)
 		return ;
-	if (ft_strchr(expanded, '*') && !node->quote_type)
-	{
-		splitted = expand_wildcard(expanded);
-		if (splitted)
-		{
-			free(expanded);
-			append_splitted_tokens(node, splitted);
-			return ;
-		}
-	}
-	if (node->quote_type == UNQUOTED && ft_strchr(expanded, ' '))
-	{
-		splitted = ft_split(expanded, ' ');
-		free(expanded);
-		append_splitted_tokens(node, splitted);
-	}
-	else
-		node->content = expanded;
+	handle_unquoted(node, expanded);
 	expander(node->right, data);
 }
