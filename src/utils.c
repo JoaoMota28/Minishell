@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:57:48 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/08/18 17:58:40 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:23:44 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	dp_len(char **dp)
 	if (!dp)
 		return (0);
 	len = 0;
-	while(dp[len])
+	while (dp[len])
 		len++;
 	return (len);
 }

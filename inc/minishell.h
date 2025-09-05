@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 19:18:17 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:34:50 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <dirent.h>
 # include "executor.h"
 
-extern volatile sig_atomic_t	sig;
+extern volatile sig_atomic_t	g_sig;
 
 # define PROMPT "Minishell>$ "
 # define PRIVATE_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin\
@@ -71,10 +71,9 @@ void	free_tree(t_tree *node);
 void	set_handler(int signum, void (*handler)(int), int flags);
 void	handle_sigint_h(int signo);
 void	handle_sigint_i(int signo);
-void	handle_sigint_i2(int signo);
+void	handle_sigint_i_h(int signo);
 void	handle_child_sig(int signo);
-void	init_interactive_signals();
-void	init_interactive_signals2();
+void	init_interactive_signals(char flag);
 void	init_child_signals();
 void	init_heredoc_signals();
 void	init_ignore_signals();

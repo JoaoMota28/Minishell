@@ -6,23 +6,23 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/27 18:04:52 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:16:52 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int manage_errors(t_minishell *data, t_tree *node, char type)
+static int	manage_errors(t_minishell *data, t_tree *node, char type)
 {
-    if (type == 'p')
-    {
-        perror("pipe error");
-        if (data->exec.pipeline_child)
-            exit_msh(data, 1);
-    }
-    else if (type == 'l')
+	if (type == 'p')
 	{
-		if (sig)
+		perror("pipe error");
+		if (data->exec.pipeline_child)
+			exit_msh(data, 1);
+	}
+	else if (type == 'l')
+	{
+		if (g_sig)
 			return (1);
 		ft_putstr_fd(HERE_DOC_ERROR_PREFIX, 2);
 		if (!node->right->content || node->right->type != WORD)
@@ -31,7 +31,7 @@ static int manage_errors(t_minishell *data, t_tree *node, char type)
 			ft_putstr_fd(node->right->content, 2);
 		ft_putstr_fd(HERE_DOC_ERROR_SUFFIX, 2);
 	}
-    return (1);
+	return (1);
 }
 
 int	close_heredoc(t_tree *node)
@@ -45,14 +45,41 @@ int	close_heredoc(t_tree *node)
 	return (0);
 }
 
-int	heredoc_loop(t_minishell *data, t_tree *node)
+void	heredoc_loop(t_minishell *data, t_tree *node, t_tree *del, char *p_line)
 {
 	char	*line;
+
+	line = NULL;
+	init_heredoc_signals();
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			manage_errors(data, node, 'l');
+			break ;
+		}
+		if (!ft_strncmp(del->content, line, ft_strlen(del->content) + 1))
+			break ;
+		p_line = expand_heredoc(line, del, data);
+		free(line);
+		line = NULL;
+		ft_putstr_fd(p_line, node->pipe_hd[1]);
+		ft_putstr_fd("\n", node->pipe_hd[1]);
+		free(p_line);
+		p_line = NULL;
+	}
+	init_interactive_signals('h');
+	if (line)
+		free(line);
+}
+
+int	heredoc_init(t_minishell *data, t_tree *node)
+{
 	char	*parsed_line;
 	t_tree	*delim;
 
 	parsed_line = NULL;
-	line = NULL;
 	if (node->right->type != WORD)
 	{
 		delim = node->right->left;
@@ -63,29 +90,8 @@ int	heredoc_loop(t_minishell *data, t_tree *node)
 		delim = node->right;
 		node->right->visited = true;
 	}
-	init_heredoc_signals();
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-		{
-			manage_errors(data, node, 'l');
-			break ;
-		}
-		if (!ft_strncmp(delim->content, line, ft_strlen(delim->content) + 1))
-			break ;
-		parsed_line = expand_heredoc(line, delim, data);
-		free(line);
-		line = NULL;
-		ft_putstr_fd(parsed_line, node->pipe_hd[1]);
-		ft_putstr_fd("\n", node->pipe_hd[1]);
-		free(parsed_line);
-		parsed_line = NULL;
-	}
-	init_interactive_signals2();
-	restore_fd(data->exec.parent_fd_in, STDIN_FILENO);
-	if (line)
-		free(line);
+	heredoc_loop(data, node, delim, parsed_line);
+	restore_fd(data->exec.par_fd_in, STDIN_FILENO);
 	if (parsed_line)
 		free(parsed_line);
 	close(node->pipe_hd[1]);
@@ -101,9 +107,9 @@ int	search_heredoc(t_minishell *data, t_tree *node)
 	if (node->type == HERE_DOC)
 	{
 		if (pipe(node->pipe_hd) == -1)
-			return(manage_errors(data, node, 'p'));
-		heredoc_loop(data, node);
-		if (sig)
+			return (manage_errors(data, node, 'p'));
+		heredoc_init(data, node);
+		if (g_sig)
 			return (0);
 	}
 	search_heredoc(data, node->left);

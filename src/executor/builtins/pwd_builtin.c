@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:19:11 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/19 16:42:14 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 12:30:42 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	pwd_builtin(t_minishell *data, t_tree *leaf)
 	if (!pwd)
 	{
 		if (data->exec.pipeline_child)
-      		exit_msh(data, EXIT_FAILURE);
+			exit_msh(data, EXIT_FAILURE);
 		ft_putstr_fd(PWD_ERROR, 2);
 		return (EXIT_FAILURE);
 	}

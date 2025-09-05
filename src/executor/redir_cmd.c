@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:04:15 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 16:14:51 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:40:17 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 static t_tree	*right_chain_tail(t_tree *node)
 {
 	if (!node)
-		return NULL;
+		return (NULL);
 	while (node->right)
 		node = node->right;
-	return node;
+	return (node);
 }
 
 static void	mark_visited_subtree(t_tree *node)
 {
-    if (!node)
-		return;
-    node->visited = 1;
-    mark_visited_subtree(node->left);
-    mark_visited_subtree(node->right);
+	if (!node)
+		return ;
+	node->visited = 1;
+	mark_visited_subtree(node->left);
+	mark_visited_subtree(node->right);
 }
 
 void	collect_to_list(t_tree *root, t_tree **head, t_tree **tail)
@@ -35,12 +35,12 @@ void	collect_to_list(t_tree *root, t_tree **head, t_tree **tail)
 	t_tree	*det;
 
 	if (!root)
-		return;
+		return ;
 	if (root->right && !root->right->visited)
 	{
 		det = root->right;
 		root->right = NULL;
-		if (!*head) 
+		if (!*head)
 		{
 			*head = det;
 			*tail = right_chain_tail(det);
@@ -52,21 +52,21 @@ void	collect_to_list(t_tree *root, t_tree **head, t_tree **tail)
 		}
 		mark_visited_subtree(det);
 	}
-  	collect_to_list(root->left, head, tail);
-  	collect_to_list(root->right, head, tail);
+	collect_to_list(root->left, head, tail);
+	collect_to_list(root->right, head, tail);
 }
 
-void attach_to_cmd(t_tree *node, t_tree *head)
+void	attach_to_cmd(t_tree *node, t_tree *head)
 {
-	t_tree *tail;
+	t_tree	*tail;
 
-  	if (!head)
-		return;
-  	if (!node->left)
-    	node->left = head;
-  	else
+	if (!head)
+		return ;
+	if (!node->left)
+		node->left = head;
+	else
 	{
-    	tail = right_chain_tail(node->left);
-    	tail->right = head;
-  	}
+		tail = right_chain_tail(node->left);
+		tail->right = head;
+	}
 }

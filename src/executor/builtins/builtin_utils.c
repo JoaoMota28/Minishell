@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:05 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 18:58:00 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 17:03:53 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	replace_val(char ***arr, char *key, char *val)
 	tmp = ft_strjoin(key, "=");
 	n = ft_strlen(tmp);
 	i = 0;
-	while((*arr)[i])
+	while ((*arr)[i])
 	{
 		if (!ft_strncmp(tmp, (*arr)[i], n))
 		{
@@ -54,7 +54,7 @@ void	replace_val(char ***arr, char *key, char *val)
 			tmp = NULL;
 			free((*arr)[i]);
 			(*arr)[i] = str;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -87,14 +87,14 @@ int	add_val(char ***arr, char *key, char *val)
 	new[i + 1] = NULL;
 	free_ar((void **)*arr);
 	*arr = new;
-	return(free(tmp), EXIT_SUCCESS);
+	return (free(tmp), EXIT_SUCCESS);
 }
 
 void	insertion_sort(char **arr)
 {
 	int		n;
 	int		i;
-	int 	j;
+	int		j;
 	char	*swap;
 
 	n = dp_len(arr);
@@ -116,34 +116,4 @@ void	insertion_sort(char **arr)
 		}
 		i++;
 	}
-}
-
-void	remove_val(char ***arr, char *search)
-{
-	int		i;
-	int		j;
-	int		n;
-	char	*tmp;
-	char	**new;
-
-	i = -1;
-	j = -1;
-	new = malloc(sizeof(char *) * (dp_len(*arr) + 1));
-	if (!new)
-		return ;
-	tmp = ft_strjoin(search, "=");
-	n = ft_strlen(tmp);
-	while ((*arr)[++i])
-	{
-		if (strncmp(tmp, (*arr)[i], n))
-		{
-			new[++j] = ft_strdup((*arr)[i]);
-			if (!new[j])
-				return (free_ar((void **)new), free(tmp));
-		}
-	}
-	new[j + 1] = NULL;
-	free_ar((void **)*arr);
-	*arr = new;
-	return(free(tmp));
 }

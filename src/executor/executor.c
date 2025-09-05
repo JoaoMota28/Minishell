@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/04 16:33:33 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:16:39 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ static int	close_executor(t_minishell *data, t_tree *root)
 	free_ar((void **)data->exec.spath);
 	data->exec.spath = NULL;
 	data->exec.redir_num = 0;
-	//print_tree(root, 0, "root: ");
 	free_tree(root);
 	data->root = NULL;
-	if (restore_fd(data->exec.parent_fd_in, data->exec.curr_fd_in) == 1)
+	if (restore_fd(data->exec.par_fd_in, data->exec.curr_fd_in) == 1)
 		return (1);
-	if (restore_fd(data->exec.parent_fd_out, data->exec.curr_fd_out) == 1)
+	if (restore_fd(data->exec.par_fd_out, data->exec.curr_fd_out) == 1)
 		return (1);
 	return (0);
 }
@@ -66,15 +65,15 @@ int	executor(t_minishell *data, t_tree *root)
 	print_tree(root, 0, "root: ");
 	data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
 	search_heredoc(data, root);
-	if (sig)
+	if (g_sig)
 	{
 		close_executor(data, root);
 		return (130);
 	}
 	ret = process_node(data, root);
 	if (data->exec.pipeline_child)
-      	exit_msh(data, ret);
+		exit_msh(data, ret);
 	if (close_executor(data, root))
 		ret = 1;
-	return(ret);
+	return (ret);
 }

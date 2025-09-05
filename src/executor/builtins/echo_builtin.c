@@ -6,25 +6,27 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:15:56 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/25 19:27:45 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 17:26:55 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	flag_handler(char *str) {
+int	flag_handler(char *str)
+{
 	int	i;
 
 	i = 0;
 	if (!str || str[i] != '-' || !str[i + 1])
 		return (0);
-	while (str[++i]) {
+	while (str[++i])
+	{
 		if (str[i] != 'n')
 			return (0);
 	}
 	return (1);
 }
- 
+
 int	echo_builtin(t_minishell *data, t_tree *leaf)
 {
 	int	handler;

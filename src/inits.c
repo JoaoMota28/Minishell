@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 20:05:56 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:20:48 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	exec_init(t_minishell *data)
 	data->exec.redir_num = 0;
 	data->exec.curr_fd_in = STDIN_FILENO;
 	data->exec.curr_fd_out = STDOUT_FILENO;
-	data->exec.parent_fd_in = dup(STDIN_FILENO);
-	data->exec.parent_fd_out = dup(STDOUT_FILENO);
-	if (data->exec.parent_fd_out < 0 || data->exec.parent_fd_in < 0)
+	data->exec.par_fd_in = dup(STDIN_FILENO);
+	data->exec.par_fd_out = dup(STDOUT_FILENO);
+	if (data->exec.par_fd_out < 0 || data->exec.par_fd_in < 0)
 	{
 		perror("Error duplicating standard fd");
 		return (1);
@@ -31,7 +31,7 @@ int	exec_init(t_minishell *data)
 	return (0);
 }
 
-char	**private_envp()
+char	**private_envp(void)
 {
 	char	**new_envp;
 	char	*pwd;
@@ -53,16 +53,8 @@ char	**private_envp()
 	return (new_envp);
 }
 
-void	data_init(t_minishell *data, char **envp)
+void	init_environment(t_minishell *data, char **envp, char *pwd, char *shlvl)
 {
-	char    *pwd;
-	char	*shlvl;
-
-	pwd = NULL;
-	shlvl = NULL;
-	data->envp = dp_dup(envp);
-	if (!data->envp || !data->envp[0])
-		data->envp = private_envp(data);
 	if (!fetch_val(data->envp, "PWD"))
 	{
 		pwd = getcwd(NULL, 0);
@@ -81,12 +73,25 @@ void	data_init(t_minishell *data, char **envp)
 		free(shlvl);
 	}
 	if (!fetch_val(data->envp, "PATH"))
-      add_val(&data->envp, "PATH", PRIVATE_PATH);
+		add_val(&data->envp, "PATH", PRIVATE_PATH);
 	if (!fetch_val(data->envp, "_"))
-      add_val(&data->envp, "_", "/usr/bin/env");
+		add_val(&data->envp, "_", "/usr/bin/env");
 	data->export = dp_dup(data->envp);
 	if (!fetch_val(data->export, "OLDPWD"))
-      add_val(&data->export, "OLDPWD", "");
+		add_val(&data->export, "OLDPWD", "");
+}
+
+void	data_init(t_minishell *data, char **envp)
+{
+	char	*pwd;
+	char	*shlvl;
+
+	pwd = NULL;
+	shlvl = NULL;
+	data->envp = dp_dup(envp);
+	init_environment(data, envp, pwd, shlvl);
+	if (!data->envp || !data->envp[0])
+		data->envp = private_envp();
 	insertion_sort(data->export);
 	data->prompt = PROMPT;
 	data->pwd = getcwd(NULL, 0);

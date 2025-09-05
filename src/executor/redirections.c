@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:30:41 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/26 19:29:43 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 16:46:09 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,14 @@ int	dup_in(t_minishell *data, t_tree *node)
 	return (0);
 }
 
-int redir_in(t_minishell *data, t_tree *node)
+int	redir_in(t_minishell *data, t_tree *node)
 {
-    int	status;
-	t_tree *head = NULL;
-    t_tree *tail = NULL;
+	int		status;
+	t_tree	*head;
+	t_tree	*tail;
 
+	head = NULL;
+	tail = NULL;
 	data->exec.redir_num++;
 	if (data->exec.redir_num == 1)
 	{
@@ -54,7 +56,7 @@ int redir_in(t_minishell *data, t_tree *node)
 		if (status != 0)
 			return (status);
 		collect_to_list(node, &head, &tail);
-    	attach_to_cmd(node, head);
+		attach_to_cmd(node, head);
 		if (node->left)
 			status = process_node(data, node->left);
 	}
@@ -63,7 +65,7 @@ int redir_in(t_minishell *data, t_tree *node)
 	return (status);
 }
 
-int dup_out(t_minishell *data, t_tree *node)
+int	dup_out(t_minishell *data, t_tree *node)
 {
 	int	new_fd;
 	int	flags;
@@ -83,33 +85,35 @@ int dup_out(t_minishell *data, t_tree *node)
 		node->right->visited = true;
 	}
 	if (new_fd == -1)
-		return(perror(OUT_OPEN_ERROR), 1);
+		return (perror(OUT_OPEN_ERROR), 1);
 	if (dup2(new_fd, data->exec.curr_fd_out) == -1)
 		return (close(new_fd), perror(OUT_DUP_ERROR), 1);
 	close(new_fd);
 	if (node->right && node->right->type != WORD)
-    	return (process_node(data, node->right));
-  	return (0);
+		return (process_node(data, node->right));
+	return (0);
 }
 
-int redir_out(t_minishell *data, t_tree *node)
+int	redir_out(t_minishell *data, t_tree *node)
 {
-	int status;
-	t_tree *head = NULL;
-    t_tree *tail = NULL;
+	int		status;
+	t_tree	*head;
+	t_tree	*tail;
 
+	head = NULL;
+	tail = NULL;
 	data->exec.redir_num++;
 	if (data->exec.redir_num == 1)
 	{
-    	status = dup_out(data, node);
-    	if (status != 0)
+		status = dup_out(data, node);
+		if (status != 0)
 			return (status);
 		collect_to_list(node, &head, &tail);
-    	attach_to_cmd(node, head);
+		attach_to_cmd(node, head);
 		if (node->left)
 			status = process_node(data, node->left);
-  	}
-  	else
-	  	status = dup_out(data, node);
-  	return status;
+	}
+	else
+		status = dup_out(data, node);
+	return (status);
 }

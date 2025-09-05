@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:26:54 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/04 15:55:01 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/04 17:18:25 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ typedef struct s_minishell	t_minishell;
 typedef struct s_exec
 {
 	char	**spath;
-	int		parent_fd_in;
-	int		parent_fd_out;
+	int		par_fd_in;
+	int		par_fd_out;
 	int		curr_fd_in;
 	int		curr_fd_out;
 	int		pipefd[2];

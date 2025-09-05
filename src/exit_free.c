@@ -6,16 +6,16 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:16:06 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/04 00:53:20 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:12:07 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    free_tree(t_tree *node)
+void	free_tree(t_tree *node)
 {
 	if (!node)
-		return;
+		return ;
 	free_tree(node->left);
 	free_tree(node->right);
 	if (node->content && node->type == WORD)

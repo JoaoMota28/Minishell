@@ -6,11 +6,9 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 12:53:36 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/08/25 19:27:13 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 12:25:44 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// env ls executes ls and ignores env
 
 #include "minishell.h"
 

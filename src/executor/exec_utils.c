@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 11:15:03 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/04 16:32:07 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 18:51:13 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	**get_cmd_line(t_tree *node)
 	i = -1;
 	cmd = NULL;
 	cmd = malloc((count_nodes(node) + 1) * sizeof(char *));
+	if (!cmd)
+		return (NULL);
 	while (node)
 	{
 		node->visited = true;
@@ -87,14 +89,14 @@ int	restore_fd(int src, int dest)
 
 void	close_parent_fds(t_minishell *data)
 {
-	if (data->exec.parent_fd_in != -1)
+	if (data->exec.par_fd_in != -1)
 	{
-		close(data->exec.parent_fd_in);
-		data->exec.parent_fd_in = -1;
+		close(data->exec.par_fd_in);
+		data->exec.par_fd_in = -1;
 	}
-	if (data->exec.parent_fd_out != -1)
+	if (data->exec.par_fd_out != -1)
 	{
-		close(data->exec.parent_fd_out);
-		data->exec.parent_fd_out = -1;
+		close(data->exec.par_fd_out);
+		data->exec.par_fd_out = -1;
 	}
 }

@@ -3,30 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:53:16 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/03 16:40:31 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:22:59 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	sig;
+volatile sig_atomic_t	g_sig;
 
-void    msh_loop(t_minishell *data)
+void	msh_loop(t_minishell *data)
 {
-	char *line;
+	char	*line;
 
-	init_interactive_signals();
 	while (1)
 	{
 		line = readline(data->prompt);
-		if (sig)
+		if (g_sig)
 		{
-			init_interactive_signals();
+			init_interactive_signals('i');
 			data->exit_code = 130;
-			sig = 0;
+			g_sig = 0;
 		}
 		if (!line)
 		{
@@ -36,7 +35,7 @@ void    msh_loop(t_minishell *data)
 		}
 		if (*line)
 		{
-			init_interactive_signals();
+			init_interactive_signals('i');
 			add_history(line);
 			data->exit_code = lexer(line, data);
 		}
@@ -44,16 +43,16 @@ void    msh_loop(t_minishell *data)
 	}
 }
 
-
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	t_minishell data;
+	t_minishell	data;
 
 	(void)argv;
-	(void)envp;	
+	(void)envp;
 	if (argc != 1)
-		return(ft_putendl_fd(WRONG_ARGC, 2), 1);
+		return (ft_putendl_fd(WRONG_ARGC, 2), 1);
 	data_init(&data, envp);
+	init_interactive_signals('i');
 	msh_loop(&data);
 	exit_msh(&data, 0);
 	return (0);
