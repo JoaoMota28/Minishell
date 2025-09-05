@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:37:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 02:03:40 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 16:49:18 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,37 @@ static char	*strip_quotes(char *content)
 	return (res);
 }
 
+static void	lex_word_node(char *line, int *i, int *start, t_token_list *node)
+{
+	char			quote;
+	char			*raw;
+
+	while (line[*i] && !is_space(line[*i]) && line[*i] != '|'
+		&& line[*i] != '>' && line[*i] != '<'
+		&& line[*i] != '(' && line[*i] != ')')
+	{
+		if (set_quote_type(line, *i))
+		{
+			quote = line[*i];
+			(*i)++;
+			while (line[*i] && line[*i] != quote)
+				(*i)++;
+			if (line[*i] == quote)
+				(*i)++;
+		}
+		else
+			(*i)++;
+	}
+	raw = ft_substr(line, *start, *i - *start);
+	node->quote_type = detect_quote_type(raw);
+	node->content = strip_quotes(raw);
+	free(raw);
+}
+
 static t_token_list	*lex_node(char *line, int *i)
 {
 	int				start;
 	t_token_list	*node;
-	char			quote;
-	char			*raw;
 
 	node = malloc(sizeof(*node));
 	if (!node)
@@ -85,28 +110,7 @@ static t_token_list	*lex_node(char *line, int *i)
 	if (node->token_type != WORD)
 		add_content(node, i);
 	else
-	{
-		while (line[*i] && !is_space(line[*i]) && line[*i] != '|'
-			&& line[*i] != '>' && line[*i] != '<'
-			&& line[*i] != '(' && line[*i] != ')')
-		{
-			if (set_quote_type(line, *i))
-			{
-				quote = line[*i];
-				(*i)++;
-				while (line[*i] && line[*i] != quote)
-					(*i)++;
-				if (line[*i] == quote)
-					(*i)++;
-			}
-			else
-				(*i)++;
-		}
-		raw = ft_substr(line, start, *i - start);
-		node->quote_type = detect_quote_type(raw);
-		node->content = strip_quotes(raw);
-		free(raw);
-	}
+		lex_word_node(line, i, &start, node);
 	return (node);
 }
 
@@ -116,20 +120,14 @@ int	lexer(char *line, t_minishell *data)
 	int				current_level;
 	t_token_list	*node;
 	t_token_list	*head;
-	t_quote_type	type;
-	t_p_type		parentheses;
 
 	(void)data;
 	i = 0;
 	head = NULL;
 	node = NULL;
-	type = is_unquoted(line);
-	parentheses = check_balance_p(line);
 	current_level = 0;
-	if (type)
-		return (put_unclosed_syntax_error(type, parentheses), 2);
-	if (parentheses)
-		return (put_unclosed_syntax_error(type, parentheses), 2);
+	if (check_unclosed(line))
+		return (2);
 	while (line[i])
 	{
 		if (is_space(line[i]))
@@ -140,12 +138,7 @@ int	lexer(char *line, t_minishell *data)
 		node = lex_node(line, &i);
 		assign_subshell(node, &current_level);
 		if (node->token_type == WORD && (!node->content || !*node->content))
-		{
-			if (node->content)
-				free(node->content);
-			free(node);
-			continue ;
-		}
+			node->content = ft_strdup("");
 		ft_lstadd_back((t_list **)&head, (t_list *)node);
 	}
 	if (check_syntax_errors(head))

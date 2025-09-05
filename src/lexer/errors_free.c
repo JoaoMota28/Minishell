@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:45:01 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 01:31:54 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 16:47:32 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,18 @@ void	free_tokens(t_token_list *list)
 			free(list);
 		list = tmp;
 	}
+}
+
+int	check_unclosed(char *line)
+{
+	t_p_type		parentheses;
+	t_quote_type	type;
+
+	type = is_unquoted(line);
+	parentheses = check_balance_p(line);
+	if (type)
+		return (put_unclosed_syntax_error(type, parentheses), 2);
+	if (parentheses)
+		return (put_unclosed_syntax_error(type, parentheses), 2);
+	return (0);
 }
