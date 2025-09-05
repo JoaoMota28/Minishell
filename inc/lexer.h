@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 01:52:45 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:49:32 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ t_quote_type	is_unquoted(char *line);
 int				check_pipe_syntax_errors(t_token_list *token, t_token_list *prev);
 int				check_redir_syntax_errors(t_token_list *token);
 int				check_syntax_errors(t_token_list *list);
+int				check_heredoc_syntax_errors(t_token_list *token);
+int				check_and_or_syntax_errors(t_token_list *token, t_token_list *prev);
+int				check_subshell_syntax_errors(t_token_list *token, t_token_list *prev);
 
 //Utils
 void			set_type(t_token_list *node, char *line, int *i);
