@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:33:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 16:46:30 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:17:43 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_token_list
 	t_quote_type		quote_type;
 	t_p_type				p_type;
 }				t_token_list;
+
 
 //Checks
 t_quote_type	is_unquoted(char *line);
