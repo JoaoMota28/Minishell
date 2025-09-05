@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 19:20:48 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:38:04 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**private_envp(void)
 	return (new_envp);
 }
 
-void	init_environment(t_minishell *data, char **envp, char *pwd, char *shlvl)
+void	init_environment(t_minishell *data, char *pwd, char *shlvl)
 {
 	if (!fetch_val(data->envp, "PWD"))
 	{
@@ -89,7 +89,7 @@ void	data_init(t_minishell *data, char **envp)
 	pwd = NULL;
 	shlvl = NULL;
 	data->envp = dp_dup(envp);
-	init_environment(data, envp, pwd, shlvl);
+	init_environment(data, pwd, shlvl);
 	if (!data->envp || !data->envp[0])
 		data->envp = private_envp();
 	insertion_sort(data->export);
