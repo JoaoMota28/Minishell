@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:28 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/05 12:30:21 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:31:31 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	list_export(t_minishell *data)
 		}
 		else
 		{
-			printf("declare -x %s=\n", arr[0]);
+			printf("declare -x %s\n", arr[0]);
 		}
 		free_ar((void **)arr);
 	}

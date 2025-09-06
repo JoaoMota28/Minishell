@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:30 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/05 12:31:01 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:55:22 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ int	unset_builtin(t_minishell *data, t_tree *leaf)
 	{
 		remove_val(&data->export, leaf->content);
 		remove_val(&data->envp, leaf->content);
+		if (!ft_strncmp(leaf->content, "PWD", 4))
+		{
+			free (data->oldpwd);
+			data->oldpwd = NULL;
+		}
 		leaf = leaf->right;
 	}
 	return (EXIT_SUCCESS);

@@ -6,13 +6,35 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:43:27 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/04 17:25:36 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 18:08:59 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	update_pwd(t_minishell *data)
+void	update_env_pwd(t_minishell *data, char *update, int flag)
+{
+	if (flag == 1)
+	{
+		if (fetch_val(data->envp, "OLDPWD"))
+			replace_val(&data->envp, "OLDPWD", update);
+		else if (fetch_val(data->export, "OLDPWD"))
+			add_val(&data->envp, "OLDPWD", update);
+		replace_val(&data->export, "OLDPWD", update);
+	}
+	else
+	{
+		if (fetch_val(data->envp, "OLDPWD"))
+			replace_val(&data->envp, "OLDPWD", update);
+		else if (fetch_val(data->export, "OLDPWD"))
+			add_val(&data->envp, "OLDPWD", update);
+		replace_val(&data->export, "OLDPWD", update);
+	}
+	replace_val(&data->envp, "PWD", data->pwd);
+	replace_val(&data->export, "PWD", data->pwd);
+}
+
+void	update_internal_pwd(t_minishell *data)
 {
 	char	*newpwd;
 	char	*prevpwd;
@@ -26,26 +48,23 @@ void	update_pwd(t_minishell *data)
 	if (fetch_val(data->envp, "PWD"))
 		prevpwd = ft_strdup(fetch_val(data->envp, "PWD"));
 	else
-		prevpwd = NULL;
+		prevpwd = ft_strdup(data->pwd);
 	if (data->pwd)
 		free(data->pwd);
 	data->pwd = newpwd;
+	if (!data->oldpwd)
+		update_env_pwd(data, NULL, 1);
+	else
+		update_env_pwd(data, prevpwd, 0);
 	free(data->oldpwd);
 	data->oldpwd = prevpwd;
-	if (fetch_val(data->envp, "OLDPWD"))
-		replace_val(&data->envp, "OLDPWD", data->oldpwd);
-	else if (fetch_val(data->export, "OLDPWD"))
-		add_val(&data->envp, "OLDPWD", data->oldpwd);
-	replace_val(&data->envp, "PWD", data->pwd);
-	replace_val(&data->export, "PWD", data->pwd);
-	replace_val(&data->export, "OLDPWD", data->oldpwd);
 }
 
 int	cd_chdir(t_minishell *data, t_tree *leaf, char *path)
 {
 	(void)leaf;
 	if (!chdir(path))
-		update_pwd(data);
+		update_internal_pwd(data);
 	else
 	{
 		ft_putstr_fd(CD_PREFIX, 2);
