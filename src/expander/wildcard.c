@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 15:59:43 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 16:00:21 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:24:49 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,14 @@ char	*dir_wildcard(char *extension, DIR *dir, char *res)
 	struct dirent	*entry;
 
 	hidden = (extension[0] == '.');
-	while ((entry = readdir(dir)))
+	entry = readdir(dir);
+	while (entry != NULL)
 	{
 		if (!hidden && entry->d_name[0] == '.')
+		{
+			entry = readdir(dir);
 			continue ;
+		}
 		if (matches_extension(extension, entry->d_name))
 		{
 			tmp = res;
@@ -55,9 +59,9 @@ char	*dir_wildcard(char *extension, DIR *dir, char *res)
 			res = ft_strjoin(res, " ");
 			free(tmp);
 		}
+		entry = readdir(dir);
 	}
-	closedir(dir);
-	return (res);
+	return (closedir(dir), res);
 }
 
 char	**expand_wildcard(char *extension)

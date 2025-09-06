@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 16:05:29 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:13:03 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ t_tree	*build_word_node(t_token_list *list, int level, int max_level)
 	return (node);
 }
 
+static void	init_splitted_node(t_token_list *t, t_tree *node)
+{
+	node->type = t->token_type;
+	node->content = t->content;
+	node->quote_type = t->quote_type;
+	node->subshell_level = t->subshell_level;
+}
+
 t_tree	*split_and_build(t_token_list *t, t_token_list *lft, int lvl, int m_lvl)
 {
 	t_token_list	*right;
@@ -55,10 +63,7 @@ t_tree	*split_and_build(t_token_list *t, t_token_list *lft, int lvl, int m_lvl)
 	node = malloc(sizeof(t_tree));
 	if (!node)
 		return (NULL);
-	node->type = t->token_type;
-	node->content = t->content;
-	node->quote_type = t->quote_type;
-	node->subshell_level = t->subshell_level;
+	init_splitted_node(t, node);
 	free (t);
 	node->left = build_tree(lft, lvl, m_lvl);
 	node->right = build_tree(right, lvl, m_lvl);
