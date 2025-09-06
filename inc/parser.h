@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:38:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 01:24:45 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/06 12:11:19 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_tree
 //tree build
 t_tree			*build_tree(t_token_list *list, int level, int max_level);
 t_tree			*split_and_build(t_token_list *target, t_token_list *left,
-					t_token_type type, int level, int max_level);
+					int level, int max_level);
 t_tree			*build_word_node(t_token_list *list, int level, int max_level);
-void			print_tree(t_tree *node, int level, char *leaf);
+//void			print_tree(t_tree *node, int level, char *leaf);
 #endif

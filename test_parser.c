@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   test_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:43:51 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 01:01:03 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/06 11:19:52 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-/*
+/*#include "minishell.h"
+
 static t_token_list *new_token(const char *str, t_token_type type)
 {
 	t_token_list *node = malloc(sizeof(t_token_list));
@@ -81,16 +81,16 @@ int	main(void)
     return (0);
 }*/
 
-void print_tree(t_tree *node, int level, char *leaf)
+/*void	print_tree(t_tree *node, int level, char *leaf)
 {
 	if (!node)
-		return;
+		return ;
 	for (int i = 0; i < level; i++)
 		printf("  ");
-    if (leaf){
-        printf("%s -> quote type: %d", leaf, node->quote_type);
-    }
-    printf("[%s]\n", node->content);
+	if (leaf){
+		printf("%s -> quote type: %d", leaf, node->quote_type);
+	}
+	printf("[%s]\n", node->content);
 	print_tree(node->left, level + 1, "left : ");
 	print_tree(node->right, level + 1, "right : ");
-}
+}*/

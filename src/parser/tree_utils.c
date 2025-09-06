@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 01:24:28 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/06 12:12:07 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_tree	*build_word_node(t_token_list *list, int level, int max_level)
 	return (node);
 }
 
-t_tree	*split_and_build(t_token_list *target, t_token_list *left, t_token_type type, int level, int max_level)
+t_tree	*split_and_build(t_token_list *target, t_token_list *left, int level, int max_level)
 {
 	t_token_list	*right;
 	t_tree			*node;
@@ -55,7 +55,7 @@ t_tree	*split_and_build(t_token_list *target, t_token_list *left, t_token_type t
 	node = malloc(sizeof(t_tree));
 	if (!node)
 		return (NULL);
-	node->type = type;
+	node->type = target->token_type;
 	node->content = target->content;
 	node->quote_type = target->quote_type;
 	node->subshell_level = target->subshell_level;
@@ -66,7 +66,9 @@ t_tree	*split_and_build(t_token_list *target, t_token_list *left, t_token_type t
 	return (node);
 }
 
-void print_tree(t_tree *node, int level, char *leaf)
+
+
+/*void print_tree(t_tree *node, int level, char *leaf)
 {
 	if (!node)
 		return;
@@ -78,4 +80,4 @@ void print_tree(t_tree *node, int level, char *leaf)
     printf("[%s]\n", node->content);
 	print_tree(node->left, level + 1, "left : ");
 	print_tree(node->right, level + 1, "right : ");
-}
+}*/

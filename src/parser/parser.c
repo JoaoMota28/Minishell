@@ -3,54 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 01:34:11 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/06 12:11:36 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_tree	*build_tree(t_token_list *list, int target_level, int max_level)
+t_tree	*build_tree(t_token_list *lst, int t_lvl, int max_lvl)
 {
 	t_token_list	*tmp;
 
-	if (!list)
+	if (!lst)
 		return (NULL);
-	tmp = list;
+	tmp = lst;
 	while (tmp)
 	{
-		if (tmp->subshell_level == target_level &&  tmp->token_type == OR)
-			return (split_and_build(tmp, list, tmp->token_type, target_level, max_level));
+		if (tmp->subshell_level == t_lvl && tmp->token_type == OR)
+			return (split_and_build(tmp, lst, t_lvl, max_lvl));
 		tmp = tmp->next;
 	}
-	tmp = list;
+	tmp = lst;
 	while (tmp)
 	{
-		if (tmp->subshell_level == target_level && tmp->token_type == AND)
-			return (split_and_build(tmp, list, tmp->token_type, target_level, max_level));
+		if (tmp->subshell_level == t_lvl && tmp->token_type == AND)
+			return (split_and_build(tmp, lst, t_lvl, max_lvl));
 		tmp = tmp->next;
 	}
-	tmp = list;
+	tmp = lst;
 	while (tmp)
 	{
-		if (tmp->subshell_level == target_level && tmp->token_type == PIPE)
-			return (split_and_build(tmp, list, PIPE, target_level, max_level));
+		if (tmp->subshell_level == t_lvl && tmp->token_type == PIPE)
+			return (split_and_build(tmp, lst, t_lvl, max_lvl));
 		tmp = tmp->next;
 	}
-	tmp = list;
+	tmp = lst;
 	while (tmp)
 	{
-		if (tmp->subshell_level == target_level && (tmp->token_type == R_IN || tmp->token_type == R_OUT 
-				|| tmp->token_type == AP_R_OUT 
+		if (tmp->subshell_level == t_lvl && (tmp->token_type == R_IN
+				|| tmp->token_type == R_OUT
+				|| tmp->token_type == AP_R_OUT
 				|| tmp->token_type == HERE_DOC))
-				return (split_and_build(tmp, list, tmp->token_type, target_level, max_level));
+			return (split_and_build(tmp, lst, t_lvl, max_lvl));
 		tmp = tmp->next;
 	}
-	if (target_level < max_level)
-		return (build_tree(list, target_level + 1, max_level));
-	return (build_word_node(list, target_level, max_level));
+	if (t_lvl < max_lvl)
+		return (build_tree(lst, t_lvl + 1, max_lvl));
+	return (build_word_node(lst, t_lvl, max_lvl));
 }
 
 static int	get_max_subshell_level(t_token_list *list)
@@ -104,7 +105,7 @@ int	parser(t_minishell *data, t_token_list *list)
 		return (-1);
 	list = strip_paretheses(list);
 	max_level = get_max_subshell_level(list);
-	root  = build_tree(list, 0, max_level);
+	root = build_tree(list, 0, max_level);
 	if (!root)
 		return (-1);
 	return (executor(data, root));
