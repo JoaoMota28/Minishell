@@ -15,7 +15,7 @@ INCLUDE			= -I inc/
 SRCS	 		= $(LEXER_SRCS) $(EXP_SRCS) $(PARSER_SRCS) $(BUILTIN_SRCS) $(EXEC_SRCS) minishell.c inits.c utils.c exit_free.c handler.c signals.c
 SRC_PATH		= src/
 
-LEXER_SRCS		= errors_free.c lexer.c syntax_checker.c subshell_syntax.c set_types.c set_token_types.c
+LEXER_SRCS		= errors_free.c lexer.c syntax_checker.c subshell_syntax.c set_types.c set_token_types.c lex_node.c
 LEXER_PATH 		= src/lexer/
 LEXER			= $(addprefix $(LEXER_PATH), $(LEXER_SRCS))
 

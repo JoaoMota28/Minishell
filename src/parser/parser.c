@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/04 02:04:39 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 01:34:11 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,6 @@ static t_token_list	*strip_paretheses(t_token_list *list)
 				prev->next = next;
 			else
 				list = next;
-			/*if (cur->content)
-				free(cur->content);*/
 			free(cur);
 		}
 		else
@@ -109,6 +107,5 @@ int	parser(t_minishell *data, t_token_list *list)
 	root  = build_tree(list, 0, max_level);
 	if (!root)
 		return (-1);
-	//print_tree(root, 0, NULL);
 	return (executor(data, root));
 }

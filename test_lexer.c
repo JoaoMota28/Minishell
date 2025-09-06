@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   test_lexer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:24:08 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/05/23 20:06:10 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:32:09 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@
 //     tok = head;
 //     while (tok)
 //     {
-//         printf(" Token Type: %s\n Content: %s\n\n", tok_name(tok->token_type), tok->content);
+//         printf(" Token Type: %s\n Content: %s\n\n", 
+//              tok_name(tok->token_type), tok->content);
 //         tok = tok->next;
 //     }
 //     return 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 19:34:50 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:33:24 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_minishell
 /// @brief Main Function that turns the parameter given into a list of tokens
 /// @param line interactive line written by the minishell
 /// @return exit status to the next step -> Parser
-int 	lexer(char *line, t_minishell *data);
+int		lexer(char *line, t_minishell *data);
 void	expander(t_tree *node, t_minishell *data);
 int		parser(t_minishell *data, t_token_list *list);
 int		executor(t_minishell *data, t_tree *root);
@@ -60,11 +60,11 @@ char	**expand_wildcard(char *extension);
 int		get_expanded_len(char *content, t_minishell *data);
 
 //inits
-void    data_init(t_minishell *data, char **envp);
+void	data_init(t_minishell *data, char **envp);
 void	init_signals(char type);
 
 //free and exit
-void    exit_msh(t_minishell *data, int exit_code);
+void	exit_msh(t_minishell *data, int exit_code);
 void	free_tree(t_tree *node);
 
 //signals
@@ -74,9 +74,9 @@ void	handle_sigint_i(int signo);
 void	handle_sigint_i_h(int signo);
 void	handle_child_sig(int signo);
 void	init_interactive_signals(char flag);
-void	init_child_signals();
-void	init_heredoc_signals();
-void	init_ignore_signals();
+void	init_child_signals(void);
+void	init_heredoc_signals(void);
+void	init_ignore_signals(void);
 
 //utils
 int		is_operator(t_token_type type);

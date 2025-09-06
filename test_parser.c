@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   test_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:43:51 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/06/09 17:35:48 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/06 01:01:03 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,3 +80,17 @@ int	main(void)
 	}
     return (0);
 }*/
+
+void print_tree(t_tree *node, int level, char *leaf)
+{
+	if (!node)
+		return;
+	for (int i = 0; i < level; i++)
+		printf("  ");
+    if (leaf){
+        printf("%s -> quote type: %d", leaf, node->quote_type);
+    }
+    printf("[%s]\n", node->content);
+	print_tree(node->left, level + 1, "left : ");
+	print_tree(node->right, level + 1, "right : ");
+}
