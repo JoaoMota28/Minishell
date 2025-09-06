@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 01:59:39 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 16:30:30 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:25:12 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ static int	check_p_closed(t_token_list *token, t_token_list *prev)
 				|| prev->token_type == PIPE))
 			return (1);
 		if (token->next && token->next->token_type == WORD)
+			return (1);
+		if (token->next && (token->next->token_type == SUBSHELL
+				&& !ft_strcmp(token->next->content, "(")))
 			return (1);
 	}
 	return (0);
@@ -37,8 +40,7 @@ static int	check_p_open(t_token_list *token, t_token_list *prev)
 			return (1);
 		if (prev && (prev->token_type == R_IN || prev->token_type == R_OUT
 				|| prev->token_type == AP_R_OUT
-				|| prev->token_type == HERE_DOC
-				|| prev->token_type == SUBSHELL))
+				|| prev->token_type == HERE_DOC))
 			return (1);
 		if (token->next && (token->next->token_type == AND
 				|| token->next->token_type == OR
