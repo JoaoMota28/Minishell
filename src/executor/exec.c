@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 14:17:59 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 14:24:16 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static void	child_process(t_minishell *data, t_tree *node)
 {
 	init_child_signals();
 	data->exec.pipeline_child = true;
+	close_heredoc(data, data->root);
 	exec_command(data, node);
 }
 

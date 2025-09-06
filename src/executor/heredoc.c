@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/05 19:16:52 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 14:23:08 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ static int	manage_errors(t_minishell *data, t_tree *node, char type)
 	return (1);
 }
 
-int	close_heredoc(t_tree *node)
+int	close_heredoc(t_minishell *data, t_tree *node)
 {
 	if (!node)
 		return (0);
-	if (node->type == HERE_DOC)
+	if (node->type == HERE_DOC && node->pipe_hd[0] != data->exec.curr_fd_in)
 		close(node->pipe_hd[0]);
-	close_heredoc(node->left);
-	close_heredoc(node->right);
+	close_heredoc(data, node->left);
+	close_heredoc(data, node->right);
 	return (0);
 }
 

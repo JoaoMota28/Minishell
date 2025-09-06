@@ -6,11 +6,37 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 12:11:36 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:02:23 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_tree	*build_tree2(t_token_list *lst, int t_lvl, int max_lvl)
+{
+	t_token_list	*tmp;
+
+	tmp = lst;
+	while (tmp)
+	{
+		if (tmp->subshell_level == t_lvl && tmp->token_type == PIPE)
+			return (split_and_build(tmp, lst, t_lvl, max_lvl));
+		tmp = tmp->next;
+	}
+	tmp = lst;
+	while (tmp)
+	{
+		if (tmp->subshell_level == t_lvl && (tmp->token_type == R_IN
+				|| tmp->token_type == R_OUT
+				|| tmp->token_type == AP_R_OUT
+				|| tmp->token_type == HERE_DOC))
+			return (split_and_build(tmp, lst, t_lvl, max_lvl));
+		tmp = tmp->next;
+	}
+	if (t_lvl < max_lvl)
+		return (build_tree(lst, t_lvl + 1, max_lvl));
+	return (build_word_node(lst, t_lvl, max_lvl));
+}
 
 t_tree	*build_tree(t_token_list *lst, int t_lvl, int max_lvl)
 {
@@ -32,26 +58,7 @@ t_tree	*build_tree(t_token_list *lst, int t_lvl, int max_lvl)
 			return (split_and_build(tmp, lst, t_lvl, max_lvl));
 		tmp = tmp->next;
 	}
-	tmp = lst;
-	while (tmp)
-	{
-		if (tmp->subshell_level == t_lvl && tmp->token_type == PIPE)
-			return (split_and_build(tmp, lst, t_lvl, max_lvl));
-		tmp = tmp->next;
-	}
-	tmp = lst;
-	while (tmp)
-	{
-		if (tmp->subshell_level == t_lvl && (tmp->token_type == R_IN
-				|| tmp->token_type == R_OUT
-				|| tmp->token_type == AP_R_OUT
-				|| tmp->token_type == HERE_DOC))
-			return (split_and_build(tmp, lst, t_lvl, max_lvl));
-		tmp = tmp->next;
-	}
-	if (t_lvl < max_lvl)
-		return (build_tree(lst, t_lvl + 1, max_lvl));
-	return (build_word_node(lst, t_lvl, max_lvl));
+	return (build_tree2(lst, t_lvl, max_lvl));
 }
 
 static int	get_max_subshell_level(t_token_list *list)

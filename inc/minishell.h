@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 00:33:24 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:00:43 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*expand_nodes(char *content, t_minishell *data);
 char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data);
 char	**expand_wildcard(char *extension);
 int		get_expanded_len(char *content, t_minishell *data);
+char	**expand_wildcard(char *extension);
 
 //inits
 void	data_init(t_minishell *data, char **envp);

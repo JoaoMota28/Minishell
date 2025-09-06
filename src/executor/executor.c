@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 12:05:45 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 14:24:41 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	close_executor(t_minishell *data, t_tree *root)
 {
 	(void) root;
-	close_heredoc(data->root);
+	close_heredoc(data, data->root);
 	free_ar((void **)data->exec.spath);
 	data->exec.spath = NULL;
 	data->exec.redir_num = 0;

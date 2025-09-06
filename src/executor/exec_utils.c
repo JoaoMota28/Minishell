@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 11:15:03 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/05 18:51:13 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 14:26:35 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ char	**get_cmd_line(t_tree *node)
 	while (node)
 	{
 		node->visited = true;
-		printf("%s, %i\n", node->content, node->quote_type);
 		if (*node->content || node->quote_type != UNQUOTED)
 			cmd[++i] = ft_strdup(node->content);
 		node = node->right;

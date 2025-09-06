@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:26:54 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/04 17:18:25 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/06 15:27:55 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define HERE_DOC_ERROR_PREFIX "minishell: warning: here-document delimited \
 by end-of-file (wanted \'"
 # define HERE_DOC_ERROR_SUFFIX "\')\n"
-# define SHLVL_ERROR "minishell: warning: shell level (2147483647) too high, \
-resetting to 1\n"
+# define SHLVL_ERROR_PREFIX "minishell: warning: shell level ("
+# define SHLVL_ERROR_SUFFIX ") too high, resetting to 1\n"
 
 typedef struct s_minishell	t_minishell;
 
@@ -65,7 +65,7 @@ char	**get_cmd_line(t_tree *node);
 int		restore_fd(int src, int dest);
 void	close_parent_fds(t_minishell *data);
 int		search_heredoc(t_minishell *data, t_tree *node);
-int		close_heredoc(t_tree *node);
+int		close_heredoc(t_minishell *data, t_tree *node);
 void	attach_to_cmd(t_tree *node, t_tree *head);
 void	collect_to_list(t_tree *root, t_tree **head, t_tree **tail);
 
