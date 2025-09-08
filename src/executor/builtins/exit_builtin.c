@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:22 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/05 18:41:06 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:05:40 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	is_within_llong(const char *str)
 		negative = (*str++ == '-');
 	while (*str == '0')
 		str++;
-	len = strlen(str);
+	len = ft_strlen(str);
 	if (len == 0)
 		return (1);
 	if (len > 19)
@@ -30,9 +30,9 @@ int	is_within_llong(const char *str)
 	if (len < 19)
 		return (1);
 	if (negative)
-		return (strcmp(str, EXIT_ABS_MIN) <= 0);
+		return (ft_strcmp(str, EXIT_ABS_MIN) <= 0);
 	else
-		return (strcmp(str, EXIT_MAX) <= 0);
+		return (ft_strcmp(str, EXIT_MAX) <= 0);
 }
 
 static int	is_valid_arg(const char *str)

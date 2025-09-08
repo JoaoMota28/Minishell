@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:30 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 17:55:22 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:08:29 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	remove_loop(char ***arr, char *search, char **new)
 	n = ft_strlen(tmp);
 	while ((*arr)[++i])
 	{
-		if (strncmp(tmp, (*arr)[i], n))
+		if (ft_strncmp(tmp, (*arr)[i], n))
 		{
 			new[++j] = ft_strdup((*arr)[i]);
 			if (!new[j])

@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:28 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 17:31:31 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/08 15:56:29 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	list_export(t_minishell *data)
 			continue ;
 		arr = ft_split(data->export[i], '=');
 		str = ft_strchr(data->export[i], '=');
-		if (arr[1])
+		if (arr[1] || str)
 		{
 			printf("declare -x %s=\"", arr[0]);
-			if (++str)
+			if (str && ++str)
 				printf("%s", str);
 			printf("\"\n");
 		}

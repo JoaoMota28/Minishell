@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:05 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 17:32:42 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:00:17 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*fetch_val(char **arr, char *search)
 	fstring = ft_strjoin(search, "=");
 	while (arr[i])
 	{
-		if (!ft_strncmp(fstring, arr[i], n + 1))
+		if (!ft_strncmp(fstring, arr[i], n + 1) || !ft_strncmp(search, arr[i], n))
 			return (free(fstring), arr[i] + n + 1);
 		i++;
 	}
@@ -45,7 +45,7 @@ void	replace_val(char ***arr, char *key, char *val)
 	i = 0;
 	while ((*arr)[i])
 	{
-		if (!ft_strncmp(tmp, (*arr)[i], n))
+		if (!ft_strncmp(tmp, (*arr)[i], n) || !ft_strncmp(tmp, (*arr)[i], n - 1))
 		{
 			str = ft_strjoin(tmp, val);
 			if (!str)
@@ -79,7 +79,10 @@ int	add_val(char ***arr, char *key, char *val)
 		if (!new[i] && *val)
 			return (free_ar((void **)new), EXIT_FAILURE);
 	}
-	tmp = ft_strjoin(key, "=");
+	if (val)
+		tmp = ft_strjoin(key, "=");
+	else
+		tmp = ft_strdup(key);
 	str = ft_strjoin(tmp, val);
 	if (!str)
 		str = ft_strdup(tmp);

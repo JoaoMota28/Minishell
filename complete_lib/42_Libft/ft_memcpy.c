@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 13:51:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2024/11/08 14:54:30 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:06:47 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 // 	char *src = "Ola";
 // 	char dest[20];
 // 	printf("My Func : %s\n", (char *)ft_memcpy(dest, src, 3));
-// 	printf("My Func : %s\n", (char *)memcpy(dest, src, 3));
+// 	printf("My Func : %s\n", (char *)ft_memcpy(dest, src, 3));
 // 	return (0);
 // }
