@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:26:54 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 15:27:55 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/11 23:14:28 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ by end-of-file (wanted \'"
 # define HERE_DOC_ERROR_SUFFIX "\')\n"
 # define SHLVL_ERROR_PREFIX "minishell: warning: shell level ("
 # define SHLVL_ERROR_SUFFIX ") too high, resetting to 1\n"
+# define HEXMAP "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 typedef struct s_minishell	t_minishell;
 
@@ -60,7 +61,6 @@ int		subshell(t_minishell *data, t_tree *node);
 
 //utils
 char	*test_cmd(t_minishell *data, t_tree *node);
-int		count_nodes(t_tree *node);
 char	**get_cmd_line(t_tree *node);
 int		restore_fd(int src, int dest);
 void	close_parent_fds(t_minishell *data);

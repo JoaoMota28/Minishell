@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 14:23:08 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/11 21:50:58 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	manage_errors(t_minishell *data, t_tree *node, char type)
 {
-	if (type == 'p')
+	if (type == 'o')
 	{
-		perror("pipe error");
+		perror("error creating temp file");
 		if (data->exec.pipeline_child)
 			exit_msh(data, 1);
 	}
@@ -32,17 +32,6 @@ static int	manage_errors(t_minishell *data, t_tree *node, char type)
 		ft_putstr_fd(HERE_DOC_ERROR_SUFFIX, 2);
 	}
 	return (1);
-}
-
-int	close_heredoc(t_minishell *data, t_tree *node)
-{
-	if (!node)
-		return (0);
-	if (node->type == HERE_DOC && node->pipe_hd[0] != data->exec.curr_fd_in)
-		close(node->pipe_hd[0]);
-	close_heredoc(data, node->left);
-	close_heredoc(data, node->right);
-	return (0);
 }
 
 void	heredoc_loop(t_minishell *data, t_tree *node, t_tree *del, char *p_line)
@@ -64,8 +53,8 @@ void	heredoc_loop(t_minishell *data, t_tree *node, t_tree *del, char *p_line)
 		p_line = expand_heredoc(line, del, data);
 		free(line);
 		line = NULL;
-		ft_putstr_fd(p_line, node->pipe_hd[1]);
-		ft_putstr_fd("\n", node->pipe_hd[1]);
+		ft_putstr_fd(p_line, node->file_fd);
+		ft_putstr_fd("\n", node->file_fd);
 		free(p_line);
 		p_line = NULL;
 	}
@@ -74,41 +63,73 @@ void	heredoc_loop(t_minishell *data, t_tree *node, t_tree *del, char *p_line)
 		free(line);
 }
 
-int	heredoc_init(t_minishell *data, t_tree *node)
+static int	create_tempfile(char *filename)
+{
+	int		fd;
+	int		i;
+	int		tries;
+	char	buf[32];
+
+	tries = 5;
+	while (tries-- > 0)
+	{
+		i = -1;
+		fd = open("/dev/urandom", O_RDONLY);
+		if (fd < 0)
+			return (-1);
+		if (read(fd, buf, sizeof(buf)) != sizeof(buf))
+			return (close(fd), -1);
+		close(fd);
+		while (++i <  31)
+			filename[i] = HEXMAP[buf[i % sizeof(buf)] % 62];
+		filename[i] = '\0';
+		fd = open(filename, O_CREAT | O_EXCL | O_RDWR, 0600);
+		if (fd >= 0)
+			return (fd);
+	}
+	return (-1);
+}
+
+int	heredoc_init(t_minishell *data, t_tree *node, t_tree *delim)
 {
 	char	*parsed_line;
-	t_tree	*delim;
+	char	filename[32];
 
 	parsed_line = NULL;
-	if (node->right->type != WORD)
-	{
-		delim = node->right->left;
-		node->right->left->visited = true;
-	}
-	else
-	{
-		delim = node->right;
-		node->right->visited = true;
-	}
+	node->file_fd = create_tempfile(filename);
+	if (node->file_fd < 0)
+		return (manage_errors(data, node, 'o'));
 	heredoc_loop(data, node, delim, parsed_line);
-	restore_fd(data->exec.par_fd_in, STDIN_FILENO);
+	close(node->file_fd);
+	node->file_fd = open(filename, O_RDONLY);
+	if (node->file_fd < 0)
+		return (manage_errors(data, node, 'o'));
+	unlink(filename);
 	if (parsed_line)
 		free(parsed_line);
-	close(node->pipe_hd[1]);
 	return (0);
 }
 
 int	search_heredoc(t_minishell *data, t_tree *node)
 {
+	t_tree	*delim;
+
 	if (!node)
 		return (0);
-	node->pipe_hd[0] = -1;
-	node->pipe_hd[1] = -1;
+	node->file_fd = -1;
 	if (node->type == HERE_DOC)
 	{
-		if (pipe(node->pipe_hd) == -1)
-			return (manage_errors(data, node, 'p'));
-		heredoc_init(data, node);
+		if (node->right->type != WORD)
+		{
+			delim = node->right->left;
+			node->right->left->visited = true;
+		}
+		else
+		{
+			delim = node->right;
+			node->right->visited = true;
+		}
+		heredoc_init(data, node, delim);
 		if (g_sig)
 			return (0);
 	}

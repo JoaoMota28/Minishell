@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/08 14:01:56 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/11 23:49:36 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	data_init(t_minishell *data, char **envp)
 	data->pwd = getcwd(NULL, 0);
 	if (fetch_val(data->envp, "OLDPWD"))
 		data->oldpwd = ft_strdup(fetch_val(data->envp, "OLDPWD"));
+	else
+		data->oldpwd = ft_strdup("");
 	data->root = NULL;
 	exec_init(data);
 	data->exit_code = 0;

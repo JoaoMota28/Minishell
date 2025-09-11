@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:30:41 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/05 16:46:09 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/11 21:52:21 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	dup_in(t_minishell *data, t_tree *node)
 			return (perror(IN_OPEN_ERROR), 1);
 	}
 	else
-		new_fd = node->pipe_hd[0];
+		new_fd = node->file_fd;
 	if (dup2(new_fd, data->exec.curr_fd_in) == -1)
 		return (close(new_fd), perror(IN_DUP_ERROR), 1);
 	close(new_fd);

@@ -6,11 +6,22 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:16:06 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 14:24:32 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:04:34 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	close_heredoc(t_minishell *data, t_tree *node)
+{
+	if (!node)
+		return (0);
+	if (node->type == HERE_DOC && node->file_fd != data->exec.curr_fd_in)
+		close(node->file_fd);
+	close_heredoc(data, node->left);
+	close_heredoc(data, node->right);
+	return (0);
+}
 
 void	free_tree(t_tree *node)
 {

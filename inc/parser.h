@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:38:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/06 12:11:19 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/11 15:59:20 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_tree
 	struct s_tree	*left;
 	struct s_tree	*right;
 	char			*content;
-	int				pipe_hd[2];
+	int				file_fd;
 	int				subshell_level;
 	bool			visited;
 	t_token_type	type;
