@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:39:54 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/11 23:49:36 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/18 15:19:24 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ void	init_environment(t_minishell *data, char *pwd, char *shlvl)
 	if (!fetch_val(data->envp, "PWD"))
 	{
 		pwd = getcwd(NULL, 0);
-		add_val(&data->envp, "PWD", pwd);
+		add_val(&data->envp, "PWD", pwd, -1);
 		free(pwd);
 	}
 	if (!fetch_val(data->envp, "SHLVL"))
-		add_val(&data->envp, "SHLVL", "1");
+		add_val(&data->envp, "SHLVL", "1", -1);
 	else
 	{
 		shlvl = shlvl_val(fetch_val(data->envp, "SHLVL"));
@@ -73,12 +73,12 @@ void	init_environment(t_minishell *data, char *pwd, char *shlvl)
 		free(shlvl);
 	}
 	if (!fetch_val(data->envp, "PATH"))
-		add_val(&data->envp, "PATH", PRIVATE_PATH);
+		add_val(&data->envp, "PATH", PRIVATE_PATH, -1);
 	if (!fetch_val(data->envp, "_"))
-		add_val(&data->envp, "_", "/usr/bin/env");
+		add_val(&data->envp, "_", "/usr/bin/env", -1);
 	data->export = dp_dup(data->envp);
 	if (!fetch_val(data->export, "OLDPWD"))
-		add_val(&data->export, "OLDPWD", "");
+		add_val(&data->export, "OLDPWD", "", -1);
 }
 
 void	data_init(t_minishell *data, char **envp)

@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:28 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/08 15:56:29 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/18 15:18:46 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ int	export_aux(t_minishell *data, char *content)
 		if (fetch_val(data->envp, arr[0]))
 			replace_val(&data->envp, arr[0], ++str);
 		else
-			add_val(&data->envp, arr[0], ++str);
+			add_val(&data->envp, arr[0], ++str, -1);
 	}
 	if (fetch_val(data->export, arr[0]) && str)
 		replace_val(&data->export, arr[0], str);
 	else if (!fetch_val(data->export, arr[0]))
-		add_val(&data->export, arr[0], str);
+		add_val(&data->export, arr[0], str, -1);
 	free_ar((void **)arr);
 	return (EXIT_SUCCESS);
 }

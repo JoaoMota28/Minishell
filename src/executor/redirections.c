@@ -6,33 +6,45 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:30:41 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/11 21:52:21 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/18 15:10:36 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	dup_in(t_minishell *data, t_tree *node)
+static int	open_fd(t_minishell *data, t_tree *node)
+{
+	char	*file;
+
+	if (node->right->type != WORD)
+	{
+		expander(node->right->left, data);
+		file = node->right->left->content;
+		node->right->left->visited = true;
+	}
+	else
+	{
+		expander(node->right, data);
+		file = node->right->content;
+		node->right->visited = true;
+	}
+	if (node->type == R_IN)
+		return (open(file, O_RDONLY));
+	else if (node->type == R_OUT)
+		return (open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644));
+	else if (node->type == AP_R_OUT)
+		return (open(file, O_WRONLY | O_CREAT | O_APPEND, 0644));
+	else
+		return (node->file_fd);
+}
+
+static int	dup_in(t_minishell *data, t_tree *node)
 {
 	int	new_fd;
 
-	if (node->type == R_IN)
-	{
-		if (node->right->type != WORD)
-		{
-			new_fd = open(node->right->left->content, O_RDONLY);
-			node->right->left->visited = true;
-		}
-		else
-		{
-			new_fd = open(node->right->content, O_RDONLY);
-			node->right->visited = true;
-		}
-		if (new_fd == -1)
-			return (perror(IN_OPEN_ERROR), 1);
-	}
-	else
-		new_fd = node->file_fd;
+	new_fd = open_fd(data, node);
+	if (new_fd == -1)
+		return (perror(IN_OPEN_ERROR), 1);
 	if (dup2(new_fd, data->exec.curr_fd_in) == -1)
 		return (close(new_fd), perror(IN_DUP_ERROR), 1);
 	close(new_fd);
@@ -65,25 +77,11 @@ int	redir_in(t_minishell *data, t_tree *node)
 	return (status);
 }
 
-int	dup_out(t_minishell *data, t_tree *node)
+static int	dup_out(t_minishell *data, t_tree *node)
 {
 	int	new_fd;
-	int	flags;
 
-	if (node->type == AP_R_OUT)
-		flags = O_WRONLY | O_CREAT | O_APPEND;
-	else
-		flags = O_WRONLY | O_CREAT | O_TRUNC;
-	if (node->right->type != WORD)
-	{
-		new_fd = open(node->right->left->content, flags, 0644);
-		node->right->left->visited = true;
-	}
-	else
-	{
-		new_fd = open(node->right->content, flags, 0644);
-		node->right->visited = true;
-	}
+	new_fd = open_fd(data, node);
 	if (new_fd == -1)
 		return (perror(OUT_OPEN_ERROR), 1);
 	if (dup2(new_fd, data->exec.curr_fd_out) == -1)

@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:21:30 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/04 15:52:47 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/18 15:18:02 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		export_builtin(t_minishell *data, t_tree *leaf);
 // Utils
 char	*fetch_val(char **arr, char *search);
 void	replace_val(char ***arr, char *key, char *val);
-int		add_val(char ***arr, char *key, char *val);
+int		add_val(char ***arr, char *key, char *val, int i);
 void	remove_val(char ***arr, char *search);
 void	insertion_sort(char **arr);
 bool	is_builtin(t_tree *root);

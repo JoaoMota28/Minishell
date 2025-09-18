@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:43:27 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 18:08:59 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/18 15:18:26 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	update_env_pwd(t_minishell *data, char *update, int flag)
 		if (fetch_val(data->envp, "OLDPWD"))
 			replace_val(&data->envp, "OLDPWD", update);
 		else if (fetch_val(data->export, "OLDPWD"))
-			add_val(&data->envp, "OLDPWD", update);
+			add_val(&data->envp, "OLDPWD", update, -1);
 		replace_val(&data->export, "OLDPWD", update);
 	}
 	else
@@ -27,7 +27,7 @@ void	update_env_pwd(t_minishell *data, char *update, int flag)
 		if (fetch_val(data->envp, "OLDPWD"))
 			replace_val(&data->envp, "OLDPWD", update);
 		else if (fetch_val(data->export, "OLDPWD"))
-			add_val(&data->envp, "OLDPWD", update);
+			add_val(&data->envp, "OLDPWD", update, -1);
 		replace_val(&data->export, "OLDPWD", update);
 	}
 	replace_val(&data->envp, "PWD", data->pwd);

@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/11 21:50:58 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/18 15:11:03 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	create_tempfile(char *filename)
 		if (read(fd, buf, sizeof(buf)) != sizeof(buf))
 			return (close(fd), -1);
 		close(fd);
-		while (++i <  31)
+		while (++i < 31)
 			filename[i] = HEXMAP[buf[i % sizeof(buf)] % 62];
 		filename[i] = '\0';
 		fd = open(filename, O_CREAT | O_EXCL | O_RDWR, 0600);
