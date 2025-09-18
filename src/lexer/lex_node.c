@@ -66,6 +66,34 @@ static char	*strip_quotes(char *content)
 	return (res);
 }
 
+static void	split_raw_segment(char *raw)
+{
+	int				i;
+	int				len;
+	char			quote;
+	int 			start;
+	char			*seg;
+	t_token_list	*node;
+	t_token_list	*list;
+
+	len = ft_strlen(raw);
+	i = 0;
+	quote = 0;
+	start = 0;
+	while (i < len)
+	{
+		if (i > start)
+		{
+			seg = ft_substr(raw, start, i - start);
+			node = create_word_seg(seg);
+			if (!node)
+				return ;
+			
+		}
+		
+	}
+}
+
 static void	lex_word_node(char *line, int *i, int *start, t_token_list *node)
 {
 	char			quote;
@@ -88,8 +116,10 @@ static void	lex_word_node(char *line, int *i, int *start, t_token_list *node)
 			(*i)++;
 	}
 	raw = ft_substr(line, *start, *i - *start);
-	node->quote_type = detect_quote_type(raw);
-	node->content = strip_quotes(raw);
+	printf("raw string = %s\n", raw);
+	//node->quote_type = detect_quote_type(raw);
+	node->content = split_raw_segment(raw);
+	printf("final content: %s\nquote type: %i", node->content, node->quote_type);
 	free(raw);
 }
 
