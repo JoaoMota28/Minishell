@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:57:48 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 19:23:44 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/09/23 15:33:17 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int	is_operator(t_token_type type)
 {
 	return (type == PIPE || type == R_IN || type == R_OUT
-		|| type == AP_R_OUT || type == HERE_DOC);
+		|| type == AP_R_OUT || type == HERE_DOC
+		|| type == AND || type == OR || type == SUBSHELL);
 }
 
 char	*get_env(char **envp, char *name)
