@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/05 01:30:13 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/30 02:16:22 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 	free_ar((void **)splitted);
 }
 
-static void	handle_unquoted(t_tree *node, char *expanded)
+static void	 handle_unquoted(t_tree *node, char *expanded)
 {
 	char	**splitted;
 
@@ -79,28 +79,28 @@ static void	handle_unquoted(t_tree *node, char *expanded)
 
 void	expander(t_tree *node, t_minishell *data)
 {
-	char	*expanded;
+	char			*expanded;
+	t_quote_type	orig_q;
 
 	if (!node || node->type != WORD)
 		return ;
-	if (node->quote_type == SINGLE_O)
+	if (!node->content)
 		return ;
-	if (node->quote_type == DOUBLE_O)
-	{
-		expanded = expand_nodes(node->content, data);
-		if (node->content)
-			free(node->content);
-		if (expanded)
-			node->content = expanded;
-		else
-			node->content = ft_strdup("");
-	}
-	expanded = expand_nodes(node->content, data);
-	if (node->content)
-		free(node->content);
-	node->content = NULL;
+	orig_q = detect_quote_type(node->content);
+	expanded = expand_quote(node->content, data);
 	if (!expanded)
 		return ;
-	handle_unquoted(node, expanded);
+	free(node->content);
+	node->content = NULL;
+	if (orig_q != UNQUOTED)
+    {
+		node->quote_type = orig_q;
+        node->content = expanded;
+    }
+	else
+	{
+		node->quote_type = UNQUOTED;
+		handle_unquoted(node, expanded);
+	}
 	expander(node->right, data);
 }

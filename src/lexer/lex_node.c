@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 00:25:45 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/27 15:57:50 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:02:53 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char	*strip_quotes(char *content)
 	res[k] = '\0';
 	return (res);
 }
-*/
+
 static void	fill_node_segment(t_token_list *node, char *line, int start, int end, t_quote_type q_type)
 {
 	char	*raw;
@@ -117,23 +117,67 @@ static void	handle_quote_segment(char *line, int *i, int *j, t_token_list **tmp)
 		(*tmp)->next = new;
 		*tmp = new;
 	}
-}
+}*/
 
 static void	lex_word_node(char *line, int *i, int *start, t_token_list *node)
 {
-	t_token_list	*tmp;
-	int				seg_start;
+	//t_token_list	*tmp;
+	//int				seg_start;
 	int				j;
+	int				q;
+
+	q = 0;
 	j = *i;
-	seg_start = j;
-	tmp = node;
+	//seg_start = j;
+	//tmp = node;
 	(void)start;
+	while (line[j])
+	{
+		if (!q && (is_space(line[j]) || line[j] == '|' || line[j] == '>'
+			|| line[j] == '<' || line[j] == '(' || line[j] == ')'))
+			break;
+		if (!q && (line[j] == '\'' || line[j] == '"')){
+			q = line[j];
+			j++;
+		}
+		else if (q && line[j] == q)
+		{
+			q = 0;
+			j++;
+		}
+		else
+			j++;
+	}
+	if (j > *i)
+	{
+		if (node->content)
+			free(node->content);
+		node->content = ft_substr(line, *i, j - *i);
+		node->quote_type = detect_quote_type(node->content);
+	}
+	if (j == *i)
+		j++;
+	*i = j;
+	/* NEW
+	while (line[j] && !is_space(line[j]) && line[j] != '|'
+		&& line[j] != '>' && line[j] != '<'
+		&& line[j] != '(' && line[j] != ')')
+		j++;
+	if (j > *i)
+	{
+		if (node->content)
+			free(node->content);
+		node->content = ft_substr(line, *i, j - *i);
+		node->quote_type = UNQUOTED;
+	}
+
+	*i = j;*/
 /*
 	new->next = NULL;
 	new->content = NULL;
 	new->subshell_level = 0;
 	new->token_type = WORD;
-	new->quote_type = UNQUOTED;*/
+	new->quote_type = UNQUOTED;
 	while (line[j] && !is_space(line[j]) && line[j] != '|'
 		&& line[j] != '>' && line[j] != '<'
 		&& line[j] != '(' && line[j] != ')')
@@ -158,8 +202,7 @@ static void	lex_word_node(char *line, int *i, int *start, t_token_list *node)
 			j++;
 	}
 	if (seg_start < j)
-		fill_node_segment(tmp, line, seg_start, j, UNQUOTED);
-	*i = j;
+		fill_node_segment(tmp, line, seg_start, j, UNQUOTED);*/
 }
 
 t_token_list	*lex_node(char *line, int *i)
@@ -170,12 +213,14 @@ t_token_list	*lex_node(char *line, int *i)
 	node = malloc(sizeof(*node));
 	if (!node)
 		return (NULL);
-	ft_memset(node, 0, sizeof(*node));
 	node->next = NULL;
 	node->content = NULL;
+	node->p_type = P_CLOSED;
+	node->quote_type = UNQUOTED;
+	node->token_type = WORD;
+	node->subshell_level = 0;
 	start = *i;
 	set_type(node, line, i);
-	node->subshell_level = 0;
 	if (node->token_type != WORD)
 		add_content(node, i);
 	else
