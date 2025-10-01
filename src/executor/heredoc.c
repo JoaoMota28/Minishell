@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/18 15:11:03 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/01 15:18:55 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ static int	manage_errors(t_minishell *data, t_tree *node, char type)
 void	heredoc_loop(t_minishell *data, t_tree *node, t_tree *del, char *p_line)
 {
 	char	*line;
+	char	*stripped_del;
 
 	line = NULL;
-	init_heredoc_signals();
+	stripped_del = strip_quotes(del->content);
 	while (1)
 	{
 		line = readline("> ");
@@ -48,17 +49,16 @@ void	heredoc_loop(t_minishell *data, t_tree *node, t_tree *del, char *p_line)
 			manage_errors(data, node, 'l');
 			break ;
 		}
-		if (!ft_strncmp(del->content, line, ft_strlen(del->content) + 1))
+		if (!ft_strncmp(stripped_del, line, ft_strlen(stripped_del) + 1))
 			break ;
 		p_line = expand_heredoc(line, del, data);
 		free(line);
 		line = NULL;
-		ft_putstr_fd(p_line, node->file_fd);
-		ft_putstr_fd("\n", node->file_fd);
+		ft_putendl_fd(p_line, node->file_fd);
 		free(p_line);
 		p_line = NULL;
 	}
-	init_interactive_signals('h');
+	free(stripped_del);
 	if (line)
 		free(line);
 }
@@ -99,7 +99,9 @@ int	heredoc_init(t_minishell *data, t_tree *node, t_tree *delim)
 	node->file_fd = create_tempfile(filename);
 	if (node->file_fd < 0)
 		return (manage_errors(data, node, 'o'));
+	init_heredoc_signals();
 	heredoc_loop(data, node, delim, parsed_line);
+	init_interactive_signals('h');
 	close(node->file_fd);
 	node->file_fd = open(filename, O_RDONLY);
 	if (node->file_fd < 0)

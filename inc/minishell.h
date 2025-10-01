@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/30 18:12:54 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/01 15:05:10 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ char	**dp_dup(char **dp);
 int		dp_len(char **dp);
 char	*get_env(char **envp, char *name);
 char	*shlvl_val(char *oldval);
+char	*strip_quotes(char *content);
 
 #endif
