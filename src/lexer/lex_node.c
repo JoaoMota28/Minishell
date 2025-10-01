@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 00:25:45 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/29 15:02:53 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:51:11 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,11 @@ static void	handle_quote_segment(char *line, int *i, int *j, t_token_list **tmp)
 
 static void	lex_word_node(char *line, int *i, int *start, t_token_list *node)
 {
-	//t_token_list	*tmp;
-	//int				seg_start;
 	int				j;
 	int				q;
 
 	q = 0;
 	j = *i;
-	//seg_start = j;
-	//tmp = node;
 	(void)start;
 	while (line[j])
 	{
@@ -158,51 +154,6 @@ static void	lex_word_node(char *line, int *i, int *start, t_token_list *node)
 	if (j == *i)
 		j++;
 	*i = j;
-	/* NEW
-	while (line[j] && !is_space(line[j]) && line[j] != '|'
-		&& line[j] != '>' && line[j] != '<'
-		&& line[j] != '(' && line[j] != ')')
-		j++;
-	if (j > *i)
-	{
-		if (node->content)
-			free(node->content);
-		node->content = ft_substr(line, *i, j - *i);
-		node->quote_type = UNQUOTED;
-	}
-
-	*i = j;*/
-/*
-	new->next = NULL;
-	new->content = NULL;
-	new->subshell_level = 0;
-	new->token_type = WORD;
-	new->quote_type = UNQUOTED;
-	while (line[j] && !is_space(line[j]) && line[j] != '|'
-		&& line[j] != '>' && line[j] != '<'
-		&& line[j] != '(' && line[j] != ')')
-	{
-		if (line[j] == '\'' || line [j] == '"')
-		{
-			if (seg_start < j)
-			{
-				fill_node_segment(tmp, line, seg_start, j, UNQUOTED);
-				tmp->next = ft_calloc(1, sizeof(*tmp));
-				tmp = tmp->next;
-				tmp->next = NULL;
-				tmp->content = NULL;
-				tmp->subshell_level = 0;
-				tmp->token_type = WORD;
-				tmp->quote_type = UNQUOTED;
-			}
-			handle_quote_segment(line, i, &j, &tmp);
-			seg_start = j;
-		}
-		else
-			j++;
-	}
-	if (seg_start < j)
-		fill_node_segment(tmp, line, seg_start, j, UNQUOTED);*/
 }
 
 t_token_list	*lex_node(char *line, int *i)

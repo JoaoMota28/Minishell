@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:57:48 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/23 15:33:17 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:40:06 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,39 @@ char	**dp_dup(char **dp)
 	}
 	new[i] = NULL;
 	return (new);
+}
+
+char	*strip_quotes(char *content)
+{
+	int		i;
+	int		k;
+	char	q;
+	char	*res;
+
+	i = 0;
+	k = 0;
+	q = 0;
+	res = malloc(ft_strlen(content) + 1);
+	if (!res)
+		return (NULL);
+	while (content[i])
+	{
+		if (content[i] == '\'' || content[i] == '"')
+		{
+			if (!q)
+			{
+				q = content[i++];
+				continue ;
+			}
+			else if (content[i] == q)
+			{
+				q = 0;
+				i++;
+				continue ;
+			}
+		}
+		res[k++] = content[i++];
+	}
+	res[k] = '\0';
+	return (res);
 }
