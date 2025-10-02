@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -96,4 +96,4 @@ int main(int argc, char **argv)
         return (1);
     printf("%s\n", strip_quotes(argv[1]));
     return (0);
-}
+}*/

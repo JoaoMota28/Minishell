@@ -6,18 +6,11 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:57:48 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/01 14:40:06 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:00:35 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	is_operator(t_token_type type)
-{
-	return (type == PIPE || type == R_IN || type == R_OUT
-		|| type == AP_R_OUT || type == HERE_DOC
-		|| type == AND || type == OR || type == SUBSHELL);
-}
 
 char	*get_env(char **envp, char *name)
 {
@@ -69,37 +62,43 @@ char	**dp_dup(char **dp)
 	return (new);
 }
 
+static void	handle_copy(char *content, int *i, char *res, int *k)
+{
+	char	q;
+
+	q = 0;
+	while (content[*i])
+	{
+		if (content[*i] == '\'' || content[*i] == '"')
+		{
+			if (!q)
+			{
+				q = content[(*i)++];
+				continue ;
+			}
+			else if (content[*i] == q)
+			{
+				q = 0;
+				(*i)++;
+				continue ;
+			}
+		}
+		res[(*k)++] = content[(*i)++];
+	}
+}
+
 char	*strip_quotes(char *content)
 {
 	int		i;
 	int		k;
-	char	q;
 	char	*res;
 
 	i = 0;
 	k = 0;
-	q = 0;
 	res = malloc(ft_strlen(content) + 1);
 	if (!res)
 		return (NULL);
-	while (content[i])
-	{
-		if (content[i] == '\'' || content[i] == '"')
-		{
-			if (!q)
-			{
-				q = content[i++];
-				continue ;
-			}
-			else if (content[i] == q)
-			{
-				q = 0;
-				i++;
-				continue ;
-			}
-		}
-		res[k++] = content[i++];
-	}
+	handle_copy(content, &i, res, &k);
 	res[k] = '\0';
 	return (res);
 }

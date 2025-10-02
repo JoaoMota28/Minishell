@@ -6,11 +6,19 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/30 02:16:22 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:38:21 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	update_index(int *i, int *j, char *raw, int *q)
+{
+	if (*q && raw[*j])
+		*i = *j + 1;
+	else
+		*i = *j;
+}
 
 char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 {
@@ -53,7 +61,7 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 	free_ar((void **)splitted);
 }
 
-static void	 handle_unquoted(t_tree *node, char *expanded)
+static void	handle_unquoted(t_tree *node, char *expanded)
 {
 	char	**splitted;
 
@@ -93,10 +101,10 @@ void	expander(t_tree *node, t_minishell *data)
 	free(node->content);
 	node->content = NULL;
 	if (orig_q != UNQUOTED)
-    {
+	{
 		node->quote_type = orig_q;
-        node->content = expanded;
-    }
+		node->content = expanded;
+	}
 	else
 	{
 		node->quote_type = UNQUOTED;

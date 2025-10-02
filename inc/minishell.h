@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/01 15:05:10 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:50:52 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	**expand_wildcard(char *extension);
 int		get_expanded_len(char *content, t_minishell *data);
 char	**expand_wildcard(char *extension);
 char	*expand_quote(char *raw, t_minishell *data);
+void	update_index(int *i, int *j, char *raw, int *q);
 
 //inits
 void	data_init(t_minishell *data, char **envp);
@@ -81,7 +82,6 @@ void	init_heredoc_signals(void);
 void	init_ignore_signals(void);
 
 //utils
-int		is_operator(t_token_type type);
 char	**dp_dup(char **dp);
 int		dp_len(char **dp);
 char	*get_env(char **envp, char *name);

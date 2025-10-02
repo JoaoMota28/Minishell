@@ -6,37 +6,53 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:16:35 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/01 14:22:07 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:35:12 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int  handle_len(char *s, int quoted, t_minishell *data)
+static int	handle_len(char *s, int quoted, t_minishell *data)
 {
-    if (quoted == '\'')
-        return (ft_strlen(s));
-    return (get_expanded_len(s, data));
+	if (quoted == '\'')
+		return (ft_strlen(s));
+	return (get_expanded_len(s, data));
 }
 
-static int  handle_copy(char *s, int quoted, t_minishell *data, char *dest)
+static int	handle_copy(char *s, int quoted, t_minishell *data, char *dest)
 {
-    char    *tmp;
-    int     len;
+	char	*tmp;
+	int		len;
 
-    if (quoted == '\'')
-    {
-        len = ft_strlen(s);
-        ft_memcpy(dest, s, len);
-        return (len);
-    }
-    tmp = expand_nodes(s, data);
-    if (!tmp)
-        tmp = ft_strdup("");
-    len = ft_strlen(tmp);
-    ft_memcpy(dest, tmp, len);
-    free(tmp);
-    return (len);
+	if (quoted == '\'')
+	{
+		len = ft_strlen(s);
+		ft_memcpy(dest, s, len);
+		return (len);
+	}
+	tmp = expand_nodes(s, data);
+	if (!tmp)
+		tmp = ft_strdup("");
+	len = ft_strlen(tmp);
+	ft_memcpy(dest, tmp, len);
+	free(tmp);
+	return (len);
+}
+
+static void	handle_quoted(int *q, int *j, int *i, char *raw)
+{
+	if (raw[*i] == '\'' || raw[*i] == '"')
+	{
+		*q = raw[*i];
+		(*i)++;
+	}
+	*j = *i;
+	if (*q)
+		while (raw[*j] && raw[*j] != *q)
+			(*j)++;
+	else
+		while (raw[*j] && raw[*j] != '\'' && raw[*j] != '"')
+			(*j)++;
 }
 
 static int	expand_segment(char *raw, t_minishell *data, char *out)
@@ -52,18 +68,7 @@ static int	expand_segment(char *raw, t_minishell *data, char *out)
 	while (raw[i])
 	{
 		q = 0;
-		if (raw[i] == '\'' || raw[i] == '"')
-		{
-			q = raw[i];
-			i++;
-		}
-		j = i;
-		if (q)
-			while (raw[j] && raw[j] != q)
-				j++;
-		else
-			while (raw[j] && raw[j] != '\'' && raw[j] != '"')
-				j++;
+		handle_quoted(&q, &j, &i, raw);
 		seg = ft_substr (raw, i, j - i);
 		if (!seg)
 			return (-1);
@@ -72,10 +77,7 @@ static int	expand_segment(char *raw, t_minishell *data, char *out)
 		else
 			k += handle_len(seg, q, data);
 		free(seg);
-		if (q && raw[j])
-			i = j + 1;
-		else
-			i = j;
+		update_index(&i, &j, raw, &q);
 	}
 	if (out)
 		out[k] = '\0';
