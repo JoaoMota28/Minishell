@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:11:09 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/04 17:19:26 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:48:30 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,14 @@ int	exec_builtin(t_minishell *data, t_tree *root)
 	{
 		if (data->exec.par_fd_in != -1)
 			if (restore_fd(data->exec.par_fd_in, data->exec.curr_fd_in) == 1)
-				return (1);
+				return (free_tree(root), 1);
 		if (data->exec.par_fd_out != -1)
 			if (restore_fd(data->exec.par_fd_out, data->exec.curr_fd_out) == 1)
-				return (1);
+				return (free_tree(root), 1);
 	}
-	return (status);
+	if (!ft_strcmp(root->content, "exit"))
+		return (free_tree(root), exit_msh(data, status), status);
+	return (free_tree(root), status);
 }
 
 bool	is_builtin(t_tree *root)

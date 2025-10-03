@@ -6,20 +6,19 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/18 15:20:11 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/03 17:17:42 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	close_executor(t_minishell *data, t_tree *root)
+static int	close_executor(t_minishell *data)
 {
-	(void) root;
 	close_heredoc(data, data->root);
 	free_ar((void **)data->exec.spath);
 	data->exec.spath = NULL;
 	data->exec.redir_num = 0;
-	free_tree(root);
+	free_tree(data->root);
 	data->root = NULL;
 	if (restore_fd(data->exec.par_fd_in, data->exec.curr_fd_in) == 1)
 		return (1);
@@ -31,13 +30,7 @@ static int	close_executor(t_minishell *data, t_tree *root)
 int	process_node(t_minishell *data, t_tree *node)
 {
 	node->visited = true;
-	if (!node || (node && node->content && !node->content[0]))
-	{
-		if (data->exec.pipeline_child)
-			exit_msh(data, 127);
-		return (ft_putstr_fd("minishell: : command not found\n", 2), 127);
-	}
-	else if (node->subshell_level > data->exec.subshell_lvl)
+	if (node->subshell_level > data->exec.subshell_lvl)
 		return (subshell(data, node));
 	else if (node->type == PIPE)
 		return (run_pipeline(data, node));
@@ -66,13 +59,13 @@ int	executor(t_minishell *data, t_tree *root)
 	search_heredoc(data, root);
 	if (g_sig)
 	{
-		close_executor(data, root);
+		close_executor(data);
 		return (130);
 	}
 	ret = process_node(data, root);
 	if (data->exec.pipeline_child)
 		exit_msh(data, ret);
-	if (close_executor(data, root))
+	if (close_executor(data))
 		ret = 1;
 	return (ret);
 }

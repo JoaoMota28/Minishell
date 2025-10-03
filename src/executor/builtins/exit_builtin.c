@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:22 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/08 14:05:40 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/03 20:11:45 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ int	exit_builtin(t_minishell *data, t_tree *leaf)
 		exit_msh(data, 0);
 	ft_putstr_fd("exit\n", 1);
 	if (!leaf)
-		return (exit_msh(data, data->exit_code), data->exit_code);
+		return (data->exit_code);
 	if (!is_valid_arg(leaf->content) || !is_within_llong(leaf->content))
 	{
 		ft_putstr_fd(EXIT_PREFIX, 2);
 		ft_putstr_fd(leaf->content, 2);
 		ft_putstr_fd(EXIT_NON_NUMERIC, 2);
-		exit_msh(data, 2);
+		return (2);
 	}
 	if (leaf->right)
 	{
@@ -72,5 +72,5 @@ int	exit_builtin(t_minishell *data, t_tree *leaf)
 		return (1);
 	}
 	exit_code = ft_atol(leaf->content);
-	return (exit_msh(data, (unsigned char)exit_code), exit_code);
+	return ((unsigned char)exit_code);
 }

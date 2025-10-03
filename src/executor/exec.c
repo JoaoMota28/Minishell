@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/09/06 14:24:16 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/03 20:09:00 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ int	exec_command(t_minishell *data, t_tree *node)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(node->content, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		return (free(path), exit_msh(data, 127), 127);
+		return (free(path), free_tree(node), exit_msh(data, 127), 127);
 	}
 	if (!ft_strcmp(node->content, "."))
 	{
 		ft_putstr_fd("minishell: .: filename argument required\n", 2);
-		return (free(path), exit_msh(data, 2), 2);
+		return (free(path), free_tree(node), exit_msh(data, 2), 2);
 	}
 	cmd = get_cmd_line(node);
 	execve(path, cmd, data->envp);
@@ -65,15 +65,19 @@ int	exec_command(t_minishell *data, t_tree *node)
 		status = 127;
 	else
 		status = 126;
-	return (free(path), free_ar((void **) cmd), exit_msh(data, status), status);
+	return (free(path), free_ar((void **) cmd), status);
 }
 
 static void	child_process(t_minishell *data, t_tree *node)
 {
+	int	status;
+
 	init_child_signals();
 	data->exec.pipeline_child = true;
 	close_heredoc(data, data->root);
-	exec_command(data, node);
+	status = exec_command(data, node);
+	free_tree(node);
+	exit_msh(data, status);
 }
 
 int	fork_command(t_minishell *data, t_tree *node)
@@ -83,7 +87,7 @@ int	fork_command(t_minishell *data, t_tree *node)
 
 	pid = fork();
 	if (pid == -1)
-		return (perror("fork failed"), 1);
+		return (free_tree(node), perror("fork failed"), 1);
 	if (pid == 0)
 	{
 		child_process(data, node);
@@ -98,13 +102,39 @@ int	fork_command(t_minishell *data, t_tree *node)
 	init_interactive_signals('i');
 	handle_child_sig(wstatus);
 	if (WIFSIGNALED(wstatus))
-		return (128 + WTERMSIG(wstatus));
+		return (free_tree(node), 128 + WTERMSIG(wstatus));
 	if (WIFEXITED(wstatus))
-		return (WEXITSTATUS(wstatus));
-	return (1);
+		return (free_tree(node), WEXITSTATUS(wstatus));
+	return (free_tree(node), 1);
 }
 
 int	process_command(t_minishell *data, t_tree *node)
+{
+	node = clone_tree(node);
+	expander(node, data);
+	clean_tree(data, &node);
+	print_tree(node, 0, "root: ");
+	if (!node)
+		return (0);
+	if (!node->content[0])
+	{
+		free_tree(node);
+		if (data->exec.pipeline_child)
+			exit_msh(data, 127);
+		return (ft_putstr_fd("minishell: : command not found\n", 2), 127);
+	}
+	else if (node->content[0] && !is_builtin(node))
+		return (fork_command(data, node));
+	else
+	{
+		if (data->exec.pipeline_child)
+			close_parent_fds(data);
+		return (exec_builtin(data, node));
+	}
+	return (1);
+}
+
+/*int	process_command(t_minishell *data, t_tree *node)
 {
 	if (!node->content)
 	{
@@ -119,6 +149,19 @@ int	process_command(t_minishell *data, t_tree *node)
 	expander(node, data);
 	if (node->content[0] && !is_builtin(node))
 		return (fork_command(data, node));
+	else if (!node->content[0] && node->quote_type == 0)
+	{
+		while (!node->content[0] && node->quote_type == 0 && node->right)
+			node = node->right;
+		if (node->content[0])
+			process_node(data, node);
+	}
+	else if (!node->content[0])
+	{
+		if (data->exec.pipeline_child)
+			exit_msh(data, 127);
+		return (ft_putstr_fd("minishell: : command not found\n", 2), 127);
+	}
 	else
 	{
 		if (data->exec.pipeline_child)
@@ -126,4 +169,4 @@ int	process_command(t_minishell *data, t_tree *node)
 		return (exec_builtin(data, node));
 	}
 	return (1);
-}
+}*/
