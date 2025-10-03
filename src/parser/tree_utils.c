@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/03 20:13:52 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/04 00:39:28 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,11 @@ t_tree	*clone_tree(const t_tree *src)
 	return (dst);
 }
 
-void	clean_tree(t_minishell *data, t_tree **node)
+void	clean_tree(t_tree **node)
 {
 	t_tree	**pp;
 	t_tree	*cur;
 
-	(void) data;
 	pp = node;
 	while (*pp)
 	{

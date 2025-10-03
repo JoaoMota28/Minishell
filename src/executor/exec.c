@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/03 20:09:00 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/04 00:41:04 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,7 @@ int	process_command(t_minishell *data, t_tree *node)
 {
 	node = clone_tree(node);
 	expander(node, data);
-	clean_tree(data, &node);
-	print_tree(node, 0, "root: ");
+	clean_tree(&node);
 	if (!node)
 		return (0);
 	if (!node->content[0])
