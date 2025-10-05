@@ -3,14 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 18:28:17 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/30 18:13:29 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/05 10:48:51 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	expand_segment(char *raw, t_minishell *data, char *out)
+{
+	int		i;
+	int		k;
+
+	i = 0;
+	k = 0;
+	while (raw[i])
+	{
+		if (raw[i] == '$' && (raw[i + 1] == '\'' || raw[i + 1] == '"'))
+		{
+			if (handle_quoted_dollar(raw, &i, data, out, &k) < 0)
+				return (-1);
+			continue ;
+		}
+		if (handle_normal_segm(raw, &i, data, out, &k) < 0)
+			return (-1);
+	}
+	if (out)
+		out[k] = '\0';
+	return (k);
+}
 
 static void	handle_env_var(char *cont, char *new, int *vals, t_minishell *data)
 {
@@ -90,5 +113,22 @@ char	*expand_nodes(char *content, t_minishell *data)
 	}
 	res[vals[1]] = '\0';
 	free(vals);
+	return (res);
+}
+
+char	*expand_quote(char *raw, t_minishell *data)
+{
+	int		len;
+	char	*res;
+
+	if (!raw)
+		return (NULL);
+	len = expand_segment(raw, data, NULL);
+	if (len < 0)
+		return (NULL);
+	res = malloc(len + 1);
+	if (!res)
+		return (NULL);
+	expand_segment(raw, data, res);
 	return (res);
 }

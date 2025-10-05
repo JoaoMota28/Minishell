@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:57:48 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/03 01:25:35 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/05 10:41:50 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**dp_dup(char **dp)
 	return (new);
 }
 
-static void	handle_copy(char *content, int *i, char *res, int *k)
+static void	handle_copy_segm(char *content, int *i, char *res, int *k)
 {
 	char	q;
 
@@ -98,7 +98,7 @@ char	*strip_quotes(char *content)
 	res = malloc(ft_strlen(content) + 1);
 	if (!res)
 		return (NULL);
-	handle_copy(content, &i, res, &k);
+	handle_copy_segm(content, &i, res, &k);
 	res[k] = '\0';
 	return (res);
 }
