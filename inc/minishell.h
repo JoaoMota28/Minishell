@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/05 10:39:20 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/05 16:43:31 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,10 @@ int		expand_segment(char *raw, t_minishell *data, char *out);
 void	handle_quoted(int *q, int *j, int *i, char *raw);
 int		handle_copy(char *s, int quoted, t_minishell *data, char *dest);
 int		handle_len(char *s, int quoted, t_minishell *data);
-int		handle_normal_segm(char *raw, int *i, t_minishell *data, char *out, int *k);
-int		handle_quoted_dollar(char *raw, int *i, t_minishell *data, char *out, int *k);
+int		handle_normal_segm(char *raw, t_minishell *data,
+			char *out, int (*ind)[2]);
+int		handle_quoted_dollar(char *raw, t_minishell *data,
+			char *out, int (*ind)[2]);
 //inits
 void	data_init(t_minishell *data, char **envp);
 void	init_signals(char type);

@@ -6,34 +6,11 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 18:28:17 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/05 10:48:51 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/05 16:43:59 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	expand_segment(char *raw, t_minishell *data, char *out)
-{
-	int		i;
-	int		k;
-
-	i = 0;
-	k = 0;
-	while (raw[i])
-	{
-		if (raw[i] == '$' && (raw[i + 1] == '\'' || raw[i + 1] == '"'))
-		{
-			if (handle_quoted_dollar(raw, &i, data, out, &k) < 0)
-				return (-1);
-			continue ;
-		}
-		if (handle_normal_segm(raw, &i, data, out, &k) < 0)
-			return (-1);
-	}
-	if (out)
-		out[k] = '\0';
-	return (k);
-}
 
 static void	handle_env_var(char *cont, char *new, int *vals, t_minishell *data)
 {
@@ -114,6 +91,29 @@ char	*expand_nodes(char *content, t_minishell *data)
 	res[vals[1]] = '\0';
 	free(vals);
 	return (res);
+}
+
+int	expand_segment(char *raw, t_minishell *data, char *out)
+{
+	int		ind[2];
+
+	ind[0] = 0;
+	ind[1] = 0;
+	while (raw[ind[0]])
+	{
+		if (raw[ind[0]] == '$'
+			&& (raw[ind[0] + 1] == '\'' || raw[ind[0] + 1] == '"'))
+		{
+			if (handle_quoted_dollar(raw, data, out, &ind) < 0)
+				return (-1);
+			continue ;
+		}
+		if (handle_normal_segm(raw, data, out, &ind) < 0)
+			return (-1);
+	}
+	if (out)
+		out[ind[1]] = '\0';
+	return (ind[1]);
 }
 
 char	*expand_quote(char *raw, t_minishell *data)
