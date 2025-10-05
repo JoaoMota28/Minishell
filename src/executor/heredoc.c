@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 22:03:33 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/01 15:18:55 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/05 15:30:32 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,19 @@ static int	create_tempfile(char *filename)
 	int		tries;
 	char	buf[32];
 
-	tries = 5;
+	tries = 4;
 	while (tries-- > 0)
 	{
-		i = -1;
+		i = 4;
 		fd = open("/dev/urandom", O_RDONLY);
 		if (fd < 0)
 			return (-1);
 		if (read(fd, buf, sizeof(buf)) != sizeof(buf))
 			return (close(fd), -1);
 		close(fd);
+		ft_strlcpy(filename, "/tmp/", 6);
 		while (++i < 31)
-			filename[i] = HEXMAP[buf[i % sizeof(buf)] % 62];
+			filename[i] = HEXMAP[buf[i % sizeof(buf)] % (sizeof(HEXMAP) - 1)];
 		filename[i] = '\0';
 		fd = open(filename, O_CREAT | O_EXCL | O_RDWR, 0600);
 		if (fd >= 0)

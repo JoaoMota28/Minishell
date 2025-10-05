@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/03 17:17:42 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/05 15:55:18 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static int	close_executor(t_minishell *data)
 {
 	close_heredoc(data, data->root);
-	free_ar((void **)data->exec.spath);
+	if (data->exec.spath)
+		free_ar((void **)data->exec.spath);
 	data->exec.spath = NULL;
 	data->exec.redir_num = 0;
 	free_tree(data->root);
@@ -55,7 +56,6 @@ int	executor(t_minishell *data, t_tree *root)
 	int		ret;
 
 	data->root = root;
-	data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
 	search_heredoc(data, root);
 	if (g_sig)
 	{
