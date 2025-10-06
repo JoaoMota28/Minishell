@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/05 15:19:20 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/06 14:56:48 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	clean_tree(t_tree **node)
 	}
 }
 
-/*void print_tree(t_tree *node, int level, char *leaf)
+void print_tree(t_tree *node, int level, char *leaf)
 {
 	if (!node)
 		return;
@@ -125,4 +125,4 @@ void	clean_tree(t_tree **node)
     printf("[%s]\n", node->content);
 	print_tree(node->left, level + 1, "left : ");
 	print_tree(node->right, level + 1, "right : ");
-}*/
+}

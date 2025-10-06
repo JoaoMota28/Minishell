@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/02 13:38:21 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:09:36 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 		tmp->right->content = ft_strdup(splitted[i]);
 		tmp->right->quote_type = UNQUOTED;
 		tmp->right->type = WORD;
+		tmp->right->visited = false;
 		tmp->right->left = NULL;
 		tmp->right->right = NULL;
 		tmp = tmp->right;

@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:38:57 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/05 15:19:08 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/06 14:57:00 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,5 @@ t_tree			*split_and_build(t_token_list *target, t_token_list *left,
 t_tree			*build_word_node(t_token_list *list, int level, int max_level);
 t_tree			*clone_tree(const t_tree *src);
 void			clean_tree(t_tree **node);
-//void			print_tree(t_tree *node, int level, char *leaf);
+void			print_tree(t_tree *node, int level, char *leaf);
 #endif
