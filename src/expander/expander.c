@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/06 15:09:36 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/07 21:31:03 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 static void	append_splitted_tokens(t_tree *node, char **splitted)
 {
 	t_tree	*tmp;
+	t_tree	*nxt;
 	int		i;
 
 	i = 1;
@@ -42,6 +43,7 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 		free(node->content);
 	node->content = ft_strdup(splitted[0]);
 	tmp = node;
+	nxt = node->right;
 	while (splitted[i])
 	{
 		tmp->right = malloc(sizeof(*tmp));
@@ -59,6 +61,7 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 		tmp = tmp->right;
 		i++;
 	}
+	tmp->right = nxt;
 	free_ar((void **)splitted);
 }
 

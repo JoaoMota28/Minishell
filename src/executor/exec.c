@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/06 14:59:17 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/07 21:34:43 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,7 @@ int	fork_command(t_minishell *data, t_tree *node)
 int	process_command(t_minishell *data, t_tree *node)
 {
 	node = clone_tree(node);
-	print_tree(node, 0, "root: ");
 	expander(node, data);
-	printf("\n");
-	print_tree(node, 0, "root: ");
 	clean_tree(&node);
 	if (!node)
 		return (0);
