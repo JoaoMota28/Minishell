@@ -6,11 +6,19 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 18:28:17 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/05 16:43:59 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:47:29 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	update_index(int *i, int *j, char *raw, int *q)
+{
+	if (*q && raw[*j])
+		*i = *j + 1;
+	else
+		*i = *j;
+}
 
 static void	handle_env_var(char *cont, char *new, int *vals, t_minishell *data)
 {
@@ -114,21 +122,4 @@ int	expand_segment(char *raw, t_minishell *data, char *out)
 	if (out)
 		out[ind[1]] = '\0';
 	return (ind[1]);
-}
-
-char	*expand_quote(char *raw, t_minishell *data)
-{
-	int		len;
-	char	*res;
-
-	if (!raw)
-		return (NULL);
-	len = expand_segment(raw, data, NULL);
-	if (len < 0)
-		return (NULL);
-	res = malloc(len + 1);
-	if (!res)
-		return (NULL);
-	expand_segment(raw, data, res);
-	return (res);
 }

@@ -6,11 +6,18 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:19:51 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/09/04 15:18:20 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:46:25 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	handle_len(char *s, int quoted, t_minishell *data)
+{
+	if (quoted == '\'')
+		return (ft_strlen(s));
+	return (get_expanded_len(s, data));
+}
 
 static int	handle_variable_len(char *content, int *i, t_minishell *data)
 {

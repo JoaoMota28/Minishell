@@ -6,18 +6,11 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 19:16:35 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/05 16:45:43 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:47:00 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	handle_len(char *s, int quoted, t_minishell *data)
-{
-	if (quoted == '\'')
-		return (ft_strlen(s));
-	return (get_expanded_len(s, data));
-}
 
 int	handle_quoted_dollar(char *raw, t_minishell *data, char *out, int (*ind)[2])
 {
@@ -102,4 +95,21 @@ void	handle_quoted(int *q, int *j, int *i, char *raw)
 		if (raw[*j] && *j > *i && raw[*j - 1] == '$')
 			(*j)--;
 	}
+}
+
+char	*expand_quote(char *raw, t_minishell *data)
+{
+	int		len;
+	char	*res;
+
+	if (!raw)
+		return (NULL);
+	len = expand_segment(raw, data, NULL);
+	if (len < 0)
+		return (NULL);
+	res = malloc(len + 1);
+	if (!res)
+		return (NULL);
+	expand_segment(raw, data, res);
+	return (res);
 }

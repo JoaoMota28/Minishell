@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/07 21:31:03 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:52:06 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	update_index(int *i, int *j, char *raw, int *q)
-{
-	if (*q && raw[*j])
-		*i = *j + 1;
-	else
-		*i = *j;
-}
 
 char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 {
@@ -30,6 +22,16 @@ char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
 	if (!expanded)
 		return (ft_strdup(""));
 	return (expanded);
+}
+
+static void	init_right_node(t_tree *node, char **splitted, int *i)
+{
+	node->right->content = ft_strdup(splitted[*i]);
+	node->right->quote_type = UNQUOTED;
+	node->right->type = WORD;
+	node->right->visited = false;
+	node->right->left = NULL;
+	node->right->right = NULL;
 }
 
 static void	append_splitted_tokens(t_tree *node, char **splitted)
@@ -52,12 +54,7 @@ static void	append_splitted_tokens(t_tree *node, char **splitted)
 			free_ar((void **)splitted);
 			return ;
 		}
-		tmp->right->content = ft_strdup(splitted[i]);
-		tmp->right->quote_type = UNQUOTED;
-		tmp->right->type = WORD;
-		tmp->right->visited = false;
-		tmp->right->left = NULL;
-		tmp->right->right = NULL;
+		init_right_node(tmp, splitted, &i);
 		tmp = tmp->right;
 		i++;
 	}
