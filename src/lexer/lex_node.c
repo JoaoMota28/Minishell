@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 00:25:45 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/02 13:49:20 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/11 16:07:43 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static void	lex_word_node(char *line, int *i, t_token_list *node)
 		if (node->content)
 			free(node->content);
 		node->content = ft_substr(line, *i, j - *i);
-		node->quote_type = detect_quote_type(node->content);
 	}
 	if (j == *i)
 		j++;
@@ -90,7 +89,6 @@ t_token_list	*lex_node(char *line, int *i)
 	node->next = NULL;
 	node->content = NULL;
 	node->p_type = P_CLOSED;
-	node->quote_type = UNQUOTED;
 	node->token_type = WORD;
 	node->subshell_level = 0;
 	set_type(node, line, i);

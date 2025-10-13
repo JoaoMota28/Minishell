@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 11:15:03 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/04 21:17:38 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/13 01:31:53 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	count_nodes(t_tree *node)
 	i = 0;
 	while (node)
 	{
-		if (*node->content || node->quote_type != UNQUOTED)
+		if (*node->content || node->q_type != UNQUOTED)
 			i++;
 		node = node->right;
 	}
@@ -68,7 +68,7 @@ char	**get_cmd_line(t_tree *node)
 	while (node)
 	{
 		node->visited = true;
-		if (*node->content || node->quote_type != UNQUOTED)
+		if (*node->content || node->q_type != UNQUOTED)
 			cmd[++i] = ft_strdup(node->content);
 		node = node->right;
 	}

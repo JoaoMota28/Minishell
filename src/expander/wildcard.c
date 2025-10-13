@@ -6,11 +6,27 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 15:59:43 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/08 14:19:31 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/13 08:54:49 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**expand_unq_wildcard(char *pattern)
+{
+	char	**matches;
+
+	matches = expand_wildcard(pattern);
+	if (!matches)
+	{
+		matches = malloc(sizeof(char *) * 2);
+		if (!matches)
+			return (NULL);
+		matches[0] = ft_strdup(pattern);
+		matches[1] = NULL;
+	}
+	return (matches);
+}
 
 static int	matches_extension(char *extension, char *file_name)
 {

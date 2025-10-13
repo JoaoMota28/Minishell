@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/05 16:43:31 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/13 08:52:43 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,21 @@ int		executor(t_minishell *data, t_tree *root);
 char	*expand_nodes(char *content, t_minishell *data);
 char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data);
 char	**expand_wildcard(char *extension);
-int		get_expanded_len(char *content, t_minishell *data);
-char	**expand_wildcard(char *extension);
-char	*expand_quote(char *raw, t_minishell *data);
-void	update_index(int *i, int *j, char *raw, int *q);
-int		expand_segment(char *raw, t_minishell *data, char *out);
-void	handle_quoted(int *q, int *j, int *i, char *raw);
-int		handle_copy(char *s, int quoted, t_minishell *data, char *dest);
-int		handle_len(char *s, int quoted, t_minishell *data);
-int		handle_normal_segm(char *raw, t_minishell *data,
-			char *out, int (*ind)[2]);
-int		handle_quoted_dollar(char *raw, t_minishell *data,
-			char *out, int (*ind)[2]);
+char	**expand_word(t_tree *node, char *s, t_minishell *data);
+char	**handle_single(const char *s, int *i, char **words);
+char	**handle_double(char *s, int *i, char **words, t_minishell *data);
+char	**handle_dollar(char *s, int *i, char **words, t_minishell *data);
+char 	**expand_unq_wildcard(char *pattern);
+char	*expand_dollar(char *s, int *idx, t_minishell *data);
+
+//expander utils
+int		is_name_char(char c);
+int		is_name_start(char c);
+int		last_word_i(char **words);
+char	**str_to_array(char **arr, char *s);
+char	*str_append(char *dst, const char *add);
+void	append_splitted_tokens(t_tree *node, char **splitted);
+
 //inits
 void	data_init(t_minishell *data, char **envp);
 void	init_signals(char type);

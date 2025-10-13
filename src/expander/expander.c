@@ -5,111 +5,103 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 15:07:11 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/08 13:52:06 by bpires-r         ###   ########.fr       */
+/*   Created: 2025/10/10 16:45:23 by bpires-r          #+#    #+#             */
+/*   Updated: 2025/10/13 08:54:29 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data)
+char	*expand_dollar(char *s, int *idx, t_minishell *data)
 {
-	char	*expanded;
-
-	if (delim->quote_type)
-		return (ft_strdup(line));
-	expanded = expand_nodes(line, data);
-	if (!expanded)
-		return (ft_strdup(""));
-	return (expanded);
-}
-
-static void	init_right_node(t_tree *node, char **splitted, int *i)
-{
-	node->right->content = ft_strdup(splitted[*i]);
-	node->right->quote_type = UNQUOTED;
-	node->right->type = WORD;
-	node->right->visited = false;
-	node->right->left = NULL;
-	node->right->right = NULL;
-}
-
-static void	append_splitted_tokens(t_tree *node, char **splitted)
-{
-	t_tree	*tmp;
-	t_tree	*nxt;
+	char	*val;
+	char	*tmp;
+	char	*env;
 	int		i;
 
 	i = 1;
-	if (node->content)
-		free(node->content);
-	node->content = ft_strdup(splitted[0]);
-	tmp = node;
-	nxt = node->right;
-	while (splitted[i])
+	val = NULL;
+	if (!s[i])
 	{
-		tmp->right = malloc(sizeof(*tmp));
-		if (!tmp->right)
-		{
-			free_ar((void **)splitted);
-			return ;
-		}
-		init_right_node(tmp, splitted, &i);
-		tmp = tmp->right;
-		i++;
+		*idx = 1;
+		return (ft_strdup("$"));
 	}
-	tmp->right = nxt;
-	free_ar((void **)splitted);
+	if (s[i] == '"' || s[i] == '\'')
+		return (*idx = 1, NULL);
+	if (s[i] == '?')
+	{
+		tmp = ft_itoa(data->exit_code);
+		*idx = 2;
+		return (tmp);
+	}
+	if (s[i] >= '0' && s[i] <= '9')
+	{
+		*idx = 2;
+		if (s[i] == '0')
+			return (ft_strdup("minishell:3"));
+		return (NULL);
+	}
+	if (!is_name_start(s[i]))
+	{
+		tmp = ft_substr(s, i, 1);
+		val = ft_strjoin("$", tmp);
+		free(tmp);
+		*idx = 2;
+		return (val);
+	}
+	//separar
+	int	start; 
+	
+	start = i;
+	while (is_name_char(s[i]))
+		i++;
+	tmp = ft_substr(s, start, i - start);
+	env = get_env(data->envp, tmp);
+	free(tmp);
+	if (env && env[0])
+		val = ft_strdup(env);
+	else
+		val = NULL;
+	*idx = i;
+	return (val);
 }
 
-static void	handle_unquoted(t_tree *node, char *expanded)
+static int	expand_and_replace(t_tree *node, t_minishell *data)
 {
-	char	**splitted;
+	char	**words;
 
-	if (ft_strchr(expanded, '*') && !node->quote_type)
-	{
-		splitted = expand_wildcard(expanded);
-		if (splitted)
-		{
-			free(expanded);
-			append_splitted_tokens(node, splitted);
-			return ;
-		}
-	}
-	if (node->quote_type == UNQUOTED && ft_strchr(expanded, ' '))
-	{
-		splitted = ft_split(expanded, ' ');
-		free(expanded);
-		append_splitted_tokens(node, splitted);
-	}
-	else
-		node->content = expanded;
+	if (!node || !node->content)
+		return (0);
+	words = expand_word(node, node->content, data);
+	if (!words)
+		return (1);
+	append_splitted_tokens(node, words);
+	return (0);
 }
 
 void	expander(t_tree *node, t_minishell *data)
 {
-	char			*expanded;
-	t_quote_type	orig_q;
+	int		del;
+	t_tree	*tmp;
 
-	if (!node || node->type != WORD)
-		return ;
-	if (!node->content)
-		return ;
-	orig_q = detect_quote_type(node->content);
-	expanded = expand_quote(node->content, data);
-	if (!expanded)
-		return ;
-	free(node->content);
-	node->content = NULL;
-	if (orig_q != UNQUOTED)
+	tmp = node;
+	if (!tmp || tmp->type != WORD)
 	{
-		node->quote_type = orig_q;
-		node->content = expanded;
+		if (tmp)
+		{
+			expander(tmp->left, data);
+			expander(tmp->right, data);
+		}
+		return ;
 	}
-	else
+	del = expand_and_replace(tmp, data);
+	if (del)
 	{
-		node->quote_type = UNQUOTED;
-		handle_unquoted(node, expanded);
+		free(tmp->content);
+		tmp->content = ft_strdup("");
 	}
-	expander(node->right, data);
+	if (tmp->right)
+		expander(tmp->right, data);
+	if (data && data->root == node)
+		clean_tree(&data->root);
 }

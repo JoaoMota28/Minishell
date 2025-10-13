@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/08 13:42:14 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/13 07:32:33 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_tree	*build_word_node(t_token_list *list, int level, int max_level)
 		return (NULL);
 	node->type = WORD;
 	node->content = ft_strdup(list->content);
-	node->quote_type = list->quote_type;
 	node->subshell_level = list->subshell_level;
 	right = list->next;
 	free(list->content);
@@ -32,6 +31,7 @@ t_tree	*build_word_node(t_token_list *list, int level, int max_level)
 	node->left = NULL;
 	node->right = build_tree(right, level, max_level);
 	node->visited = false;
+	node->q_type = UNQUOTED;
 	return (node);
 }
 
@@ -39,8 +39,8 @@ static void	init_splitted_node(t_token_list *t, t_tree *node)
 {
 	node->type = t->token_type;
 	node->content = t->content;
-	node->quote_type = t->quote_type;
 	node->subshell_level = t->subshell_level;
+	node->q_type = UNQUOTED;
 }
 
 t_tree	*split_and_build(t_token_list *t, t_token_list *lft, int lvl, int m_lvl)
@@ -83,7 +83,6 @@ t_tree	*clone_tree(const t_tree *src)
 	dst->content = NULL;
 	if (src->content)
 		dst->content = ft_strdup(src->content);
-	dst->quote_type = src->quote_type;
 	dst->type = src->type;
 	dst->subshell_level = src->subshell_level;
 	dst->visited = src->visited;
@@ -102,7 +101,7 @@ void	clean_tree(t_tree **node)
 	while (*pp)
 	{
 		cur = *pp;
-		if (((!cur->content) || (!cur->content[0])) && cur->quote_type == 0)
+		if (((!cur->content) || (!cur->content[0])) && !cur->q_type)
 		{
 			*pp = cur->right;
 			free(cur->content);
@@ -120,7 +119,7 @@ void print_tree(t_tree *node, int level, char *leaf)
 	for (int i = 0; i < level; i++)
 		printf("  ");
     if (leaf){
-        printf("%s -> quote type: %d", leaf, node->quote_type);
+        printf("%s -> ", leaf);
     }
     printf("[%s]\n", node->content);
 	print_tree(node->left, level + 1, "left : ");
