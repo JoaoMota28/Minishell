@@ -6,39 +6,59 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 07:20:32 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/13 08:36:32 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/14 19:41:15 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**append_matched(char **words, char **matched)
+static char	**glob_words(char **words)
 {
-	int	m;
-	int	w;
+	char	*pattern;
+	char	**matches;
+	char	*restored;
+	char	*restored2;
+	int		w;
+	int		m;
 
-	m = 0;
-	while (matched && matched[m])
+	if (!words)
+		return (words);
+	w = 0;
+	while (words[w])
 	{
-		w = last_word_i(words);
-		if (m == 0)
-			words[w] = str_append(words[w], matched[m]);
+		if (ft_strchr(words[w], '*'))
+		{
+			pattern = ft_strdup(words[w]);
+			matches = expand_wildcard(pattern);
+			if (!matches)
+			{
+				restored = restore_quoted_wc(pattern);
+				free(words[w]);
+				words[w] = restored;
+				free(pattern);
+			}
+			else
+			{
+				free(words[w]);
+				words[w] = ft_strdup(matches[0]);
+				m = 1;
+				while (matches[m])
+				{
+					words = str_to_array(words, ft_strdup(matches[m]));
+					m++;
+				}
+				free_ar((void **)matches);
+				free(pattern);
+			}
+		}
 		else
-			words = str_to_array(words, ft_strdup(matched[m]));
-		m++;
+		{
+			restored2 = restore_quoted_wc(words[w]);
+			free(words[w]);
+			words[w] = restored2;
+		}
+		w++;
 	}
-	return (words);
-}
-
-static char	**handle_wildc_seg(char *seg, char **words)
-{
-	char	**matched;
-
-	matched = expand_unq_wildcard(seg);
-	words = append_matched(words, matched);
-	if (matched)
-		free_ar((void **)matched);
-	free(seg);
 	return (words);
 }
 
@@ -52,8 +72,6 @@ static char	**handle_unquoted(char *s, int *i, char **words)
 	while (s[*i] && s[*i] != '\'' && s[*i] != '"')
 		(*i)++;
 	segm = ft_substr(s, start, *i - start);
-	if (ft_strchr(segm, '*'))
-		return (handle_wildc_seg(segm, words));
 	w = last_word_i(words);
 	words[w] = str_append(words[w], segm);
 	free(segm);
@@ -95,5 +113,6 @@ char	**expand_word(t_tree *node, char *s, t_minishell *data)
 	words = str_to_array(words, ft_strdup(""));
 	node->q_type = set_quote_type(s, 0);
 	words = check_rules(s, words, data);
+	words = glob_words(words);
 	return (words);
 }

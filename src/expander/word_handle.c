@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 08:37:59 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/13 08:46:35 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/14 19:36:56 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static char	*expand_double(char *s, int *i, t_minishell *data)
 	char	*tmp;
 	int		j;
 	int		len;
+	char	*marked;
+	char	tmpwc[2];
 
 	j = *i + 1;
 	out = ft_strdup("");
@@ -27,15 +29,22 @@ static char	*expand_double(char *s, int *i, t_minishell *data)
 		{
 			tmp = expand_dollar(&s[j], &len, data);
 			if (tmp)
-				out = str_append(out, tmp);
-			free(tmp);
+			{
+				marked = mark_quoted_wc(tmp);
+				out = str_append(out, marked);
+				free(tmp);
+				free(marked);
+			}
 			j += len;
 		}
 		else
 		{
-			tmp = ft_substr(s, j, 1);
-			out = str_append(out, tmp);
-			free(tmp);
+			if (s[j] == '*')
+				tmpwc[0] = QUOTED_WC;
+			else
+				tmpwc[0] = s[j];
+			tmpwc[1] = '\0';
+			out = str_append(out, tmpwc);
 			j++;
 		}
 	}
@@ -57,6 +66,7 @@ char	**handle_single(const char *s, int *i, char **words)
 {
 	int		start;
 	char	*tmp;
+	char	*marked;
 	int		w;
 
 	start = *i + 1;
@@ -64,9 +74,11 @@ char	**handle_single(const char *s, int *i, char **words)
 	while (s[*i] && s[*i] != '\'')
 		(*i)++;
 	tmp = ft_substr(s, start, *i - start);
-	w = last_word_i(words);
-	words[w] = str_append(words[w], tmp);
+	marked = mark_quoted_wc(tmp);
 	free(tmp);
+	w = last_word_i(words);
+	words[w] = str_append(words[w], marked);
+	free(marked);
 	if (s[*i] == '\'')
 		(*i)++;
 	return (words);

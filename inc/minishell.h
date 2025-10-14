@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/13 08:52:43 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/14 03:14:30 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ extern volatile sig_atomic_t	g_sig;
 # define PRIVATE_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin\
 :/usr/bin:/sbin:/bin"
 # define WRONG_ARGC "Minishell: no arguments expected"
+# define QUOTED_WC '\x1F'
 
 typedef struct s_minishell
 {
@@ -71,6 +72,8 @@ int		last_word_i(char **words);
 char	**str_to_array(char **arr, char *s);
 char	*str_append(char *dst, const char *add);
 void	append_splitted_tokens(t_tree *node, char **splitted);
+char	*mark_quoted_wc(const char *s);
+char	*restore_quoted_wc(const char *s);
 
 //inits
 void	data_init(t_minishell *data, char **envp);

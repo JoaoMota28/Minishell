@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 15:59:43 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/13 08:54:49 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/14 03:09:21 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*dir_wildcard(char *extension, DIR *dir, char *res)
 			res = ft_strjoin(res, entry->d_name);
 			free(tmp);
 			tmp = res;
-			res = ft_strjoin(res, " ");
+			res = ft_strjoin(res, "\037");
 			free(tmp);
 		}
 		entry = readdir(dir);
@@ -95,10 +95,10 @@ char	**expand_wildcard(char *extension)
 	res = dir_wildcard(extension, dir, res);
 	if (res && !*res)
 		return (free(res), NULL);
-	tmp = ft_strtrim(res, " ");
+	tmp = ft_strtrim(res, "\037");
 	free(res);
 	res = tmp;
-	splitted = ft_split(res, ' ');
+	splitted = ft_split(res, 31);
 	free(tmp);
 	return (splitted);
 }

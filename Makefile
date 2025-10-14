@@ -19,7 +19,7 @@ LEXER_SRCS		= errors_free.c lexer.c syntax_checker.c subshell_syntax.c set_types
 LEXER_PATH 		= src/lexer/
 LEXER			= $(addprefix $(LEXER_PATH), $(LEXER_SRCS))
 
-EXP_SRCS		= expander.c wildcard.c expander_utils.c expand_word.c word_handle.c hd_expander.c append_token.c
+EXP_SRCS		= expander.c wildcard.c expander_utils.c expand_word.c word_handle.c hd_expander.c append_token.c wildcard_utils.c
 EXP_PATH		= src/expander/
 EXP				= $(addprefix $(EXP_PATH), $(EXP_SRCS))
 
