@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:30:41 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/08 13:43:14 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/14 22:05:31 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@ static int	open_fd(t_minishell *data, t_tree *node)
 {
 	char	*file;
 
-	if (node->right->type != WORD)
+	if (node->right->type != WORD && !node->right->visited)
 	{
 		expander(node->right->left, data);
 		file = node->right->left->content;
 		node->right->left->visited = true;
 	}
-	else
+	else if (!node->right->visited)
 	{
 		expander(node->right, data);
 		file = node->right->content;
 		node->right->visited = true;
 	}
-	print_tree(node, 0, "root: ");
 	if (node->type == R_IN)
 		return (open(file, O_RDONLY));
 	else if (node->type == R_OUT)
