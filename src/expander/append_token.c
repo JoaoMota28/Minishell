@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 08:51:36 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 10:56:15 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 11:33:28 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	append_splitted_tokens(t_tree *node, char **splitted)
 			free_ar((void **)splitted);
 			return (0);
 		}
-		init_right_node(tmp ,tmp->right, splitted, &i);
+		init_right_node(tmp, tmp->right, splitted, &i);
 		tmp = tmp->right;
 		i++;
 	}

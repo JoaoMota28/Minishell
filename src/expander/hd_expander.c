@@ -6,16 +6,30 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 08:43:26 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/13 08:47:49 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 11:31:42 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*handle_dollar_expansion(char *o, char *p, t_minishell *d, int *c)
+{
+	char	*val;
+
+	val = expand_dollar(p, c, d);
+	if (val)
+	{
+		o = str_append(o, val);
+		free(val);
+	}
+	if (*c <= 0)
+		*c = 1;
+	return (o);
+}
+
 static char	*expand_heredoc_line(char *line, t_minishell *data)
 {
 	char	*out;
-	char	*val;
 	char	*seg;
 	int		i;
 	int		consumed;
@@ -28,14 +42,7 @@ static char	*expand_heredoc_line(char *line, t_minishell *data)
 	{
 		if (line[i] == '$')
 		{
-			val = expand_dollar(&line[i], &consumed, data);
-			if (val)
-			{
-				out = str_append(out, val);
-				free(val);
-			}
-			if (consumed <= 0)
-				consumed = 1;
+			out = handle_dollar_expansion(out, &line[i], data, &consumed);
 			i += consumed;
 		}
 		else

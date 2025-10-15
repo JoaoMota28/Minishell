@@ -6,19 +6,45 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 07:20:32 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 09:54:47 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 11:23:49 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**glob_words(char **words)
+static char	**is_wc(char **words, int w)
 {
 	char	*pattern;
 	char	**matches;
 	char	*restored;
-	int		w;
 	int		m;
+
+	pattern = ft_strdup(words[w]);
+	matches = expand_wildcard(pattern);
+	if (!matches)
+	{
+		restored = restore_quoted_wc(pattern);
+		free(words[w]);
+		words[w] = restored;
+		free(pattern);
+		return (words);
+	}
+	free(words[w]);
+	words[w] = ft_strdup(matches[0]);
+	m = 1;
+	while (matches[m])
+	{
+		words = str_to_array(words, ft_strdup(matches[m]));
+		m++;
+	}
+	free_ar((void **)matches);
+	return (free(pattern), words);
+}
+
+static char	**glob_words(char **words)
+{
+	char	*restored;
+	int		w;
 
 	if (!words)
 		return (words);
@@ -26,30 +52,7 @@ static char	**glob_words(char **words)
 	while (words[w])
 	{
 		if (ft_strchr(words[w], '*'))
-		{
-			pattern = ft_strdup(words[w]);
-			matches = expand_wildcard(pattern);
-			if (!matches)
-			{
-				restored = restore_quoted_wc(pattern);
-				free(words[w]);
-				words[w] = restored;
-				free(pattern);
-			}
-			else
-			{
-				free(words[w]);
-				words[w] = ft_strdup(matches[0]);
-				m = 1;
-				while (matches[m])
-				{
-					words = str_to_array(words, ft_strdup(matches[m]));
-					m++;
-				}
-				free_ar((void **)matches);
-				free(pattern);
-			}
-		}
+			words = is_wc(words, w);
 		else
 		{
 			restored = restore_quoted_wc(words[w]);

@@ -6,20 +6,34 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 08:37:59 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/14 19:36:56 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:05:22 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*handle_double_dollar(char *o, char *p, t_minishell *d, int *c)
+{
+	char	*tmp;
+	char	*marked;
+
+	tmp = expand_dollar(p, c, d);
+	if (tmp)
+	{
+		marked = mark_quoted_wc(tmp);
+		o = str_append(o, marked);
+		free(tmp);
+		free(marked);
+	}
+	return (o);
+}
+
 static char	*expand_double(char *s, int *i, t_minishell *data)
 {
 	char	*out;
-	char	*tmp;
 	int		j;
 	int		len;
-	char	*marked;
-	char	tmpwc[2];
+	char	tmp[2];
 
 	j = *i + 1;
 	out = ft_strdup("");
@@ -27,29 +41,21 @@ static char	*expand_double(char *s, int *i, t_minishell *data)
 	{
 		if (s[j] == '$')
 		{
-			tmp = expand_dollar(&s[j], &len, data);
-			if (tmp)
-			{
-				marked = mark_quoted_wc(tmp);
-				out = str_append(out, marked);
-				free(tmp);
-				free(marked);
-			}
+			out = handle_double_dollar(out, &s[j], data, &len);
 			j += len;
 		}
 		else
 		{
 			if (s[j] == '*')
-				tmpwc[0] = QUOTED_WC;
+				tmp[0] = QUOTED_WC;
 			else
-				tmpwc[0] = s[j];
-			tmpwc[1] = '\0';
-			out = str_append(out, tmpwc);
+				tmp[0] = s[j];
+			tmp[1] = '\0';
+			out = str_append(out, tmp);
 			j++;
 		}
 	}
-	*i = j;
-	return (out);
+	return (*i = j, out);
 }
 
 static char	*expand_var(char *s, int *i, t_minishell *data)
