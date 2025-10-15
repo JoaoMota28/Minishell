@@ -6,75 +6,54 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 16:45:23 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 09:48:29 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 11:03:39 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*check_dollar_rules(char *tmp, t_minishell *data, int *idx, char *s)
+static char	*expand_dollar_name(char *s, int *idx, t_minishell *data)
 {
-	char	*val;
+	char	*tmp;
 	int		i;
+	char	*val;
+	char	*env;
 
 	i = 1;
 	val = NULL;
-	if (s[i] == '?')
-	{
-		tmp = ft_itoa(data->exit_code);
-		return (*idx = 2, tmp);
-	}
-	if (s[i] >= '0' && s[i] <= '9')
-	{
-		*idx = 2;
-		if (s[i] == '0')
-			return (ft_strdup("minishell:3"));
-		return (NULL);
-	}
 	if (!is_name_start(s[i]))
 	{
 		tmp = ft_substr(s, i, 1);
 		val = ft_strjoin("$", tmp);
-		free(tmp);
-		return (*idx = 2, val);
+		return (*idx = 2, free(tmp), val);
 	}
-	return (NULL);
+	while (is_name_char(s[i]))
+		i++;
+	tmp = ft_substr(s, 1, i - 1);
+	env = get_env(data->envp, tmp);
+	free(tmp);
+	*idx = i;
+	if (env && env[0])
+		return (ft_strdup(env));
+	else
+		return (NULL);
 }
-
 
 char	*expand_dollar(char *s, int *idx, t_minishell *data)
 {
-	char	*val;
-	char	*tmp;
-	char	*env;
-	int		i;
-	int		start; 
-
-	i = 1;
-	val = NULL;
-	if (!s[i])
+	if (!s[1])
 		return (*idx = 1, ft_strdup("$"));
-	if (s[i] == '"' || s[i] == '\'')
+	if (s[1] == '"' || s[1] == '\'')
 		return (*idx = 1, NULL);
-	if (s[i] == '?')
-		return (check_dollar_rules(tmp, data, idx, s));
-	if (s[i] >= '0' && s[i] <= '9')
-		return (check_dollar_rules(tmp, data, idx, s));
-	if (!is_name_start(s[i]))
-		return (check_dollar_rules(tmp, data, idx, s));
-	//separar
-	start = i;
-	while (is_name_char(s[i]))
-		i++;
-	tmp = ft_substr(s, start, i - start);
-	env = get_env(data->envp, tmp);
-	free(tmp);
-	if (env && env[0])
-		val = ft_strdup(env);
-	else
-		val = NULL;
-	*idx = i;
-	return (val);
+	if (s[1] == '?')
+		return (*idx = 2, ft_itoa(data->exit_code));
+	if (s[1] >= '0' && s[1] <= '9')
+	{
+		if (s[1] == '0')
+			return (*idx = 2, ft_strdup("minishell:3"));
+		return (*idx = 2, NULL);
+	}
+	return (expand_dollar_name(s, idx, data));
 }
 
 static int	expand_and_replace(t_tree *node, t_minishell *data)
@@ -85,14 +64,13 @@ static int	expand_and_replace(t_tree *node, t_minishell *data)
 		return (0);
 	words = expand_word(node, node->content, data);
 	if (!words)
-		return (1);
-	append_splitted_tokens(node, words);
-	return (0);
+		return (0);
+	return (append_splitted_tokens(node, words));
 }
 
 void	expander(t_tree *node, t_minishell *data)
 {
-	int		del;
+	int		counter;
 	t_tree	*tmp;
 
 	tmp = node;
@@ -105,12 +83,9 @@ void	expander(t_tree *node, t_minishell *data)
 		}
 		return ;
 	}
-	del = expand_and_replace(tmp, data);
-	if (del)
-	{
-		free(tmp->content);
-		tmp->content = ft_strdup("");
-	}
+	counter = expand_and_replace(tmp, data);
+	while (counter--)
+		tmp = tmp->right;
 	if (tmp->right)
 		expander(tmp->right, data);
 	if (data && data->root == node)

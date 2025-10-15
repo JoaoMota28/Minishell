@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/14 03:14:30 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 10:53:58 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ extern volatile sig_atomic_t	g_sig;
 # define PRIVATE_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin\
 :/usr/bin:/sbin:/bin"
 # define WRONG_ARGC "Minishell: no arguments expected"
-# define QUOTED_WC '\x1F'
+# define QUOTED_WC '\x07'
 
 typedef struct s_minishell
 {
@@ -62,7 +62,7 @@ char	**expand_word(t_tree *node, char *s, t_minishell *data);
 char	**handle_single(const char *s, int *i, char **words);
 char	**handle_double(char *s, int *i, char **words, t_minishell *data);
 char	**handle_dollar(char *s, int *i, char **words, t_minishell *data);
-char 	**expand_unq_wildcard(char *pattern);
+char	**expand_unq_wildcard(char *pattern);
 char	*expand_dollar(char *s, int *idx, t_minishell *data);
 
 //expander utils
@@ -71,7 +71,7 @@ int		is_name_start(char c);
 int		last_word_i(char **words);
 char	**str_to_array(char **arr, char *s);
 char	*str_append(char *dst, const char *add);
-void	append_splitted_tokens(t_tree *node, char **splitted);
+int		append_splitted_tokens(t_tree *node, char **splitted);
 char	*mark_quoted_wc(const char *s);
 char	*restore_quoted_wc(const char *s);
 

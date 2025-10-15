@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 07:20:32 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/14 19:41:15 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 09:54:47 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static char	**glob_words(char **words)
 	char	*pattern;
 	char	**matches;
 	char	*restored;
-	char	*restored2;
 	int		w;
 	int		m;
 
@@ -53,9 +52,9 @@ static char	**glob_words(char **words)
 		}
 		else
 		{
-			restored2 = restore_quoted_wc(words[w]);
+			restored = restore_quoted_wc(words[w]);
 			free(words[w]);
-			words[w] = restored2;
+			words[w] = restored;
 		}
 		w++;
 	}

@@ -6,25 +6,25 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 08:51:36 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/13 08:52:31 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 10:56:15 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	init_right_node(t_tree *node, char **splitted, int *i)
+static void	init_right_node(t_tree *node, t_tree *new, char **splitted, int *i)
 {
-	node->right->left = NULL;
-	node->right->right = NULL;
-	node->right->content = ft_strdup(splitted[*i]);
-	node->file_fd = 0;
-	node->right->type = WORD;
-	node->right->visited = false;
-	node->q_type = UNQUOTED;
-	node->right->subshell_level = node->subshell_level;
+	new->left = NULL;
+	new->right = NULL;
+	new->content = ft_strdup(splitted[*i]);
+	new->file_fd = 0;
+	new->type = WORD;
+	new->visited = false;
+	new->q_type = UNQUOTED;
+	new->subshell_level = node->subshell_level;
 }
 
-void	append_splitted_tokens(t_tree *node, char **splitted)
+int	append_splitted_tokens(t_tree *node, char **splitted)
 {
 	t_tree	*tmp;
 	t_tree	*nxt;
@@ -38,16 +38,17 @@ void	append_splitted_tokens(t_tree *node, char **splitted)
 	nxt = node->right;
 	while (splitted[i])
 	{
-		tmp->right = malloc(sizeof(*tmp));
+		tmp->right = ft_calloc(1, sizeof(*tmp));
 		if (!tmp->right)
 		{
 			free_ar((void **)splitted);
-			return ;
+			return (0);
 		}
-		init_right_node(tmp, splitted, &i);
+		init_right_node(tmp ,tmp->right, splitted, &i);
 		tmp = tmp->right;
 		i++;
 	}
 	tmp->right = nxt;
 	free_ar((void **)splitted);
+	return (i - 1);
 }
