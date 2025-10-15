@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:21:43 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 10:53:58 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 13:04:42 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ char	*expand_nodes(char *content, t_minishell *data);
 char	*expand_heredoc(char *line, t_tree *delim, t_minishell *data);
 char	**expand_wildcard(char *extension);
 char	**expand_word(t_tree *node, char *s, t_minishell *data);
-char	**handle_single(const char *s, int *i, char **words);
-char	**handle_double(char *s, int *i, char **words, t_minishell *data);
-char	**handle_dollar(char *s, int *i, char **words, t_minishell *data);
+char	**handle_single(const char *s, char **words, int *arr[2]);
+char	**handle_double(char *s, char **words, t_minishell *data, int *arr[2]);
+char	**handle_dollar(char *s, char **words, t_minishell *data, int *arr[2]);
 char	**expand_unq_wildcard(char *pattern);
 char	*expand_dollar(char *s, int *idx, t_minishell *data);
 
