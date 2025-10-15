@@ -6,11 +6,40 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 15:59:43 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/14 03:09:21 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:18:13 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**is_wc(char **words, int w)
+{
+	char	*pattern;
+	char	**matches;
+	char	*restored;
+	int		m;
+
+	pattern = ft_strdup(words[w]);
+	matches = expand_wildcard(pattern);
+	if (!matches)
+	{
+		restored = restore_quoted_wc(pattern);
+		free(words[w]);
+		words[w] = restored;
+		free(pattern);
+		return (words);
+	}
+	free(words[w]);
+	words[w] = ft_strdup(matches[0]);
+	m = 1;
+	while (matches[m])
+	{
+		words = str_to_array(words, ft_strdup(matches[m]));
+		m++;
+	}
+	free_ar((void **)matches);
+	return (free(pattern), words);
+}
 
 char	**expand_unq_wildcard(char *pattern)
 {

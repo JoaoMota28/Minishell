@@ -6,54 +6,29 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 08:37:59 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 13:03:50 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:09:05 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*handle_double_dollar(char *o, char *p, t_minishell *d, int *c)
-{
-	char	*tmp;
-	char	*marked;
-
-	tmp = expand_dollar(p, c, d);
-	if (tmp)
-	{
-		marked = mark_quoted_wc(tmp);
-		o = str_append(o, marked);
-		free(tmp);
-		free(marked);
-	}
-	return (o);
-}
 
 static char	*expand_double(char *s, int *i, t_minishell *data)
 {
 	char	*out;
 	int		j;
 	int		len;
-	char	tmp[2];
 
 	j = *i + 1;
 	out = ft_strdup("");
 	while (s[j] && s[j] != '"')
 	{
-		if (s[j] == '$' && s[j + 1] == '"')
+		if (s[j] == '$' && s[j + 1] != '"')
 		{
 			out = handle_double_dollar(out, &s[j], data, &len);
 			j += len;
 		}
 		else
-		{
-			if (s[j] == '*')
-				tmp[0] = QUOTED_WC;
-			else
-				tmp[0] = s[j];
-			tmp[1] = '\0';
-			out = str_append(out, tmp);
-			j++;
-		}
+			out = handle_double_char(out, s, &j);
 	}
 	return (*i = j, out);
 }
@@ -68,7 +43,7 @@ static char	*expand_var(char *s, int *i, t_minishell *data)
 	return (res);
 }
 
-char	**handle_single(const char *s, char **words, int *arr[2])
+char	**handle_single(char *s, char **words, int *arr[2])
 {
 	int		start;
 	char	*tmp;
@@ -121,8 +96,7 @@ char	**handle_dollar(char *s, char **words, t_minishell *data, int *arr[2])
 	{
 		words[w] = str_append(words[w], tmp);
 		free(tmp);
-		*(arr[1]) = 1;
-		return (words);
+		return (*(arr[1]) = 1, words);
 	}
 	splitted = ft_split(tmp, ' ');
 	free(tmp);
@@ -133,6 +107,5 @@ char	**handle_dollar(char *s, char **words, t_minishell *data, int *arr[2])
 	while (splitted[m])
 		words = str_to_array(words, ft_strdup(splitted[m++]));
 	free_ar((void **)splitted);
-	*(arr[1]) = 1;
-	return (words);
+	return (*(arr[1]) = 1, words);
 }
