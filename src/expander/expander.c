@@ -6,33 +6,23 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 16:45:23 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/13 08:54:29 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 09:48:29 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_dollar(char *s, int *idx, t_minishell *data)
+static char	*check_dollar_rules(char *tmp, t_minishell *data, int *idx, char *s)
 {
 	char	*val;
-	char	*tmp;
-	char	*env;
 	int		i;
 
 	i = 1;
 	val = NULL;
-	if (!s[i])
-	{
-		*idx = 1;
-		return (ft_strdup("$"));
-	}
-	if (s[i] == '"' || s[i] == '\'')
-		return (*idx = 1, NULL);
 	if (s[i] == '?')
 	{
 		tmp = ft_itoa(data->exit_code);
-		*idx = 2;
-		return (tmp);
+		return (*idx = 2, tmp);
 	}
 	if (s[i] >= '0' && s[i] <= '9')
 	{
@@ -46,12 +36,33 @@ char	*expand_dollar(char *s, int *idx, t_minishell *data)
 		tmp = ft_substr(s, i, 1);
 		val = ft_strjoin("$", tmp);
 		free(tmp);
-		*idx = 2;
-		return (val);
+		return (*idx = 2, val);
 	}
+	return (NULL);
+}
+
+
+char	*expand_dollar(char *s, int *idx, t_minishell *data)
+{
+	char	*val;
+	char	*tmp;
+	char	*env;
+	int		i;
+	int		start; 
+
+	i = 1;
+	val = NULL;
+	if (!s[i])
+		return (*idx = 1, ft_strdup("$"));
+	if (s[i] == '"' || s[i] == '\'')
+		return (*idx = 1, NULL);
+	if (s[i] == '?')
+		return (check_dollar_rules(tmp, data, idx, s));
+	if (s[i] >= '0' && s[i] <= '9')
+		return (check_dollar_rules(tmp, data, idx, s));
+	if (!is_name_start(s[i]))
+		return (check_dollar_rules(tmp, data, idx, s));
 	//separar
-	int	start; 
-	
 	start = i;
 	while (is_name_char(s[i]))
 		i++;
