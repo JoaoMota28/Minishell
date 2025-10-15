@@ -1,5 +1,0 @@
-head:  -> [echo]
-  right :  -> ["olz eu sou a bea"]
-head:  -> [echo]
-  right :  -> [olz eu sou a bea]
-olz eu sou a bea

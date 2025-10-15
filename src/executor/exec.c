@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:57:21 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/14 22:01:29 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/15 19:22:30 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,7 @@ int	fork_command(t_minishell *data, t_tree *node)
 int	process_command(t_minishell *data, t_tree *node)
 {
 	node = clone_tree(node);
-	print_tree(node, 0, "head: ");
 	expander(node, data);
-	print_tree(node, 0, "head: ");
 	clean_tree(&node);
 	if (!node)
 		return (0);

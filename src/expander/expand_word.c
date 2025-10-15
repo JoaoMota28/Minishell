@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 07:20:32 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 19:13:28 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 19:21:43 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,28 @@ static char	**handle_unquoted(char *s, char **words, int *arr[2])
 	return (words);
 }
 
-static char	**handle_rules(char **words, int *arr[2], char *s, t_minishell *data)
+static char	**handle_rules(char **w, int *arr[2], char *s, t_minishell *d)
 {
 	while (s[*(arr[0])])
 	{
 		if (s[*(arr[0])] == '\'')
 		{
-			words = handle_single(s, words, arr);
+			w = handle_single(s, w, arr);
 			continue ;
 		}
 		if (s[*(arr[0])] == '"')
 		{
-			words = handle_double(s, words, data, arr);
+			w = handle_double(s, w, d, arr);
 			continue ;
 		}
 		if (s[*(arr[0])] == '$')
 		{
-			words = handle_dollar(s, words, data, arr);
+			w = handle_dollar(s, w, d, arr);
 			continue ;
 		}
-		words = handle_unquoted(s, words, arr);
+		w = handle_unquoted(s, w, arr);
 	}
-	return (words);
+	return (w);
 }
 
 static char	**check_rules(char *s, char **words, t_minishell *data)
