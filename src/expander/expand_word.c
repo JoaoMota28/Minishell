@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 07:20:32 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 14:23:53 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/15 19:13:28 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	**handle_unquoted(char *s, char **words, int *arr[2])
 	return (words);
 }
 
-static void	handle_rules(char **words, int *arr[2], char *s, t_minishell *data)
+static char	**handle_rules(char **words, int *arr[2], char *s, t_minishell *data)
 {
 	while (s[*(arr[0])])
 	{
@@ -80,6 +80,7 @@ static void	handle_rules(char **words, int *arr[2], char *s, t_minishell *data)
 		}
 		words = handle_unquoted(s, words, arr);
 	}
+	return (words);
 }
 
 static char	**check_rules(char *s, char **words, t_minishell *data)
@@ -92,7 +93,7 @@ static char	**check_rules(char *s, char **words, t_minishell *data)
 	marked = 0;
 	arr[0] = &idx;
 	arr[1] = &marked;
-	handle_rules(words, arr, s, data);
+	words = handle_rules(words, arr, s, data);
 	return (words);
 }
 
