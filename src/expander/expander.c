@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 16:45:23 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 12:09:32 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/16 11:01:48 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*expand_dollar(char *s, int *idx, t_minishell *data)
 	if (s[1] >= '0' && s[1] <= '9')
 	{
 		if (s[1] == '0')
-			return (*idx = 2, ft_strdup("minishell:3"));
+			return (*idx = 2, ft_strdup("Minishell:3"));
 		return (*idx = 2, NULL);
 	}
 	return (expand_dollar_name(s, idx, data));

@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 07:20:32 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 19:21:43 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:55:45 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static char	**handle_unquoted(char *s, char **words, int *arr[2])
 	int		w;
 
 	start = *(arr[0]);
-	while (s[*(arr[0])] && s[*(arr[0])] != '\'' && s[*(arr[0])] != '"')
+	while (s[*(arr[0])] && s[*(arr[0])] != '\'' 
+		&& s[*(arr[0])] != '"' && s[*(arr[0])] != '$')
 		(*(arr[0]))++;
 	segm = ft_substr(s, start, *(arr[0]) - start);
 	if (arr[1] && *arr[1])

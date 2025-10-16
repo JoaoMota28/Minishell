@@ -6,7 +6,7 @@
 /*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 08:37:59 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 14:09:05 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:47:10 by bpires-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,5 @@ char	**handle_dollar(char *s, char **words, t_minishell *data, int *arr[2])
 	while (splitted[m])
 		words = str_to_array(words, ft_strdup(splitted[m++]));
 	free_ar((void **)splitted);
-	return (*(arr[1]) = 1, words);
+	return (*(arr[1]) = 0, words);
 }
