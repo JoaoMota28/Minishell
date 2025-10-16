@@ -3,40 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 11:15:03 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/13 01:31:53 by bpires-r         ###   ########.fr       */
+/*   Updated: 2025/10/16 12:38:10 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*test_cmd(t_minishell *data, t_tree *node)
+char	*test_cmd(t_minishell *data, t_tree *n)
 {
-	char	*tmp;
-	char	*cmd;
-	int		i;
+	char		*tmp;
+	char		*cmd;
+	int			i;
 
 	tmp = NULL;
 	cmd = NULL;
-	i = 0;
-	if (!node || !node->content)
+	i = -1;
+	if (!n || !n->content)
 		return (NULL);
-	if (access(node->content, X_OK) == 0)
-		return (ft_strdup(node->content));
+	if (access(n->content, X_OK) == 0)
+		if (!ft_strncmp(n->content, "./", 2) || !ft_strncmp(n->content, "/", 1))
+			return (ft_strdup(n->content));
 	data->exec.spath = ft_split(fetch_val(data->envp, "PATH"), ':');
-	if (!data->exec.spath)
+	if (!data->exec.spath || !ft_strncmp(n->content, "./", 2))
 		return (NULL);
-	while (data->exec.spath[i])
+	while (data->exec.spath[++i])
 	{
 		tmp = ft_strjoin(data->exec.spath[i], "/");
-		cmd = ft_strjoin(tmp, node->content);
+		cmd = ft_strjoin(tmp, n->content);
 		free(tmp);
 		if (access(cmd, F_OK) == 0)
 			return (cmd);
 		free(cmd);
-		i++;
 	}
 	return (NULL);
 }
