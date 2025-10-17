@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:11:09 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/03 19:48:30 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/17 15:26:40 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ int	exec_builtin(t_minishell *data, t_tree *root)
 				return (free_tree(root), 1);
 	}
 	if (!ft_strcmp(root->content, "exit"))
+	{
+		if (status == -1)
+			return (free_tree(root), 1);
 		return (free_tree(root), exit_msh(data, status), status);
+	}
 	return (free_tree(root), status);
 }
 
