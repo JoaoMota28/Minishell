@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:49:22 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/17 15:25:15 by jomanuel         ###   ########.fr       */
+/*   Updated: 2026/04/19 19:29:05 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ int	exit_builtin(t_minishell *data, t_tree *leaf)
 {
 	int	exit_code;
 
-	if (data->exec.pipeline_child)
-		exit_msh(data, 0);
-	ft_putstr_fd("exit\n", 1);
+	if (!data->exec.pipeline_child)
+		ft_putstr_fd("exit\n", 1);
 	if (!leaf)
 		return (data->exit_code);
 	if (!is_valid_arg(leaf->content) || !is_within_llong(leaf->content))

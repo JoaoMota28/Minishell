@@ -60,7 +60,8 @@ int	exec_builtin(t_minishell *data, t_tree *root)
 	{
 		if (status == -1)
 			return (free_tree(root), 1);
-		return (free_tree(root), exit_msh(data, status), status);
+		free_tree(root);
+		exit_msh(data, status);
 	}
 	return (free_tree(root), status);
 }

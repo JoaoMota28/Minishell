@@ -6,7 +6,7 @@
 /*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:24:02 by jomanuel          #+#    #+#             */
-/*   Updated: 2025/10/16 12:20:22 by jomanuel         ###   ########.fr       */
+/*   Updated: 2025/10/18 15:57:24 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	executor(t_minishell *data, t_tree *root)
 	int		ret;
 
 	data->root = root;
+	print_tree(root, 0, "root: ");
 	search_heredoc(data, root);
 	if (g_sig)
 	{

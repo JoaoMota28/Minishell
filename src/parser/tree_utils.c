@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bpires-r <bpires-r@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jomanuel <jomanuel@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 19:32:22 by bpires-r          #+#    #+#             */
-/*   Updated: 2025/10/15 19:21:03 by bpires-r         ###   ########.fr       */
+/*   Updated: 2026/04/19 19:13:00 by jomanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,9 @@ t_tree	*clone_tree(const t_tree *src)
 	dst->type = src->type;
 	dst->subshell_level = src->subshell_level;
 	dst->visited = src->visited;
-	dst->left = NULL;
+	dst->q_type = src->q_type;
 	dst->file_fd = src->file_fd;
+	dst->left = clone_tree(src->left);
 	dst->right = clone_tree(src->right);
 	return (dst);
 }
@@ -111,7 +112,7 @@ void	clean_tree(t_tree **node)
 			pp = &cur->right;
 	}
 }
-/*
+
 void print_tree(t_tree *node, int level, char *leaf)
 {
 	if (!node)
@@ -125,4 +126,3 @@ void print_tree(t_tree *node, int level, char *leaf)
 	print_tree(node->left, level + 1, "left : ");
 	print_tree(node->right, level + 1, "right : ");
 }
-*/
